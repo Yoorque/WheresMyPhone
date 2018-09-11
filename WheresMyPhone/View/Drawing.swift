@@ -16,6 +16,7 @@ class Drawing {
     
     func drawPolylinesOn(_ mapView: GMSMapView, forDevice device: Device) {
         
+        phoneMarker.position = CLLocationCoordinate2D(latitude: device.coordinates.last!.coordinate.latitude, longitude: device.coordinates.last!.coordinate.longitude)
         //mapView.clear()
         let path = GMSMutablePath()
         var speed: Double = 0.0
@@ -23,7 +24,6 @@ class Drawing {
         //Iterate through locations array
         for (index, location) in device.coordinates.enumerated() {
             speed = location.speed
-            print(device.coordinates.count)
             
             //Create new path for every 2 (two) last coordinates in order to observe the speed and color the segment accordingly
             if index >= device.coordinates.count - 2 {
@@ -37,7 +37,6 @@ class Drawing {
         polyline.geodesic = true
         polyline.strokeColor = speedColors(forSpeed: speed)
         polyline.map = mapView
-        phoneMarker.position = CLLocationCoordinate2D(latitude: device.coordinates.last!.coordinate.latitude, longitude: device.coordinates.last!.coordinate.longitude)
         phoneMarker.groundAnchor = CGPoint(x: 0.5, y: 0.5)
         
         phoneMarker.icon = UIImage(named: "iPhone")!.scaleImageTo(CGSize(width: 35, height: 40))

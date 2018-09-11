@@ -71,7 +71,8 @@ class ViewController: UIViewController, GMSMapViewDelegate {
         //Subscribe to onNext events once the device is connected
         publishCoordSubject.subscribe(onNext: { location in
             guard self.viewModel.devices.count != 0 else {return}
-            let row = self.tableView.indexPathForSelectedRow?.row ?? 0
+            guard let row = self.tableView.indexPathForSelectedRow?.row else {return}
+            
             self.viewModel.devices[row].coordinates.append(location)
             self.drawing.drawPolylinesOn(self.mapView, forDevice: self.viewModel.devices[row])
         }).disposed(by: disposeBag)
@@ -82,13 +83,15 @@ class ViewController: UIViewController, GMSMapViewDelegate {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Disconnect", style: .done, target: self, action: #selector(disconnectDevice))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Connect", style: .done, target: self, action: #selector(connectDevice))
         
+        //Timer for displaying mocked CLLocations over time using publishCoordSubject
+        mockedDataWithTimer()
     }
     
     //MARK: - Custom methods -
     
     func mockedDataWithTimer() {
         Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { _ in
-            let row = self.tableView.indexPathForSelectedRow?.row ?? 0
+            guard let row = self.tableView.indexPathForSelectedRow?.row else {return}
             guard self.viewModel.devices.count != 0 else {return}
             
             let lat = self.viewModel.devices[row].coordinates.last!.coordinate.latitude
@@ -104,14 +107,12 @@ class ViewController: UIViewController, GMSMapViewDelegate {
     }
     
     @objc func connectDevice() {
+        
         for device in devices {
             viewModel.addDevice(device)
         }
         //Advertises onNext event once the 'viewModel.devices.count' changes
         publishSubject.onNext(viewModel.devices.count)
-        
-        //Timer for displaying mocked CLLocations over time using publishCoordSubject
-        mockedDataWithTimer()
         
         tableView.reloadData()
     }

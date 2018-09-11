@@ -32,7 +32,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     //Delegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
+        mapView.clear()
+        print("Selected")
         CATransaction.setAnimationDuration(0.5)
         CATransaction.begin()
         mapView.animate(toLocation: CLLocationCoordinate2D(latitude: self.viewModel.devices[indexPath.row].coordinates.last!.coordinate.latitude, longitude: self.viewModel.devices[indexPath.row].coordinates.last!.coordinate.longitude))
