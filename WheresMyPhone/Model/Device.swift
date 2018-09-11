@@ -10,7 +10,7 @@ import UIKit
 import CoreLocation
 import GoogleMaps
 
-struct Device: Comparable, DeviceProtocol {
+struct Device: Comparable {
     
     //MARK: - properties -
     let name: String

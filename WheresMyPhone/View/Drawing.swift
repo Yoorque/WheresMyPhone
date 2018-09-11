@@ -24,13 +24,17 @@ class Drawing {
         var speed: Double = 0.0
         
         //Iterate through locations array
-        for (index, location) in device.coordinates.enumerated() {
-            speed = location.speed
-            
-            //Create new path for every 2 (two) last coordinates in order to observe the speed and color the segment accordingly
-            if index >= device.coordinates.count - 2 {
-                path.add(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
-            }
+//        for (index, location) in device.coordinates.enumerated() {
+//            speed = location.speed
+//
+//            if index >= device.coordinates.count - 2 {
+//                path.add(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
+//            }
+//        }
+        //Create new path for every 2 (two) last coordinates in order to observe the speed and color the segment accordingly
+        _ = device.coordinates.suffix(2).map {
+            speed = $0.speed
+            path.add(CLLocationCoordinate2D(latitude: $0.coordinate.latitude, longitude: $0.coordinate.longitude))
         }
         
         let polyline = GMSPolyline(path: path)

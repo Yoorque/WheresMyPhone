@@ -10,7 +10,6 @@
 		260718D821412DFA009B36C1 /* Double+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 260718D721412DFA009B36C1 /* Double+extension.swift */; };
 		260718DA21412E8D009B36C1 /* ViewController+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 260718D921412E8D009B36C1 /* ViewController+extension.swift */; };
 		260718DE2141359A009B36C1 /* Drawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 260718DD2141359A009B36C1 /* Drawing.swift */; };
-		261E183F2142BF120010D4AC /* Device+protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261E183E2142BF120010D4AC /* Device+protocol.swift */; };
 		2622265921382DF2000CB875 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2622265821382DF2000CB875 /* AppDelegate.swift */; };
 		2622265B21382DF2000CB875 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2622265A21382DF2000CB875 /* ViewController.swift */; };
 		2622265E21382DF2000CB875 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2622265C21382DF2000CB875 /* Main.storyboard */; };
@@ -39,7 +38,6 @@
 		260718D721412DFA009B36C1 /* Double+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+extension.swift"; sourceTree = "<group>"; };
 		260718D921412E8D009B36C1 /* ViewController+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+extension.swift"; sourceTree = "<group>"; };
 		260718DD2141359A009B36C1 /* Drawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drawing.swift; sourceTree = "<group>"; };
-		261E183E2142BF120010D4AC /* Device+protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Device+protocol.swift"; sourceTree = "<group>"; };
 		2622265521382DF2000CB875 /* WheresMyPhone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WheresMyPhone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2622265821382DF2000CB875 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2622265A21382DF2000CB875 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -88,7 +86,6 @@
 				260718D721412DFA009B36C1 /* Double+extension.swift */,
 				260718D921412E8D009B36C1 /* ViewController+extension.swift */,
 				2651CF13214160E500BB20A1 /* ImageView+extension.swift */,
-				261E183E2142BF120010D4AC /* Device+protocol.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -404,7 +401,6 @@
 				260718D821412DFA009B36C1 /* Double+extension.swift in Sources */,
 				26D9AA07213924BC0053F2DA /* DeviceViewModel.swift in Sources */,
 				2622265921382DF2000CB875 /* AppDelegate.swift in Sources */,
-				261E183F2142BF120010D4AC /* Device+protocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

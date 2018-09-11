@@ -51,6 +51,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 extension ViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+       
 //        guard let location = locations.last else {return} //takes the last user location
 //        guard viewModel.devices.count != 0 else {return}
 //

@@ -27,6 +27,7 @@ class ViewController: UIViewController {
     let drawing = Drawing() //used for drawing polylines
     let locationManager = CLLocationManager()
     var previouslySelected = IndexPath()
+    
    // var index = 0
    // var locationArray = [CLLocation]()
     
@@ -37,7 +38,10 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //setup locationManager
         locationManagerSetup()
+        
+        //setup settings for mapView
         mapSetup()
         
         //subscribing to onNext events for count property of viewModel.devices array and
@@ -66,6 +70,8 @@ class ViewController: UIViewController {
             }
             
         }).disposed(by: disposeBag)
+        
+        //Initially checks count property of viewModel.devices array
         publishSubject.onNext(viewModel.devices.count)
         
         //Subscribe to onNext events once the device is connected
@@ -76,8 +82,9 @@ class ViewController: UIViewController {
             self.viewModel.devices[row].coordinates.append(location)
             self.drawing.drawPolylinesOn(self.mapView, forDevice: self.viewModel.devices[row])
         }).disposed(by: disposeBag)
-        view.backgroundColor = UIColor.lightText
         
+        //set view background color
+        view.backgroundColor = UIColor.lightText
         
         //add left and right navigationBar buttons for removing and adding new Devices
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Disconnect", style: .done, target: self, action: #selector(disconnectDevice))
@@ -88,9 +95,9 @@ class ViewController: UIViewController {
     }
     
     //MARK: - Custom methods -
-    
     func mockedDataWithTimer() {
         Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { _ in
+            //Produce new random coordinates every 'timeInterval' seconds
             guard let row = self.tableView.indexPathForSelectedRow?.row else {return}
             guard self.viewModel.devices.count != 0 else {return}
             
@@ -100,17 +107,20 @@ class ViewController: UIViewController {
             let randomNumber = Double(arc4random_uniform(5))
             let randomNumber1 = Double(arc4random_uniform(5))
             
+            //create CLLocation object to be sent
             let cll = CLLocation(coordinate: CLLocationCoordinate2D(latitude: CLLocationDegrees(lat + randomNumber), longitude: CLLocationDegrees(lon + randomNumber1)), altitude: 2, horizontalAccuracy: 2, verticalAccuracy: 2, course: 2, speed: CLLocationSpeed(randomNumber), timestamp: Date() + TimeInterval(randomNumber))
             
+            //advertise onNext event with newly created CLLocation object
             self.publishCoordSubject.onNext(cll)
         }
     }
     
     @objc func connectDevice() {
-        
+        //Add mock devices from devices array
         for device in devices {
             viewModel.addDevice(device)
         }
+        
         //Advertises onNext event once the 'viewModel.devices.count' changes
         publishSubject.onNext(viewModel.devices.count)
         
@@ -123,8 +133,11 @@ class ViewController: UIViewController {
         //viewModel.removeLastDevice()
         let row = tableView.indexPathForSelectedRow?.row ?? 0
         
+        //Remove polylines for a selected device via Polyline name property (String)
         drawing.removePolyline(forDeviceTitle: viewModel.devices[row].name)
-        viewModel.removeDevice(named: viewModel.devices[row].name)  //remove specific Device.
+        
+        //remove specific Device.
+        viewModel.removeDevice(named: viewModel.devices[row].name)
         
         //Advertises onNext event once the 'viewModel.devices.count' changes
         publishSubject.onNext(viewModel.devices.count)
@@ -148,7 +161,6 @@ class ViewController: UIViewController {
     }
     
     func mapSetup() {
-        
         mapView.delegate = self
         mapView.settings.compassButton = true //displays compas on the map when map heading is changed
         mapView.settings.myLocationButton = true //displays round myLocation button
