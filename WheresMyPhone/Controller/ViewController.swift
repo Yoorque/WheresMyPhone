@@ -98,7 +98,7 @@ class ViewController: UIViewController, GMSMapViewDelegate {
             let randomNumber1 = Double(arc4random_uniform(5))
             
             let cll = CLLocation(coordinate: CLLocationCoordinate2D(latitude: CLLocationDegrees(lat + randomNumber), longitude: CLLocationDegrees(lon + randomNumber1)), altitude: 2, horizontalAccuracy: 2, verticalAccuracy: 2, course: 2, speed: CLLocationSpeed(randomNumber), timestamp: Date() + TimeInterval(randomNumber))
-            self.viewModel.devices[row].coordinates.append(cll)
+            
             self.publishCoordSubject.onNext(cll)
         }
     }

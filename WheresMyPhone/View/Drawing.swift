@@ -26,7 +26,7 @@ class Drawing {
             print(device.coordinates.count)
             
             //Create new path for every 2 (two) last coordinates in order to observe the speed and color the segment accordingly
-            if index >= device.coordinates.count - 3 {
+            if index >= device.coordinates.count - 2 {
                 path.add(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
             }
         }
