@@ -17,6 +17,8 @@ class Drawing {
     func drawPolylinesOn(_ mapView: GMSMapView, forDevice device: Device) {
         
         phoneMarker.position = CLLocationCoordinate2D(latitude: device.coordinates.last!.coordinate.latitude, longitude: device.coordinates.last!.coordinate.longitude)
+        let camera = GMSCameraPosition(target: phoneMarker.position, zoom: 5, bearing: 0, viewingAngle: 0)
+        mapView.animate(to: camera)
         //mapView.clear()
         let path = GMSMutablePath()
         var speed: Double = 0.0
@@ -39,7 +41,7 @@ class Drawing {
         polyline.map = mapView
         phoneMarker.groundAnchor = CGPoint(x: 0.5, y: 0.5)
         
-        phoneMarker.icon = UIImage(named: "iPhone")!.scaleImageTo(CGSize(width: 35, height: 40))
+        phoneMarker.icon = device.image.scaleImageTo(CGSize(width: 35, height: 40))
     
         phoneMarker.title = device.name
         phoneMarker.snippet = speed.toStringOfkmPerHour()

@@ -17,7 +17,7 @@ let mockDevice4 = Device(name: "Fourth", uuid: UIDevice.current.identifierForVen
 
 let devices = [mockDevice, mockDevice2, mockDevice3, mockDevice4]
 
-class ViewController: UIViewController, GMSMapViewDelegate {
+class ViewController: UIViewController {
     
     //MARK: - properties -
     var viewModel = DeviceViewModel(devices: [])
@@ -26,7 +26,7 @@ class ViewController: UIViewController, GMSMapViewDelegate {
     let disposeBag = DisposeBag() //disposeBag for Disposables
     let drawing = Drawing() //used for drawing polylines
     let locationManager = CLLocationManager()
-    
+    var previouslySelected = IndexPath()
    // var index = 0
    // var locationArray = [CLLocation]()
     

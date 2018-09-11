@@ -16,12 +16,14 @@ struct Device: Comparable, DeviceProtocol {
     let name: String
     var uuid: UUID
     var coordinates: [CLLocation]
+    let image: UIImage
     
     //MARK: - init -
-    init(name: String, uuid: UUID, coordinates: [CLLocation]) {
+    init(name: String, uuid: UUID, coordinates: [CLLocation], image: UIImage = UIImage(named: "iPhone")!) {
         self.name = name
         self.uuid = UIDevice.current.identifierForVendor!
         self.coordinates = coordinates
+        self.image = image
     }
     
     //satisfying Comparable protocol

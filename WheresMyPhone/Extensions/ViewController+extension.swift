@@ -9,7 +9,7 @@
 import UIKit
 import GoogleMaps
 
-//MARK: tableViewDelegate and tableViewDataSource
+//MARK: - tableViewDelegate and tableViewDataSource -
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     //DataSource
@@ -31,16 +31,23 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     //Delegate
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        mapView.clear()
+        
+        if previouslySelected != indexPath {
+            mapView.clear()
+        }
+        
         print("Selected")
         CATransaction.setAnimationDuration(0.5)
         CATransaction.begin()
         mapView.animate(toLocation: CLLocationCoordinate2D(latitude: self.viewModel.devices[indexPath.row].coordinates.last!.coordinate.latitude, longitude: self.viewModel.devices[indexPath.row].coordinates.last!.coordinate.longitude))
         CATransaction.commit()
+        previouslySelected = indexPath
     }
 }
 
+//MARK: - LocationManagerDelegate -
 extension ViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -61,4 +68,9 @@ extension ViewController: CLLocationManagerDelegate {
 //        drawing.drawPolylinesOn(mapView, forLocations: viewModel.devices[index].coordinates, forDevice: viewModel.devices[index])
         //viewModel.drawPolylines(forMap: mapView)
     }
+}
+
+//MARK: - MapViewDelegates -
+extension ViewController: GMSMapViewDelegate {
+    
 }
