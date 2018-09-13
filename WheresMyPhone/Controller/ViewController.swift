@@ -58,7 +58,7 @@ class ViewController: UIViewController {
             self.drawing.drawPolylinesOn(self.mapView, forDevice: self.viewModel.devices[row])
         }).disposed(by: disposeBag)
         
-        mockData.mockedDataWithTimer()  //Timer for displaying mocked CLLocations over time using publishCoordSubject
+        mockData.mockedDataWithTimer(for: self, and: tableView) //Timer for displaying mocked CLLocations over time using publishCoordSubject
     }
     
     //MARK: - Helper methods -
