@@ -19,11 +19,11 @@ struct Device: Comparable {
     let image: UIImage
     
     //MARK: - init -
-    init(name: String, uuid: UUID, coordinates: [CLLocation], image: UIImage = UIImage(named: "iPhone")!) {
+    init(name: String, uuid: UUID, coordinates: [CLLocation]) {
         self.name = name
         self.uuid = UIDevice.current.identifierForVendor!
         self.coordinates = coordinates
-        self.image = image
+        self.image = UIImage(named: "iPhone")!.scaleImageTo(CGSize(width: 35, height: 40))
     }
     
     //satisfying Comparable protocol

@@ -10,13 +10,7 @@ import UIKit
 import GoogleMaps
 import RxSwift
 
-let mockDevice = Device(name: "First", uuid: UIDevice.current.identifierForVendor!, coordinates: [CLLocation(latitude: 30, longitude: 20), CLLocation(latitude: 35, longitude: 25)])
-let mockDevice2 = Device(name: "Second", uuid: UIDevice.current.identifierForVendor!, coordinates: [CLLocation(latitude: 40, longitude: 30), CLLocation(latitude: 45, longitude: 35)])
-let mockDevice3 = Device(name: "Third", uuid: UIDevice.current.identifierForVendor!, coordinates: [CLLocation(latitude: 50, longitude: 40), CLLocation(latitude: 55, longitude: 45)])
-let mockDevice4 = Device(name: "Fourth", uuid: UIDevice.current.identifierForVendor!, coordinates: [CLLocation(latitude: 60, longitude: 50), CLLocation(latitude: 65, longitude: 55)])
-
-let devices = [mockDevice, mockDevice2, mockDevice3, mockDevice4]
-
+//MARK: - Mocked data -
 class ViewController: UIViewController {
     
     //MARK: - properties -
@@ -27,7 +21,7 @@ class ViewController: UIViewController {
     let drawing = Drawing() //used for drawing polylines
     let locationManager = CLLocationManager()
     var previouslySelected = IndexPath()
-    
+    var mockData = MockData()
    // var index = 0
    // var locationArray = [CLLocation]()
     
@@ -35,47 +29,28 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     //MARK: - life cycle -
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        //setup locationManager
-        locationManagerSetup()
         
-        //setup settings for mapView
-        mapSetup()
+        locationManagerSetup() //setup locationManager
+        mapSetup() //setup settings for mapView
+        setupNavigationBar() //setup navigationBar
         
         //subscribing to onNext events for count property of viewModel.devices array and
         //modifying UI according to the result
         publishSubject.subscribe(onNext: { count in
-            //if viewModel.devices.count is 0, tableView is hidden and mapView spans over the entire screen
-            if count == 0 {
-                self.mapView.clear()
-                DispatchQueue.main.async {
-                    UIView.animate(withDuration: 1, animations: {
-                        self.tableView.alpha = 0
-                        self.mapView.frame.size.height = self.view.frame.size.height
-                        self.tableView.frame.origin.y = self.view.frame.maxY
-                    })
-                }
-                
-                //else, tableView is showing with the list of devices and mapView takes up it's position above tableView
-            } else {
-                DispatchQueue.main.async {
-                    UIView.animate(withDuration: 1, animations: {
-                        self.mapView.frame.size.height = self.view.frame.size.height - self.tableView.frame.size.height
-                        self.tableView.frame.origin.y = self.view.frame.size.height - self.tableView.frame.size.height
-                        self.tableView.alpha = 1
-                    })
-                }
-            }
             
+            if count == 0 { //if viewModel.devices.count is 0, tableView is hidden and mapView spans over the entire screen
+                self.removeTableView()
+                
+            } else { //else, tableView is showing with the list of devices and mapView takes up it's position above tableView
+                self.displayTableView()
+            }
         }).disposed(by: disposeBag)
         
-        //Initially checks count property of viewModel.devices array
-        publishSubject.onNext(viewModel.devices.count)
+        publishSubject.onNext(viewModel.devices.count) //Initially checks count property of viewModel.devices array
         
-        //Subscribe to onNext events once the device is connected
-        publishCoordSubject.subscribe(onNext: { location in
+        publishCoordSubject.subscribe(onNext: { location in //Subscribe to onNext events
             guard self.viewModel.devices.count != 0 else {return}
             guard let row = self.tableView.indexPathForSelectedRow?.row else {return}
             
@@ -83,69 +58,40 @@ class ViewController: UIViewController {
             self.drawing.drawPolylinesOn(self.mapView, forDevice: self.viewModel.devices[row])
         }).disposed(by: disposeBag)
         
-        //set view background color
-        view.backgroundColor = UIColor.lightText
+        mockData.mockedDataWithTimer()  //Timer for displaying mocked CLLocations over time using publishCoordSubject
+    }
+    
+    //MARK: - Helper methods -
+    fileprivate func removeTableView() {
+        self.mapView.clear()
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 1, animations: {
+                self.tableView.alpha = 0
+                self.mapView.frame.size.height = self.view.frame.size.height
+                self.tableView.frame.origin.y = self.view.frame.maxY
+            })
+        }
+    }
+    
+    fileprivate func displayTableView() {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 1, animations: {
+                self.mapView.frame.size.height = self.view.frame.size.height - self.tableView.frame.size.height
+                self.tableView.frame.origin.y = self.view.frame.size.height - self.tableView.frame.size.height
+                self.tableView.alpha = 1
+            })
+        }
+    }
+    
+    fileprivate func setupNavigationBar() {
+        view.backgroundColor = UIColor.lightText //set view background color
         
         //add left and right navigationBar buttons for removing and adding new Devices
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Disconnect", style: .done, target: self, action: #selector(disconnectDevice))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Connect", style: .done, target: self, action: #selector(connectDevice))
-        
-        //Timer for displaying mocked CLLocations over time using publishCoordSubject
-        mockedDataWithTimer()
     }
     
-    //MARK: - Custom methods -
-    func mockedDataWithTimer() {
-        Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { _ in
-            //Produce new random coordinates every 'timeInterval' seconds
-            guard let row = self.tableView.indexPathForSelectedRow?.row else {return}
-            guard self.viewModel.devices.count != 0 else {return}
-            
-            let lat = self.viewModel.devices[row].coordinates.last!.coordinate.latitude
-            let lon = self.viewModel.devices[row].coordinates.last!.coordinate.longitude
-            
-            let randomNumber = Double(arc4random_uniform(5))
-            let randomNumber1 = Double(arc4random_uniform(5))
-            
-            //create CLLocation object to be sent
-            let cll = CLLocation(coordinate: CLLocationCoordinate2D(latitude: CLLocationDegrees(lat + randomNumber), longitude: CLLocationDegrees(lon + randomNumber1)), altitude: 2, horizontalAccuracy: 2, verticalAccuracy: 2, course: 2, speed: CLLocationSpeed(randomNumber), timestamp: Date() + TimeInterval(randomNumber))
-            
-            //advertise onNext event with newly created CLLocation object
-            self.publishCoordSubject.onNext(cll)
-        }
-    }
-    
-    @objc func connectDevice() {
-        //Add mock devices from devices array
-        for device in devices {
-            viewModel.addDevice(device)
-        }
-        
-        //Advertises onNext event once the 'viewModel.devices.count' changes
-        publishSubject.onNext(viewModel.devices.count)
-        
-        tableView.reloadData()
-    }
-    
-    //Remocve last Device in the array of devices
-    @objc func disconnectDevice() {
-        guard viewModel.devices.count != 0 else {return}
-        //viewModel.removeLastDevice()
-        let row = tableView.indexPathForSelectedRow?.row ?? 0
-        
-        //Remove polylines for a selected device via Polyline name property (String)
-        drawing.removePolyline(forDeviceTitle: viewModel.devices[row].name)
-        
-        //remove specific Device.
-        viewModel.removeDevice(named: viewModel.devices[row].name)
-        
-        //Advertises onNext event once the 'viewModel.devices.count' changes
-        publishSubject.onNext(viewModel.devices.count)
-        
-        tableView.reloadData()
-    }
-    
-    func locationManagerSetup() {
+    fileprivate func locationManagerSetup() {
         locationManager.delegate = self
         locationManager.showsBackgroundLocationIndicator = true
         locationManager.allowsBackgroundLocationUpdates = true
@@ -160,14 +106,36 @@ class ViewController: UIViewController {
         }
     }
     
-    func mapSetup() {
-        mapView.delegate = self
+    fileprivate func mapSetup() {
+        mapView.delegate = self //assign mapView delegate to 'self'
         mapView.settings.compassButton = true //displays compas on the map when map heading is changed
         mapView.settings.myLocationButton = true //displays round myLocation button
         mapView.isMyLocationEnabled = true //enables user location
     }
+    
+    @objc func connectDevice() {
+        for device in mockData.devices { //add mock devices from devices array
+            if viewModel.addDevice(device) == true {
+                publishSubject.onNext(viewModel.devices.count) //advertises onNext event once the 'viewModel.devices.count' changes
+                tableView.reloadData()
+            }
+        }
+    }
+    
+    //Remove Device from the array of devices
+    @objc func disconnectDevice() {
+        guard viewModel.devices.count != 0 else {return} //check the count of devices, if 0, return
+        //viewModel.removeLastDevice() // remove last device from devices array
+        guard let row = tableView.indexPathForSelectedRow?.row else {return} //if device row is selected, extract the row Int
+        
+        drawing.removePolyline(forDeviceTitle: viewModel.devices[row].name) //Remove polylines for a selected device via Polyline name property (String)
+        viewModel.removeDevice(named: viewModel.devices[row].name) //remove specific Device.
+        publishSubject.onNext(viewModel.devices.count) //advertise onNext event once the 'viewModel.devices.count' changes
+        tableView.reloadData() //reload tableView
+    }
 }
 //MARK: Extensions in Extensions folder
+
 
 
 

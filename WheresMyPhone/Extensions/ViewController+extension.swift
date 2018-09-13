@@ -50,7 +50,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 //MARK: - LocationManagerDelegate -
 extension ViewController: CLLocationManagerDelegate {
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
        
 //        guard let location = locations.last else {return} //takes the last user location
 //        guard viewModel.devices.count != 0 else {return}
@@ -68,7 +68,7 @@ extension ViewController: CLLocationManagerDelegate {
 //    
 //        drawing.drawPolylinesOn(mapView, forLocations: viewModel.devices[index].coordinates, forDevice: viewModel.devices[index])
         //viewModel.drawPolylines(forMap: mapView)
-    }
+//    }
 }
 
 //MARK: - MapViewDelegates -

@@ -24,12 +24,14 @@ class DeviceViewModel {
     
     //MARK: - Helper methods -
     //Add device method
-    func addDevice(_ device: Device) {
+    func addDevice(_ device: Device) -> Bool {
         if !devices.contains(where: {$0.name == device.name}) {
             print("Adding \(device.name)")
             devices.append(device)
+            return true
         } else {
             print("\(device.name) is already added.")
+            return false
         }
     }
     
