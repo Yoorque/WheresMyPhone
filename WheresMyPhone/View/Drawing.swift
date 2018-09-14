@@ -14,35 +14,35 @@ class Drawing {
     var polylines = [GMSOverlay]()
     let phoneMarker = GMSMarker()
     
-    func drawPolylinesOn(_ mapView: GMSMapView, forDevice device: Device) {
+    func drawPolylinesOn(_ mapView: GMSMapView, forDevice device: DeviceLocation) {
         
         //mapView.clear()
         let path = GMSMutablePath()
         var speed: Double = 0.0
         
         //Iterate through locations array
-        for (index, location) in device.coordinates.enumerated() {
-            speed = location.speed
-            print(device.coordinates.count)
-            
-            //Create new path for every 2 (two) last coordinates in order to observe the speed and color the segment accordingly
-            if index >= device.coordinates.count - 3 {
-                path.add(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
-            }
-        }
+//        for {
+//            speed = location.speed
+//            print(device.coordinates.count)
+//
+//            //Create new path for every 2 (two) last coordinates in order to observe the speed and color the segment accordingly
+//            if index >= device.coordinates.count - 3 {
+//                path.add(CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
+//            }
+//        }
         
         let polyline = GMSPolyline(path: path)
-        polyline.title = device.name
+        polyline.title = device.deviceName
         polyline.strokeWidth = 3
         polyline.geodesic = true
         polyline.strokeColor = speedColors(forSpeed: speed)
         polyline.map = mapView
-        phoneMarker.position = CLLocationCoordinate2D(latitude: device.coordinates.last!.coordinate.latitude, longitude: device.coordinates.last!.coordinate.longitude)
+        phoneMarker.position = CLLocationCoordinate2D(latitude: device.latitude, longitude: device.longitude)
         phoneMarker.groundAnchor = CGPoint(x: 0.5, y: 0.5)
         
         phoneMarker.icon = UIImage(named: "iPhone")!.scaleImageTo(CGSize(width: 35, height: 40))
     
-        phoneMarker.title = device.name
+        phoneMarker.title = device.deviceName
         phoneMarker.snippet = speed.toStringOfkmPerHour()
         phoneMarker.map = mapView
         phoneMarker.tracksInfoWindowChanges = true

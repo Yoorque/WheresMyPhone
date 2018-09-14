@@ -7,13 +7,13 @@
 //
 
 import UIKit
-import GoogleMaps
 // 'Device' struct requires that any object that wants to be a 'Device' object, needs to adopt DeviceProtocol in order to provide neccesary properties.
 
 //MARK: - protocol -
 protocol DeviceProtocol {
-    var name: String {get}
-    var uuid: UUID {get}
-    var coordinates: [CLLocation] {get set}
+    
+//    var name: String { get }
+//    var uuid: UUID { get }
+//    var coordinates: [CLLocation] { get set }
 }
 

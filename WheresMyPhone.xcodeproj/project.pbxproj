@@ -14,13 +14,20 @@
 		2622265921382DF2000CB875 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2622265821382DF2000CB875 /* AppDelegate.swift */; };
 		2622265B21382DF2000CB875 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2622265A21382DF2000CB875 /* ViewController.swift */; };
 		2622265E21382DF2000CB875 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2622265C21382DF2000CB875 /* Main.storyboard */; };
-		2622266121382DF2000CB875 /* WheresMyPhone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2622265F21382DF2000CB875 /* WheresMyPhone.xcdatamodeld */; };
+		2622266121382DF2000CB875 /* LocationModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2622265F21382DF2000CB875 /* LocationModel.xcdatamodeld */; };
 		2622266321382DF3000CB875 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2622266221382DF3000CB875 /* Assets.xcassets */; };
 		2622266621382DF3000CB875 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2622266421382DF3000CB875 /* LaunchScreen.storyboard */; };
 		2622267121382DF3000CB875 /* WheresMyPhoneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2622267021382DF3000CB875 /* WheresMyPhoneTests.swift */; };
 		2651CF14214160E500BB20A1 /* ImageView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2651CF13214160E500BB20A1 /* ImageView+extension.swift */; };
-		26D9AA04213924590053F2DA /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D9AA03213924590053F2DA /* Device.swift */; };
+		26D9AA04213924590053F2DA /* DeviceLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D9AA03213924590053F2DA /* DeviceLocation.swift */; };
 		26D9AA07213924BC0053F2DA /* DeviceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D9AA06213924BC0053F2DA /* DeviceViewModel.swift */; };
+		35241B3A21491AA7009F3DBC /* CoreLocationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35241B3921491AA7009F3DBC /* CoreLocationExtension.swift */; };
+		35241B3D21495F0C009F3DBC /* PeripheralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35241B3C21495F0C009F3DBC /* PeripheralManager.swift */; };
+		35241B3F21495F3B009F3DBC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35241B3E21495F3B009F3DBC /* Constants.swift */; };
+		35241B41214A615D009F3DBC /* PeripheralManagerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35241B40214A615D009F3DBC /* PeripheralManagerViewModel.swift */; };
+		35241B45214ABE12009F3DBC /* BackgroundTaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35241B44214ABE12009F3DBC /* BackgroundTaskManager.swift */; };
+		35D0FE792147D48B0055EBDE /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D0FE782147D48B0055EBDE /* CoreDataManager.swift */; };
+		35D0FE7B2147DCA30055EBDE /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D0FE7A2147DCA30055EBDE /* LocationManager.swift */; };
 		95DC57EF425F3696436AFC4B /* Pods_WheresMyPhoneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A9EDF733A168BA5209EDE4 /* Pods_WheresMyPhoneTests.framework */; };
 		CA937446F0E13CAC0020B38C /* Pods_WheresMyPhone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA1D594D1EC9F824E6D40329 /* Pods_WheresMyPhone.framework */; };
 /* End PBXBuildFile section */
@@ -52,8 +59,15 @@
 		2622267021382DF3000CB875 /* WheresMyPhoneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WheresMyPhoneTests.swift; sourceTree = "<group>"; };
 		2622267221382DF3000CB875 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2651CF13214160E500BB20A1 /* ImageView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageView+extension.swift"; sourceTree = "<group>"; };
-		26D9AA03213924590053F2DA /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		26D9AA03213924590053F2DA /* DeviceLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceLocation.swift; sourceTree = "<group>"; };
 		26D9AA06213924BC0053F2DA /* DeviceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceViewModel.swift; sourceTree = "<group>"; };
+		35241B3921491AA7009F3DBC /* CoreLocationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreLocationExtension.swift; sourceTree = "<group>"; };
+		35241B3C21495F0C009F3DBC /* PeripheralManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralManager.swift; sourceTree = "<group>"; };
+		35241B3E21495F3B009F3DBC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		35241B40214A615D009F3DBC /* PeripheralManagerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralManagerViewModel.swift; sourceTree = "<group>"; };
+		35241B44214ABE12009F3DBC /* BackgroundTaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTaskManager.swift; sourceTree = "<group>"; };
+		35D0FE782147D48B0055EBDE /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		35D0FE7A2147DCA30055EBDE /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		464153AFAC6ECD5FBC6D1C83 /* Pods-WheresMyPhone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WheresMyPhone.release.xcconfig"; path = "Pods/Target Support Files/Pods-WheresMyPhone/Pods-WheresMyPhone.release.xcconfig"; sourceTree = "<group>"; };
 		510E2B67D0E88B6DE6213999 /* Pods-WheresMyPhone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WheresMyPhone.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WheresMyPhone/Pods-WheresMyPhone.debug.xcconfig"; sourceTree = "<group>"; };
 		BA1D594D1EC9F824E6D40329 /* Pods_WheresMyPhone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WheresMyPhone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -85,6 +99,7 @@
 		260718D421412DA0009B36C1 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				35241B3921491AA7009F3DBC /* CoreLocationExtension.swift */,
 				260718D721412DFA009B36C1 /* Double+extension.swift */,
 				260718D921412E8D009B36C1 /* ViewController+extension.swift */,
 				2651CF13214160E500BB20A1 /* ImageView+extension.swift */,
@@ -116,13 +131,15 @@
 		2622265721382DF2000CB875 /* WheresMyPhone */ = {
 			isa = PBXGroup;
 			children = (
-				260718D421412DA0009B36C1 /* Extensions */,
 				26D9AA08213925630053F2DA /* AppDelegate */,
 				26D9AA00213923F20053F2DA /* Controller */,
+				260718D421412DA0009B36C1 /* Extensions */,
 				26D9AA022139240B0053F2DA /* Model */,
 				26D9A9FF213923EA0053F2DA /* Support */,
 				26D9AA01213924040053F2DA /* View */,
 				26D9AA05213924A70053F2DA /* ViewModel */,
+				35241B3B21495EA9009F3DBC /* Manager */,
+				35241B3E21495F3B009F3DBC /* Constants.swift */,
 			);
 			path = WheresMyPhone;
 			sourceTree = "<group>";
@@ -166,8 +183,8 @@
 		26D9AA022139240B0053F2DA /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				2622265F21382DF2000CB875 /* WheresMyPhone.xcdatamodeld */,
-				26D9AA03213924590053F2DA /* Device.swift */,
+				2622265F21382DF2000CB875 /* LocationModel.xcdatamodeld */,
+				26D9AA03213924590053F2DA /* DeviceLocation.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -175,6 +192,7 @@
 		26D9AA05213924A70053F2DA /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				35241B40214A615D009F3DBC /* PeripheralManagerViewModel.swift */,
 				26D9AA06213924BC0053F2DA /* DeviceViewModel.swift */,
 			);
 			path = ViewModel;
@@ -195,6 +213,17 @@
 				D1A9EDF733A168BA5209EDE4 /* Pods_WheresMyPhoneTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		35241B3B21495EA9009F3DBC /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				35D0FE7A2147DCA30055EBDE /* LocationManager.swift */,
+				35D0FE782147D48B0055EBDE /* CoreDataManager.swift */,
+				35241B3C21495F0C009F3DBC /* PeripheralManager.swift */,
+				35241B44214ABE12009F3DBC /* BackgroundTaskManager.swift */,
+			);
+			path = Manager;
 			sourceTree = "<group>";
 		};
 		ECEAC97E40E4774773FC7220 /* Pods */ = {
@@ -397,11 +426,18 @@
 			files = (
 				260718DA21412E8D009B36C1 /* ViewController+extension.swift in Sources */,
 				2622265B21382DF2000CB875 /* ViewController.swift in Sources */,
+				35241B3A21491AA7009F3DBC /* CoreLocationExtension.swift in Sources */,
 				2651CF14214160E500BB20A1 /* ImageView+extension.swift in Sources */,
-				26D9AA04213924590053F2DA /* Device.swift in Sources */,
-				2622266121382DF2000CB875 /* WheresMyPhone.xcdatamodeld in Sources */,
+				26D9AA04213924590053F2DA /* DeviceLocation.swift in Sources */,
+				35241B3F21495F3B009F3DBC /* Constants.swift in Sources */,
+				35241B3D21495F0C009F3DBC /* PeripheralManager.swift in Sources */,
+				35241B45214ABE12009F3DBC /* BackgroundTaskManager.swift in Sources */,
+				2622266121382DF2000CB875 /* LocationModel.xcdatamodeld in Sources */,
 				260718DE2141359A009B36C1 /* Drawing.swift in Sources */,
+				35D0FE792147D48B0055EBDE /* CoreDataManager.swift in Sources */,
 				260718D821412DFA009B36C1 /* Double+extension.swift in Sources */,
+				35D0FE7B2147DCA30055EBDE /* LocationManager.swift in Sources */,
+				35241B41214A615D009F3DBC /* PeripheralManagerViewModel.swift in Sources */,
 				26D9AA07213924BC0053F2DA /* DeviceViewModel.swift in Sources */,
 				2622265921382DF2000CB875 /* AppDelegate.swift in Sources */,
 				261E183F2142BF120010D4AC /* Device+protocol.swift in Sources */,
@@ -566,7 +602,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = UKQDW363ZZ;
+				DEVELOPMENT_TEAM = GV7YJ9P95C;
 				INFOPLIST_FILE = "$(SRCROOT)/WheresMyPhone/Support/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -585,7 +621,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = UKQDW363ZZ;
+				DEVELOPMENT_TEAM = GV7YJ9P95C;
 				INFOPLIST_FILE = "$(SRCROOT)/WheresMyPhone/Support/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -675,13 +711,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		2622265F21382DF2000CB875 /* WheresMyPhone.xcdatamodeld */ = {
+		2622265F21382DF2000CB875 /* LocationModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				2622266021382DF2000CB875 /* WheresMyPhone.xcdatamodel */,
 			);
 			currentVersion = 2622266021382DF2000CB875 /* WheresMyPhone.xcdatamodel */;
-			path = WheresMyPhone.xcdatamodeld;
+			path = LocationModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

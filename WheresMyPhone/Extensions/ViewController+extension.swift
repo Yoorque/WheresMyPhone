@@ -9,55 +9,50 @@
 import UIKit
 import GoogleMaps
 
-//MARK: tableViewDelegate and tableViewDataSource
-extension ViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    //DataSource
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.devices.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let device = viewModel.devices[indexPath.row]
-        cell.textLabel?.text = device.name
-        cell.detailTextLabel?.text = device.uuid.uuidString
-        
-        return cell
-    }
-    
-    //Delegate
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+////MARK: tableViewDelegate and tableViewDataSource
+//extension ViewController: UITableViewDelegate, UITableViewDataSource {
+//
+//    //DataSource
+//    func numberOfSections(in tableView: UITableView) -> Int {
+//        return 1
+//    }
+//
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return viewModel.devices.count
+//    }
+//
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+//        let device = viewModel.devices[indexPath.row]
+//        cell.textLabel?.text = device.name
+//        cell.detailTextLabel?.text = device.uuid.uuidString
+//
+//        return cell
+//    }
 
-        CATransaction.setAnimationDuration(0.5)
-        CATransaction.begin()
-        mapView.animate(toLocation: CLLocationCoordinate2D(latitude: self.viewModel.devices[indexPath.row].coordinates.last!.coordinate.latitude, longitude: self.viewModel.devices[indexPath.row].coordinates.last!.coordinate.longitude))
-        CATransaction.commit()
-    }
-}
+//    //Delegate
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//
+//        CATransaction.setAnimationDuration(0.5)
+//        CATransaction.begin()
+//        mapView.animate(toLocation: CLLocationCoordinate2D(latitude: self.viewModel.devices[indexPath.row].coordinates.last!.coordinate.latitude, longitude: self.viewModel.devices[indexPath.row].coordinates.last!.coordinate.longitude))
+//        CATransaction.commit()
+//    }
+//}
 
-extension ViewController: CLLocationManagerDelegate {
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+//extension ViewController: CLLocationManagerDelegate {
+//    
+//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 //        guard let location = locations.last else {return} //takes the last user location
-//        guard viewModel.devices.count != 0 else {return}
+//       
+//        viewModel.devices[tableView.indexPathForSelectedRow!.row].coordinates.append(location)
 //
-//        if index > viewModel.devices.count - 1 {
-//            index = viewModel.devices.count - 1
+//        if viewModel.devices[tableView.indexPathForSelectedRow!.row].coordinates.count > 50 {
+//            viewModel.devices[tableView.indexPathForSelectedRow!.row].coordinates.removeFirst()
 //        }
-//        viewModel.devices[index].coordinates.append(location)
-//
-//        if viewModel.devices[index].coordinates.count > 50 {
-//            viewModel.devices[index].coordinates.removeFirst()
-//        }
-//         let coords = CLLocationCoordinate2D(latitude: viewModel.devices[index].coordinates.last!.coordinate.latitude, longitude: viewModel.devices[index].coordinates.last!.coordinate.longitude)
+//         let coords = CLLocationCoordinate2D(latitude: viewModel.devices[tableView.indexPathForSelectedRow!.row].coordinates.last!.coordinate.latitude, longitude: viewModel.devices[tableView.indexPathForSelectedRow!.row].coordinates.last!.coordinate.longitude)
 //         mapView.animate(toLocation: coords)
 //    
-//        drawing.drawPolylinesOn(mapView, forLocations: viewModel.devices[index].coordinates, forDevice: viewModel.devices[index])
-        //viewModel.drawPolylines(forMap: mapView)
-    }
-}
+//        self.publishCoordSubject.onNext(location)
+//    }
+//}
