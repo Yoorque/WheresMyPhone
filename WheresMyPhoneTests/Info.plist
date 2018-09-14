@@ -6,21 +6,13 @@
 	<string></string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string></string>
-    <key>UIBackgroundModes</key>
-        <array>
-        <string>bluetooth-central</string>
-        <string>external-accessory</string>
-        <string>bluetooth-peripheral</string>
-        <string>fetch</string>
-        <string>CoreBlue</string>
-        <string>location</string>
-    </array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
 		<string>location</string>
 		<string>external-accessory</string>
 		<string>remote-notification</string>
+		<string>CoreBlue</string>
 		<string>bluetooth-peripheral</string>
 		<string>bluetooth-central</string>
 	</array>
