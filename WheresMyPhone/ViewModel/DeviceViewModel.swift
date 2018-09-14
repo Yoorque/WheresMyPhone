@@ -49,6 +49,7 @@ class DeviceViewModel {
                 if device.name == name { // compare device.name with passed in name
                     print("Removing \(device.name)")
                     //devices[index].coordinates = []
+                    
                     devices.remove(at: index) // remove element with matching name if it exists in the array
                 }
             }

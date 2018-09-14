@@ -55,7 +55,7 @@ class ViewController: UIViewController {
             guard let row = self.tableView.indexPathForSelectedRow?.row else {return}
             
             self.viewModel.devices[row].coordinates.append(location)
-            self.drawing.drawPolylinesOn(self.mapView, forDevice: self.viewModel.devices[row])
+            self.drawing.drawPolylinesOn(self.mapView, forDevice: self.viewModel.devices[row], withZoom: self.mapView.camera.zoom)
         }).disposed(by: disposeBag)
         
         mockData.mockedDataWithTimer(for: self, and: tableView) //Timer for displaying mocked CLLocations over time using publishCoordSubject
@@ -127,8 +127,7 @@ class ViewController: UIViewController {
         guard viewModel.devices.count != 0 else {return} //check the count of devices, if 0, return
         //viewModel.removeLastDevice() // remove last device from devices array
         guard let row = tableView.indexPathForSelectedRow?.row else {return} //if device row is selected, extract the row Int
-        
-        drawing.removePolyline(forDeviceTitle: viewModel.devices[row].name) //Remove polylines for a selected device via Polyline name property (String)
+        drawing.removePolylinesFor(viewModel.devices[row])
         viewModel.removeDevice(named: viewModel.devices[row].name) //remove specific Device.
         publishSubject.onNext(viewModel.devices.count) //advertise onNext event once the 'viewModel.devices.count' changes
         tableView.reloadData() //reload tableView

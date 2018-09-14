@@ -14,11 +14,11 @@ class Drawing {
     var polylines = [GMSOverlay]()
     let phoneMarker = GMSMarker()
     
-    func drawPolylinesOn(_ mapView: GMSMapView, forDevice device: Device) {
+    func drawPolylinesOn(_ mapView: GMSMapView, forDevice device: Device, withZoom zoom: Float) {
         
         phoneMarker.position = CLLocationCoordinate2D(latitude: device.coordinates.last!.coordinate.latitude, longitude: device.coordinates.last!.coordinate.longitude)
-        let camera = GMSCameraPosition(target: phoneMarker.position, zoom: 5, bearing: 0, viewingAngle: 0)
-        mapView.animate(to: camera)
+        let camera = GMSCameraPosition(target: mapView.camera.target, zoom: mapView.camera.zoom, bearing: mapView.camera.bearing, viewingAngle: mapView.camera.bearing)
+        mapView.animate(to: camera) //animate camera to center on current/last device location
         //mapView.clear()
         let path = GMSMutablePath()
         var speed: Double = 0.0
@@ -29,29 +29,38 @@ class Drawing {
             path.add(CLLocationCoordinate2D(latitude: $0.coordinate.latitude, longitude: $0.coordinate.longitude))
         }
         
+        //create polylines from GMSPath consisting of last two coordinates of device locations
         let polyline = GMSPolyline(path: path)
         polyline.title = device.name
         polyline.strokeWidth = 3
         polyline.geodesic = true
-        polyline.strokeColor = speedColors(forSpeed: speed)
+        polyline.strokeColor = speedColors(forSpeed: speed) //color polyline segment, depending on the speed
         polyline.map = mapView
-        phoneMarker.groundAnchor = CGPoint(x: 0.5, y: 0.5)
         
+        phoneMarker.groundAnchor = CGPoint(x: 0.5, y: 0.5) //lower the default position of the marker in relation to 'blue dot' representing current device location, so that the marker covers the dot.
         phoneMarker.icon = device.image
-    
         phoneMarker.title = device.name
-        phoneMarker.snippet = speed.toStringOfkmPerHour()
+        phoneMarker.snippet = speed.toStringOfkmPerHour() //convert speed 'Double' to return String
         phoneMarker.map = mapView
-        phoneMarker.tracksInfoWindowChanges = true
+        phoneMarker.tracksInfoWindowChanges = true //monitors changes in infoWindow and updates it once new data arrives
         
-        polylines.append(polyline)
-        polylines.append(phoneMarker)
+        polylines.append(polyline) //append created polyline segment to polyline array for storage, so it can be cleared by device.name property
+        polylines.append(phoneMarker) //append created marker segment to polyline array for storage, so it can be cleared by device.name property
+        history(forDeviceTitle: device.name, onMap: mapView) //retrieve historical data saved in polylines array, for selected device
     }
     
-    func removePolyline(forDeviceTitle title: String) {
+    private func history(forDeviceTitle title: String, onMap map: GMSMapView) {
         polylines.forEach {
             if $0.title == title {
-                $0.map = nil
+                $0.map = map
+            }
+        }
+    }
+    
+    func removePolylinesFor(_ device: Device) {
+        for polyline in polylines {
+            if polyline.title == device.name {
+                polyline.map = nil
             }
         }
     }
