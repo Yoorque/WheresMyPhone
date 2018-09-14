@@ -34,7 +34,7 @@ class ViewController: UIViewController {
         
         locationManagerSetup() //setup locationManager
         mapSetup() //setup settings for mapView
-        setupNavigationBar() //setup navigationBar
+        setupNavigationBar() //setup navigationBar buttons
         
         //subscribing to onNext events for count property of viewModel.devices array and
         //modifying UI according to the result

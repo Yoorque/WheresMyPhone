@@ -49,6 +49,7 @@ class Drawing {
         history(forDeviceTitle: device.name, onMap: mapView) //retrieve historical data saved in polylines array, for selected device
     }
     
+    //historical data for a selected device
     private func history(forDeviceTitle title: String, onMap map: GMSMapView) {
         polylines.forEach {
             if $0.title == title {
@@ -57,14 +58,22 @@ class Drawing {
         }
     }
     
+    //set polylines for removed device to nil
     func removePolylinesFor(_ device: Device) {
         for polyline in polylines {
             if polyline.title == device.name {
-                polyline.map = nil
+                polyline.map = nil //setting polyline map to nil
             }
         }
+        cleanUpPolylinesFor(device)
     }
     
+    //clean-up polylines for removed device
+    private func cleanUpPolylinesFor(_ device: Device) {
+        polylines = polylines.filter {$0.title != device.name}
+    }
+    
+    //choose polyline segment color depending on the speed for that segment
     private func speedColors(forSpeed speed: Double) -> UIColor{
         switch speed {
         case 0..<2:
