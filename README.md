@@ -32,8 +32,8 @@ Central device will subscribe to events emitted and stored by Peripheral device,
 
 Specification:  
 
-	-	NAME - String
-	-	UUID - String (…to be specified…)
-	-	COORDINATES - Custom type array containing above specified properties
+	- NAME: String
+	- UUID: String (…to be specified…)
+	- COORDINATES: Custom type array containing above specified properties
 	
 
