@@ -29,7 +29,7 @@ On the Central device side, received data will be converted into suitable data t
 
 Central device will subscribe to events emitted and stored by Peripheral device, once the new data is available and is within the time interval range, set by Central device in the fetchData(_:between:and:) method. 
 
-Specification:
+Specification: 
 
 	•	NAME - String
 	•	UUID - String (…to be specified…)
