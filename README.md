@@ -13,6 +13,7 @@ This protocol will contain following properties:
 This protocol will contain methods for:
 
 	▪	 Invoking a connection to a qualifying Peripheral device - qualifying devices are those that emit UUIDs that Central device is interested in, which will be specified by developer.
+	
 //Serves as a connection request to a Peripheral device
 //Swift Example: func connectTo(_ device:) 
 
