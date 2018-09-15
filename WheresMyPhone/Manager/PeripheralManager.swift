@@ -18,15 +18,12 @@ class PeripheralManager: NSObject {
     fileprivate var sendDataIndex: Int?
     fileprivate var characteristic: CBMutableCharacteristic?
     fileprivate var sendingEOM = false
-
-    
     fileprivate var manager: CBPeripheralManager?
     
     
      override init() {
         super.init()
         self.manager = CBPeripheralManager(delegate: self, queue: nil)
-
     }
     
     
@@ -58,7 +55,6 @@ class PeripheralManager: NSObject {
                                                  properties: .notify,
                                                  value: nil,
                                                  permissions: .readable)
-        
         service.characteristics = [characteristic!]
         manager?.add(service)
     }
@@ -205,7 +201,7 @@ extension PeripheralManager: CBPeripheralManagerDelegate {
     func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didSubscribeTo characteristic: CBCharacteristic) {
         print("PERIPHERAL_MANAGER: didSubscribeTO \(characteristic.description)")
         // Get the data
-        dataToSend = "saljeeee".data(using: String.Encoding.utf8)
+        dataToSend = "".data(using: String.Encoding.utf8)
         
         // Reset the index
         sendDataIndex = 0

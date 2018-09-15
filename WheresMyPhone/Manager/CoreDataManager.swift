@@ -10,9 +10,8 @@ import Foundation
 import CoreData
 
 final class CoreDataManager {
-    
     static let persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "Location")
+        let container = NSPersistentContainer(name: "LocationModel")
         container.loadPersistentStores { (_, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")

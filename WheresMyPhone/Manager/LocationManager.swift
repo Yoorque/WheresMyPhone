@@ -32,7 +32,8 @@ class LocationManager: NSObject {
         super.init()
     }
     
-    // Start with updating location and checks For
+    // Start with updating location and checks for
+    
     public func start() {
         if CLLocationManager.locationServicesEnabled() == false {
             print("Service is not available")
@@ -52,7 +53,6 @@ class LocationManager: NSObject {
         location.stopUpdatingLocation()
         BackgroundTaskManager.shared.drain()
     }
-    
 }
 extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

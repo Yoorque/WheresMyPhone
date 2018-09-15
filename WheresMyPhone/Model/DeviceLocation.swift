@@ -8,10 +8,11 @@
 
 import UIKit
 
-struct DeviceLocation {
+struct DeviceLocation: Codable {
     
     let deviceName: String
     let longitude: Double
     let latitude: Double
     let timestamp: Date
+
 }

@@ -30,8 +30,6 @@
 	<string>Location is being used while the app is in the foreground</string>
 	<key>UIBackgroundModes</key>
 	<array>
-		<string>bluetooth-central</string>
-		<string>bluetooth-peripheral</string>
 		<string>fetch</string>
 		<string>location</string>
 	</array>

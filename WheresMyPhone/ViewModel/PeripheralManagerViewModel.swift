@@ -9,21 +9,9 @@
 import Foundation
 import RxSwift
 
-//class PeripheralManagerViewModel {
-//    
-//    
-//    
-//    func loadLocations() -> [DeviceLocation] {
-//        
-//        }
-//    }
-//    
-//    func prepareToSend() -> DeviceLocation {
-//        loadLocations().forEach {
-//            if $0.deviceName != deviceName {
-//                
-//            }
-//            
-//        }
-//    }
-//}
+class PeripheralManagerViewModel {
+    
+    
+    
+
+}

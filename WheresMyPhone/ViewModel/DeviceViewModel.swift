@@ -15,6 +15,7 @@ class DeviceLocationViewModel {
     private let disposeBag = DisposeBag()
     
     func saveLocation() {
+        BackgroundTaskManager.shared.new()
         let newLocation = Location(context: CoreDataManager.context)
         subject.subscribe(onNext: {
             newLocation.latitude = $0.latitude
