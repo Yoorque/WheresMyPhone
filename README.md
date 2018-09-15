@@ -14,14 +14,14 @@ This protocol will contain methods for:
 
 	▪	 Invoking a connection to a qualifying Peripheral device - qualifying devices are those that emit UUIDs that Central device is interested in, which will be specified by developer.
 	
-//Serves as a connection request to a Peripheral device
-//Swift Example: func connectTo(_ device:) 
+//Serves as a connection request to a Peripheral device.
+//Swift Example: func connectTo(_ device:). 
 
 	▪	Fetch data from the Peripheral device between two dates set by user and passed as function arguments. The fetched data will contain defined properties in properties declaration of the protocol.
 	
-// T - represents Data type which will consist of required properties defined in the protocol
-// U - represents Date type in the form of a timestamp
-//Swift Example: func fetchData<T, U>(between startDate: U, and endDate: U) -> T
+// T - represents Data type which will consist of required properties defined in the protocol.
+// U - represents Date type in the form of a timestamp.
+//Swift Example: func fetchData<T, U>(between startDate: U, and endDate: U) -> T.
 
 All of the data will be sent as encoded data packages that will be decoded and parsed in Central device.
 Central device will be the one parsing received data and turning it into information it needs to perform its tasks.
