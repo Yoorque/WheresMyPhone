@@ -26,9 +26,9 @@ Central device will subscribe to events emitted and stored by Peripheral device,
 
 Specification:
 
-	•	name: String
-	•	uuid: String  - Specified under 0x1819  assigned number from GATT specification (org.bluetooth.service.location_and_navigation). -  Required Service
-	•	uuid: String - Specified under 0x2A67  assigned number from GATT specification (org.bluetooth.characteristic.location_and_speed). - Required Characteristic
-	•	coordinates: Custom type array containing above specified properties
+	• name: String
+	• uuid: String  - Specified under 0x1819  assigned number from GATT specification (org.bluetooth.service.location_and_navigation). -  Required Service
+	• uuid: String - Specified under 0x2A67  assigned number from GATT specification (org.bluetooth.characteristic.location_and_speed). - Required Characteristic
+	• coordinates: Custom type array containing above specified properties
 	
 
