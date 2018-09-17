@@ -17,7 +17,7 @@ Central Device will initiate connection to a qualifying peripheral device that c
 
 This protocol will contain method for sending data back to Central Device:
 
-	▪	Fetch data from the Peripheral device between two dates set by user and passed as function arguments. The fetched data will contain defined properties in properties declaration of the protocol.
+	▪ Fetch data from the Peripheral device between two dates set by user and passed as function arguments. The fetched data will contain defined properties in properties declaration of the protocol.
 
 All of the data will be sent as encoded data packages that will be decoded and parsed in Central device.
 Central device will be the one parsing received data and turning it into information it needs to perform its tasks.
