@@ -37,12 +37,12 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         if previouslySelected != indexPath {
             mapView.clear()
         }
+        let selectedDevice = viewModel.devices[indexPath.row]
         
-        print("Selected")
         CATransaction.setAnimationDuration(0.5)
         CATransaction.begin()
         mapView.animate(toZoom: 3)
-        mapView.animate(toLocation: CLLocationCoordinate2D(latitude: self.viewModel.devices[indexPath.row].coordinates.last!.coordinate.latitude, longitude: self.viewModel.devices[indexPath.row].coordinates.last!.coordinate.longitude))
+        mapView.animate(toLocation: CLLocationCoordinate2D(latitude: selectedDevice.coordinates.last!.coordinate.latitude, longitude: selectedDevice.coordinates.last!.coordinate.longitude))
         CATransaction.commit()
         previouslySelected = indexPath
     }
