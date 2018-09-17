@@ -1,8 +1,9 @@
-#App overview
+# WheresMyPhone
+## App overview
 
 This app is intended to track changes in position of the other eligible device, with the possibility to choose the date range for changes observation. Date range will be specified by Central device in the fetch request. The initial release of the app will only have basic functionality, where the Central Device will pick-up bluetooth signal from any advertising device within BLE range by using predefined characteristic which complies with UUID of the required service, which is `location` data, with below specified requirements.
 
-##Communication protocol between Central device and Peripheral device 
+### Communication protocol between Central device and Peripheral device 
 
 Central device (requesting party) will implement protocol that any Service (party sending data / Peripheral device (server)) interested in sending its data to Central device will adopt.
 
