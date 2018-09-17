@@ -11,7 +11,7 @@ This protocol will contain following properties:
 
 	- NAME of the device advertising it’s data
 	- UUID of services and characteristics satisfying requested services and characteristics
-	- COORDINATES of the Peripheral device, containing an array of; [Latitude (Double), Longitude (Double), Timestamp, Speed (Double), Accuracy (Double)].
+	- COORDINATES of the Peripheral device, containing an array of: [Latitude (Double), Longitude (Double), Timestamp, Speed (Double), Accuracy (Double)].
 
 Central Device will initiate connection to a qualifying peripheral device that complies with the passed-in characteristic UUID by providing suitable method- qualifying devices are those that emit UUIDs that Central device is interested in, which will be specified by developer.
 
