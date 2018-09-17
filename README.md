@@ -1,5 +1,11 @@
 # WheresMyPhone
 
+## App overview
+
+This app is intended to track changes in position of the other eligible device, with the possibility to choose the date range for changes observation. Date range choice is not yet implemented.
+
+The initial release of the app will only have basic functionality, where the will pick up bluetooth signal from any advertising device within BLE range which complies with UUID of the wanted service, which is `location` data, with below specified requirements.
+
 ## Communication protocol between Central device and Peripheral device 
 
 Central device (requesting party) will implement protocol that any Service (party sending data / Peripheral device) interested in sending its data to Central device will adopt.
@@ -12,7 +18,7 @@ This protocol will contain following properties:
 
 This protocol will contain methods for:
 
-- Invoking a connection to a qualifying Peripheral device - qualifying devices are those that emit UUIDs that Central device is interested in, which will be specified by developer.
+- Invoking a connection to a qualifying Peripheral device - qualifying devices are those that emit `UUID`s that Central device is interested in, which will be specified by developer.
 	
 	- Serves as a connection request to a Peripheral device.
 	- Swift Example: func connectTo(_ device:). 
@@ -28,12 +34,12 @@ Central device will be the one parsing received data and turning it into informa
 
 On the Central device side, received data will be converted into suitable data types depending on the platform.
 
-Central device will subscribe to events emitted and stored by Peripheral device, once the new data is available and is within the time interval range, set by Central device in the fetchData(_:between:and:) method. 
+Central device will subscribe to events emitted and stored by Peripheral device, once the new data is available and is within the time interval range, set by Central device in the fetch method. 
 
 Specification:  
 
-	- NAME: String
-	- UUID: String (…to be specified…)
-	- COORDINATES: Custom type array containing above specified properties
+	- name: String
+	- uuid: String 
+	- coordinates: Custom type array containing above specified properties
 	
 
