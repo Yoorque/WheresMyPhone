@@ -1,45 +1,33 @@
-# WheresMyPhone
+#App overview
 
-## App overview
+This app is intended to track changes in position of the other eligible device, with the possibility to choose the date range for changes observation. Date range will be specified by Central device in the fetch request. The initial release of the app will only have basic functionality, where the Central Device will pick-up bluetooth signal from any advertising device within BLE range by using predefined characteristic which complies with UUID of the required service, which is `location` data, with below specified requirements.
 
-This app is intended to track changes in position of the other eligible device, with the possibility to choose the date range for changes observation. Date range choice is not yet implemented.
+##Communication protocol between Central device and Peripheral device 
 
-The initial release of the app will only have basic functionality, where the will pick up bluetooth signal from any advertising device within BLE range which complies with UUID of the wanted service, which is `location` data, with below specified requirements.
-
-## Communication protocol between Central device and Peripheral device 
-
-Central device (requesting party) will implement protocol that any Service (party sending data / Peripheral device) interested in sending its data to Central device will adopt.
+Central device (requesting party) will implement protocol that any Service (party sending data / Peripheral device (server)) interested in sending its data to Central device will adopt.
 
 This protocol will contain following properties:
 
 	- NAME of the device advertising it’s data
 	- UUID of services and characteristics satisfying requested services and characteristics
-	- COORDINATES of the Peripheral device, containing an array of; [Latitude (Double), Longitude (Double), Timestamp, Speed (Double)].
+	- COORDINATES of the Peripheral device, containing an array of; [Latitude (Double), Longitude (Double), Timestamp, Speed (Double), Accuracy (Double)].
 
-This protocol will contain methods for:
+Central Device will initiate connection to a qualifying peripheral device that complies with the passed-in characteristic UUID by providing suitable method- qualifying devices are those that emit UUIDs that Central device is interested in, which will be specified by developer.
 
-- Invoking a connection to a qualifying Peripheral device - qualifying devices are those that emit `UUID`s that Central device is interested in, which will be specified by developer.
-	
-	- Serves as a connection request to a Peripheral device.
-	- Swift Example: func connectTo(_ device:). 
+This protocol will contain method for sending data back to Central Device:
 
-- Fetch data from the Peripheral device between two dates set by user and passed as function arguments. The fetched data will contain defined properties in properties declaration of the protocol.
-	
-	- T - represents Data type which will consist of required properties defined in the protocol.
-	- U - represents Date type in the form of a timestamp.
-	- Swift Example: func fetchData<T, U>(between startDate: U, and endDate: U) -> T.
+	▪	Fetch data from the Peripheral device between two dates set by user and passed as function arguments. The fetched data will contain defined properties in properties declaration of the protocol.
 
 All of the data will be sent as encoded data packages that will be decoded and parsed in Central device.
 Central device will be the one parsing received data and turning it into information it needs to perform its tasks.
 
-On the Central device side, received data will be converted into suitable data types depending on the platform.
-
 Central device will subscribe to events emitted and stored by Peripheral device, once the new data is available and is within the time interval range, set by Central device in the fetch method. 
 
-Specification:  
+Specification:
 
-	- name: String
-	- uuid: String 
-	- coordinates: Custom type array containing above specified properties
+	•	name: String
+	•	uuid: String  - Specified under 0x1819  assigned number from GATT specification (org.bluetooth.service.location_and_navigation). -  Required Service
+	•	uuid: String - Specified under 0x2A67  assigned number from GATT specification (org.bluetooth.characteristic.location_and_speed). - Required Characteristic
+	•	coordinates: Custom type array containing above specified properties
 	
 
