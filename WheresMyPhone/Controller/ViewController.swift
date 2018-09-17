@@ -22,7 +22,6 @@ class ViewController: UIViewController {
     let locationManager = CLLocationManager()
     var previouslySelected = IndexPath()
     var mockData = MockData()
-   // var index = 0
    // var locationArray = [CLLocation]()
     
     @IBOutlet weak var mapView: GMSMapView!
