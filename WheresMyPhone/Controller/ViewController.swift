@@ -52,8 +52,9 @@ class ViewController: UIViewController {
         publishCoordSubject.subscribe(onNext: { location in //Subscribe to onNext events
             guard self.viewModel.devices.count != 0 else {return}
             guard let row = self.tableView.indexPathForSelectedRow?.row else {return}
+            let passedLocation = Coordinates(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, timestamp: location.timestamp, speed: location.speed, accuracy: location.horizontalAccuracy)
             
-            self.viewModel.devices[row].coordinates.append(location)
+            self.viewModel.devices[row].coordinates.append(passedLocation)
             self.drawing.drawPolylinesOn(self.mapView, forDevice: self.viewModel.devices[row], withZoom: self.mapView.camera.zoom)
         }).disposed(by: disposeBag)
         
@@ -87,7 +88,15 @@ class ViewController: UIViewController {
         
         //add left and right navigationBar buttons for removing and adding new Devices
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Disconnect", style: .done, target: self, action: #selector(disconnectDevice))
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Connect", style: .done, target: self, action: #selector(connectDevice))
+       let connectButton = UIBarButtonItem(title: "Connect", style: .done, target: self, action: #selector(connectDevice))
+        let dateButton = UIBarButtonItem(title: "Select Date", style: .done, target: self, action: #selector(dateRange))
+        
+        self.navigationItem.rightBarButtonItems = [connectButton, dateButton]
+    }
+    
+    @objc func dateRange() {
+       // drawing.removePolylinesFor(viewModel.devices[tableView.indexPathForSelectedRow!.row])
+        drawing.drawDateRangePolylinesFor(viewModel.devices[tableView.indexPathForSelectedRow!.row], mapView: mapView)
     }
     
     fileprivate func locationManagerSetup() {
@@ -112,7 +121,7 @@ class ViewController: UIViewController {
         mapView.isMyLocationEnabled = true //enables user location
     }
     
-    @objc func connectDevice() {
+    @objc func connectDevice() {        
         for device in mockData.devices { //add mock devices from devices array
             if viewModel.addDevice(device) == true {
                 publishSubject.onNext(viewModel.devices.count) //advertises onNext event once the 'viewModel.devices.count' changes

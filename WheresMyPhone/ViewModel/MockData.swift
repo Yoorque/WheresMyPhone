@@ -10,10 +10,18 @@ import UIKit
 import CoreLocation
 
 class MockData {
-    let mockDevice = Device(name: "First", uuid: UIDevice.current.identifierForVendor!, coordinates: [CLLocation(latitude: 30, longitude: 20), CLLocation(latitude: 35, longitude: 25)])
-    let mockDevice2 = Device(name: "Second", uuid: UIDevice.current.identifierForVendor!, coordinates: [CLLocation(latitude: 40, longitude: 30), CLLocation(latitude: 45, longitude: 35)])
-    let mockDevice3 = Device(name: "Third", uuid: UIDevice.current.identifierForVendor!, coordinates: [CLLocation(latitude: 50, longitude: 40), CLLocation(latitude: 55, longitude: 45)])
-    let mockDevice4 = Device(name: "Fourth", uuid: UIDevice.current.identifierForVendor!, coordinates: [CLLocation(latitude: 60, longitude: 50), CLLocation(latitude: 65, longitude: 55)])
+    let mockDevice = Device(name: "First", uuid: UIDevice.current.identifierForVendor!, coordinates: [
+        Coordinates(latitude: 30, longitude: 20, timestamp: Date(), speed: 0, accuracy: 3),
+        Coordinates(latitude: 35, longitude: 25, timestamp: Date(), speed: 0, accuracy: 3)])
+    let mockDevice2 = Device(name: "Second", uuid: UIDevice.current.identifierForVendor!, coordinates: [
+        Coordinates(latitude: 50, longitude: 30, timestamp: Date(), speed: 0, accuracy: 3),
+        Coordinates(latitude: 55, longitude: 35, timestamp: Date(), speed: 0, accuracy: 3)])
+    let mockDevice3 = Device(name: "Third", uuid: UIDevice.current.identifierForVendor!, coordinates: [
+        Coordinates(latitude: 15, longitude: 10, timestamp: Date(), speed: 0, accuracy: 3),
+        Coordinates(latitude: 20, longitude: 15, timestamp: Date(), speed: 0, accuracy: 3)])
+    let mockDevice4 = Device(name: "Fourth", uuid: UIDevice.current.identifierForVendor!, coordinates: [
+        Coordinates(latitude: 40, longitude: 40, timestamp: Date(), speed: 0, accuracy: 3),
+        Coordinates(latitude: 45, longitude: 45, timestamp: Date(), speed: 0, accuracy: 3)])
     let viewModel: DeviceViewModel
     let devices: [Device]
     init() {
@@ -26,15 +34,16 @@ class MockData {
             guard let row = tableView.indexPathForSelectedRow?.row else {return}
             guard self.viewModel.devices.count != 0 else {return}
             
-            let lat = viewController.viewModel.devices[row].coordinates.last!.coordinate.latitude
-            let lon = viewController.viewModel.devices[row].coordinates.last!.coordinate.longitude
+            let lat = viewController.viewModel.devices[row].coordinates.last!.latitude
+            let lon = viewController.viewModel.devices[row].coordinates.last!.longitude
+            let accuracy = viewController.viewModel.devices[row].coordinates.last!.accuracy
             
             //Produce new random coordinates every 'timeInterval' seconds
             let randomNumber = Double(arc4random_uniform(5))
             let randomNumber1 = Double(arc4random_uniform(5))
             
             //create CLLocation object to be sent
-            let cll = CLLocation(coordinate: CLLocationCoordinate2D(latitude: CLLocationDegrees(lat + randomNumber), longitude: CLLocationDegrees(lon + randomNumber1)), altitude: 2, horizontalAccuracy: 2, verticalAccuracy: 2, course: 2, speed: CLLocationSpeed(randomNumber), timestamp: Date() + TimeInterval(randomNumber))
+            let cll = CLLocation(coordinate: CLLocationCoordinate2D(latitude: CLLocationDegrees(lat + randomNumber), longitude: CLLocationDegrees(lon + randomNumber1)), altitude: 2, horizontalAccuracy: accuracy, verticalAccuracy: 2, course: 2, speed: CLLocationSpeed(randomNumber), timestamp: Date() + TimeInterval(randomNumber))
             
             //advertise onNext event with newly created CLLocation object
             viewController.publishCoordSubject.onNext(cll)
