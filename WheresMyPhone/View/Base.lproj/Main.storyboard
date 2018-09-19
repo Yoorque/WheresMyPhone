@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="chJ-9c-tyT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="chJ-9c-tyT">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,6 +17,58 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Ju-b8-9Kl" customClass="GMSMapView">
+                                <rect key="frame" x="0.0" y="64" width="375" height="373"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="a5Z-gJ-0s3">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="276"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select Start Date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cvv-lE-JCl">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                <color key="textColor" red="0.0" green="0.59999999999999998" blue="0.070588235289999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="MhG-Rj-U2f">
+                                                <rect key="frame" x="0.0" y="36" width="375" height="100"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="100" id="ehl-Zg-qy9"/>
+                                                </constraints>
+                                                <date key="date" timeIntervalSinceReferenceDate="559034642.10376894">
+                                                    <!--2018-09-19 07:24:02 +0000-->
+                                                </date>
+                                                <connections>
+                                                    <action selector="didChangeStartDate:" destination="BYZ-38-t0r" eventType="valueChanged" id="x9G-Nq-tAR"/>
+                                                </connections>
+                                            </datePicker>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select End Date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E3c-2I-zAL">
+                                                <rect key="frame" x="0.0" y="140" width="375" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="3QZ-n5-Gv9">
+                                                <rect key="frame" x="0.0" y="176" width="375" height="100"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="100" id="HWa-iU-LmX"/>
+                                                </constraints>
+                                                <date key="date" timeIntervalSinceReferenceDate="559034642.10376894">
+                                                    <!--2018-09-19 07:24:02 +0000-->
+                                                </date>
+                                                <connections>
+                                                    <action selector="didChangeEndDate:" destination="BYZ-38-t0r" eventType="valueChanged" id="53k-CF-E6K"/>
+                                                </connections>
+                                            </datePicker>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="a5Z-gJ-0s3" firstAttribute="leading" secondItem="7Ju-b8-9Kl" secondAttribute="leading" id="08a-zD-pMM"/>
+                                    <constraint firstItem="a5Z-gJ-0s3" firstAttribute="top" secondItem="7Ju-b8-9Kl" secondAttribute="top" id="8BL-IR-gtJ"/>
+                                    <constraint firstAttribute="trailing" secondItem="a5Z-gJ-0s3" secondAttribute="trailing" id="aGH-Q2-VCb"/>
+                                </constraints>
+                            </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QSw-3c-k5F">
                                 <rect key="frame" x="0.0" y="437" width="375" height="230"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -55,26 +106,26 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="BEp-hm-p9G"/>
                                 </connections>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Ju-b8-9Kl" customClass="GMSMapView">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="437"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="QSw-3c-k5F" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="0eQ-vw-xKa"/>
                             <constraint firstItem="QSw-3c-k5F" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="QFD-UF-iCj"/>
                             <constraint firstItem="QSw-3c-k5F" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Qau-4v-3c6"/>
+                            <constraint firstItem="QSw-3c-k5F" firstAttribute="top" secondItem="7Ju-b8-9Kl" secondAttribute="bottom" id="ZDt-9N-7oR"/>
                             <constraint firstItem="QSw-3c-k5F" firstAttribute="top" secondItem="7Ju-b8-9Kl" secondAttribute="bottom" id="aOx-6R-MGO"/>
+                            <constraint firstItem="7Ju-b8-9Kl" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="cSI-xn-JXA"/>
                             <constraint firstItem="7Ju-b8-9Kl" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="fGa-8Y-Uta"/>
                             <constraint firstItem="7Ju-b8-9Kl" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="gah-RH-but"/>
-                            <constraint firstItem="7Ju-b8-9Kl" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="q7D-Jg-tiM"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="UT6-uB-5Fs"/>
                     <connections>
+                        <outlet property="datePickerStackView" destination="a5Z-gJ-0s3" id="XNF-Hj-aNM"/>
+                        <outlet property="endDate" destination="3QZ-n5-Gv9" id="hjc-lb-Ng8"/>
                         <outlet property="mapView" destination="7Ju-b8-9Kl" id="KnF-iy-4Zg"/>
+                        <outlet property="startDate" destination="MhG-Rj-U2f" id="17o-Mr-xo4"/>
                         <outlet property="tableView" destination="QSw-3c-k5F" id="9B2-pF-dU7"/>
                     </connections>
                 </viewController>

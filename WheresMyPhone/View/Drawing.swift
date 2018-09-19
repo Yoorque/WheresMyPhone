@@ -58,28 +58,31 @@ class Drawing {
         }
     }
     
-    func drawDateRangePolylinesFor(_ device: Device, mapView: GMSMapView) {
+    func drawDateRangePolylinesFor(_ device: Device, mapView: GMSMapView, between startDate: Date, and endDate: Date) {
+        polylines.forEach {
+            if $0.title == device.name + "range" {
+                $0.map = nil
+            }
+        }
         let path = GMSMutablePath()
-        let startDate = device.coordinates[5].timestamp
-        let endDate = device.coordinates[10].timestamp
-        
         let eligibleDates = device.coordinates.filter {$0.timestamp > startDate && $0.timestamp < endDate}
         for coord in eligibleDates {
             path.add(CLLocationCoordinate2D(latitude: coord.latitude, longitude: coord.longitude))
         }
         
         let polyline = GMSPolyline(path: path)
-        
+        polyline.title = device.name + "range"
         polyline.strokeColor = .cyan
         polyline.strokeWidth = 5
         polyline.geodesic = true
         polyline.map = mapView
+        polylines.append(polyline)
     }
     
     //set polylines for removed device to nil
-    func removePolylinesFor(_ device: Device) {
+    func removePolylinesFor(_ name: String) {
         for polyline in polylines {
-            if polyline.title == device.name {
+            if polyline.title!.contains(name) {
                 polyline.map = nil //setting polyline map to nil
             }
         }

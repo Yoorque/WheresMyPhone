@@ -15,8 +15,9 @@ class ViewController: UIViewController {
     
     //MARK: - properties -
     var viewModel = DeviceViewModel(devices: [])
-    let publishSubject = PublishSubject<Int>() // reactive component for tracking viewModel.devices.count values
+    let publishDeviceCountSubject = PublishSubject<Int>() // reactive component for tracking viewModel.devices.count values
     let publishCoordSubject = PublishSubject<CLLocation>()
+    let publishDatePickerSubject = PublishSubject<(Date,String)>()
     let disposeBag = DisposeBag() //disposeBag for Disposables
     let drawing = Drawing() //used for drawing polylines
     let locationManager = CLLocationManager()
@@ -27,17 +28,30 @@ class ViewController: UIViewController {
     @IBOutlet weak var mapView: GMSMapView!
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var startDate: UIDatePicker! {
+        didSet {
+            startDate.alpha = 0.5
+        }
+    }
+    
+    @IBOutlet weak var endDate: UIDatePicker! {
+        didSet {
+            endDate.alpha = 0.5
+        }
+    }
+    @IBOutlet weak var datePickerStackView: UIStackView!
+    
     //MARK: - life cycle -
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         locationManagerSetup() //setup locationManager
         mapSetup() //setup settings for mapView
         setupNavigationBar() //setup navigationBar buttons
-        
+       
+        datePickerStackView.isHidden = true
         //subscribing to onNext events for count property of viewModel.devices array and
         //modifying UI according to the result
-        publishSubject.subscribe(onNext: { count in
+        publishDeviceCountSubject.subscribe(onNext: { count in
             
             if count == 0 { //if viewModel.devices.count is 0, tableView is hidden and mapView spans over the entire screen
                 self.removeTableView()
@@ -47,18 +61,37 @@ class ViewController: UIViewController {
             }
         }).disposed(by: disposeBag)
         
-        publishSubject.onNext(viewModel.devices.count) //Initially checks count property of viewModel.devices array
+        publishDeviceCountSubject.onNext(viewModel.devices.count) //Initially checks count property of viewModel.devices array
         
         publishCoordSubject.subscribe(onNext: { location in //Subscribe to onNext events
             guard self.viewModel.devices.count != 0 else {return}
             guard let row = self.tableView.indexPathForSelectedRow?.row else {return}
             let passedLocation = Coordinates(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, timestamp: location.timestamp, speed: location.speed, accuracy: location.horizontalAccuracy)
-            
             self.viewModel.devices[row].coordinates.append(passedLocation)
             self.drawing.drawPolylinesOn(self.mapView, forDevice: self.viewModel.devices[row], withZoom: self.mapView.camera.zoom)
         }).disposed(by: disposeBag)
         
+        publishDatePickerSubject.subscribe(onNext: { (date, picker) in
+            if picker == "startDate" {
+                self.drawing.drawDateRangePolylinesFor(self.viewModel.devices[self.tableView.indexPathForSelectedRow!.row], mapView: self.mapView, between: date, and: self.endDate.date)
+            } else {
+                self.drawing.drawDateRangePolylinesFor(self.viewModel.devices[self.tableView.indexPathForSelectedRow!.row], mapView: self.mapView, between: self.startDate.date, and: date)
+            }
+            self.pickerSetup()
+        }).disposed(by: disposeBag)
+        
         mockData.mockedDataWithTimer(for: self, and: tableView) //Timer for displaying mocked CLLocations over time using publishCoordSubject
+    }
+
+    @IBAction func didChangeStartDate(_ sender: Any) {
+        if let datePicker = sender as? UIDatePicker {
+            publishDatePickerSubject.onNext((datePicker.date, "startDate"))
+        }
+    }
+    @IBAction func didChangeEndDate(_ sender: Any) {
+        if let datePicker = sender as? UIDatePicker {
+            publishDatePickerSubject.onNext((datePicker.date, "endDate"))
+        }
     }
     
     //MARK: - Helper methods -
@@ -76,9 +109,12 @@ class ViewController: UIViewController {
     fileprivate func displayTableView() {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 1, animations: {
+                self.tableView.alpha = 1
+                let result = self.mapView.frame.intersection(self.tableView.frame)
+                let resultView = UIView(frame: result)
+                resultView.backgroundColor = .red
                 self.mapView.frame.size.height = self.view.frame.size.height - self.tableView.frame.size.height
                 self.tableView.frame.origin.y = self.view.frame.size.height - self.tableView.frame.size.height
-                self.tableView.alpha = 1
             })
         }
     }
@@ -95,8 +131,18 @@ class ViewController: UIViewController {
     }
     
     @objc func dateRange() {
+        pickerSetup()
+        datePickerStackView.isHidden = !datePickerStackView.isHidden
+        if datePickerStackView.isHidden {
+            datePickerStackView.isHidden = true
+            navigationItem.rightBarButtonItems![1].title = "Select Range"
+        } else {
+            datePickerStackView.isHidden = false
+            navigationItem.rightBarButtonItems![1].title = "Finish"
+        }
+        
        // drawing.removePolylinesFor(viewModel.devices[tableView.indexPathForSelectedRow!.row])
-        drawing.drawDateRangePolylinesFor(viewModel.devices[tableView.indexPathForSelectedRow!.row], mapView: mapView)
+       // drawing.drawDateRangePolylinesFor(viewModel.devices[tableView.indexPathForSelectedRow!.row], mapView: mapView)
     }
     
     fileprivate func locationManagerSetup() {
@@ -114,6 +160,28 @@ class ViewController: UIViewController {
         }
     }
     
+    fileprivate func pickerSetup() {
+        if let row = tableView.indexPathForSelectedRow?.row {
+            mapView.addSubview(datePickerStackView)
+            startDate.backgroundColor = .green
+            endDate.backgroundColor = .red
+            startDate.timeZone = TimeZone.autoupdatingCurrent
+            endDate.timeZone = TimeZone.autoupdatingCurrent
+            
+            startDate.minimumDate = viewModel.devices[row].coordinates.first!.timestamp
+            startDate.maximumDate = endDate.date
+            
+            endDate.minimumDate = startDate.date
+            endDate.maximumDate = viewModel.devices[row].coordinates.last!.timestamp
+        } else {
+            let alert = UIAlertController(title: "Date Selection", message: "Please select the device and try again", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alert.addAction(okAction)
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    
     fileprivate func mapSetup() {
         mapView.delegate = self //assign mapView delegate to 'self'
         mapView.settings.compassButton = true //displays compas on the map when map heading is changed
@@ -124,7 +192,7 @@ class ViewController: UIViewController {
     @objc func connectDevice() {        
         for device in mockData.devices { //add mock devices from devices array
             if viewModel.addDevice(device) == true {
-                publishSubject.onNext(viewModel.devices.count) //advertises onNext event once the 'viewModel.devices.count' changes
+                publishDeviceCountSubject.onNext(viewModel.devices.count) //advertises onNext event once the 'viewModel.devices.count' changes
                 tableView.reloadData()
             }
         }
@@ -135,9 +203,9 @@ class ViewController: UIViewController {
         guard viewModel.devices.count != 0 else {return} //check the count of devices, if 0, return
         //viewModel.removeLastDevice() // remove last device from devices array
         guard let row = tableView.indexPathForSelectedRow?.row else {return} //if device row is selected, extract the row Int
-        drawing.removePolylinesFor(viewModel.devices[row])
+        drawing.removePolylinesFor(viewModel.devices[row].name)
         viewModel.removeDevice(named: viewModel.devices[row].name) //remove specific Device.
-        publishSubject.onNext(viewModel.devices.count) //advertise onNext event once the 'viewModel.devices.count' changes
+        publishDeviceCountSubject.onNext(viewModel.devices.count) //advertise onNext event once the 'viewModel.devices.count' changes
         tableView.reloadData() //reload tableView
     }
 }

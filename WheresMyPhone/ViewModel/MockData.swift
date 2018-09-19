@@ -32,7 +32,7 @@ class MockData {
     func mockedDataWithTimer(for viewController: ViewController, and tableView: UITableView) {
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             guard let row = tableView.indexPathForSelectedRow?.row else {return}
-            guard self.viewModel.devices.count != 0 else {return}
+            guard viewController.viewModel.devices.count != 0 else {return}
             
             let lat = viewController.viewModel.devices[row].coordinates.last!.latitude
             let lon = viewController.viewModel.devices[row].coordinates.last!.longitude
@@ -43,7 +43,7 @@ class MockData {
             let randomNumber1 = Double(arc4random_uniform(5))
             
             //create CLLocation object to be sent
-            let cll = CLLocation(coordinate: CLLocationCoordinate2D(latitude: CLLocationDegrees(lat + randomNumber), longitude: CLLocationDegrees(lon + randomNumber1)), altitude: 2, horizontalAccuracy: accuracy, verticalAccuracy: 2, course: 2, speed: CLLocationSpeed(randomNumber), timestamp: Date() + TimeInterval(randomNumber))
+            let cll = CLLocation(coordinate: CLLocationCoordinate2D(latitude: CLLocationDegrees(lat + randomNumber / 10), longitude: CLLocationDegrees(lon + randomNumber1 / 10)), altitude: 2, horizontalAccuracy: accuracy, verticalAccuracy: 2, course: 2, speed: CLLocationSpeed(randomNumber), timestamp: viewController.viewModel.devices[row].coordinates.last!.timestamp + TimeInterval(randomNumber))
             
             //advertise onNext event with newly created CLLocation object
             viewController.publishCoordSubject.onNext(cll)
