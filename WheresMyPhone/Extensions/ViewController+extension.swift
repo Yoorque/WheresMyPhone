@@ -45,6 +45,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         mapView.animate(toLocation: CLLocationCoordinate2D(latitude: selectedDevice.coordinates.last!.latitude, longitude: selectedDevice.coordinates.last!.longitude))
         CATransaction.commit()
         previouslySelected = indexPath
+        setupSliders()
     }
 }
 

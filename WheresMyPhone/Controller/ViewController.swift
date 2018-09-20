@@ -17,38 +17,30 @@ class ViewController: UIViewController {
     var viewModel = DeviceViewModel(devices: [])
     let publishDeviceCountSubject = PublishSubject<Int>() // reactive component for tracking viewModel.devices.count values
     let publishCoordSubject = PublishSubject<CLLocation>()
-    let publishDatePickerSubject = PublishSubject<(Date,String)>()
+    let publishDateSliderSubject = PublishSubject<(Float,String)>()
     let disposeBag = DisposeBag() //disposeBag for Disposables
     let drawing = Drawing() //used for drawing polylines
     let locationManager = CLLocationManager()
     var previouslySelected = IndexPath()
     var mockData = MockData()
-   // var locationArray = [CLLocation]()
     
     @IBOutlet weak var mapView: GMSMapView!
     @IBOutlet weak var tableView: UITableView!
-    
-    @IBOutlet weak var startDate: UIDatePicker! {
-        didSet {
-            startDate.alpha = 0.5
-        }
-    }
-    
-    @IBOutlet weak var endDate: UIDatePicker! {
-        didSet {
-            endDate.alpha = 0.5
-        }
-    }
-    @IBOutlet weak var datePickerStackView: UIStackView!
+    @IBOutlet weak var dateRangeStackView: UIStackView!
+    @IBOutlet weak var minSliderLabel: UILabel!
+    @IBOutlet weak var maxSliderLabel: UILabel!
+    @IBOutlet weak var minSlider: UISlider!
+    @IBOutlet weak var maxSlider: UISlider!
     
     //MARK: - life cycle -
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         locationManagerSetup() //setup locationManager
         mapSetup() //setup settings for mapView
         setupNavigationBar() //setup navigationBar buttons
-       
-        datePickerStackView.isHidden = true
+        setupSliders() //setup slider views
+        
         //subscribing to onNext events for count property of viewModel.devices array and
         //modifying UI according to the result
         publishDeviceCountSubject.subscribe(onNext: { count in
@@ -71,30 +63,53 @@ class ViewController: UIViewController {
             self.drawing.drawPolylinesOn(self.mapView, forDevice: self.viewModel.devices[row], withZoom: self.mapView.camera.zoom)
         }).disposed(by: disposeBag)
         
-        publishDatePickerSubject.subscribe(onNext: { (date, picker) in
-            if picker == "startDate" {
-                self.drawing.drawDateRangePolylinesFor(self.viewModel.devices[self.tableView.indexPathForSelectedRow!.row], mapView: self.mapView, between: date, and: self.endDate.date)
-            } else {
-                self.drawing.drawDateRangePolylinesFor(self.viewModel.devices[self.tableView.indexPathForSelectedRow!.row], mapView: self.mapView, between: self.startDate.date, and: date)
+        publishDateSliderSubject.subscribe(onNext: { (value, slider) in
+            //Check if there is a row selected
+            if let row = self.tableView.indexPathForSelectedRow?.row {
+                //limit min and max values of sliders according to the values of passed in value object
+                self.minSlider.maximumValue = self.maxSlider.value
+                self.maxSlider.minimumValue = self.minSlider.value
+                self.maxSlider.maximumValue = Float(self.viewModel.devices[row].coordinates.count - 1)
+                
+                //check the passed in string from tuple passed in to determine which slider was moved
+                if slider == "startDate" {
+                    self.maxSlider.minimumValue = value
+                } else if slider == "endDate" {
+                    self.minSlider.maximumValue = value
+                }
+                
+                //selct the timestamp value from an array of coordinates, according to the index passed in as value of the passed in element
+                let minDate = self.viewModel.devices[row].coordinates[Int(self.minSlider.value)].timestamp
+                let maxDate = self.viewModel.devices[row].coordinates[Int(self.maxSlider.value)].timestamp
+                
+                //draw selected range
+                self.drawing.drawDateRangePolylinesFor(self.viewModel.devices[row], mapView: self.mapView, between: minDate, and: maxDate)
+                
+                //use converted timestamp to display in the appropriate label
+                self.minSliderLabel.text = self.viewModel.devices[row].coordinates[Int(self.minSlider.value)].timestamp.formatDate()
+                self.maxSliderLabel.text = self.viewModel.devices[row].coordinates[Int(self.maxSlider.value)].timestamp.formatDate()
             }
-            self.pickerSetup()
         }).disposed(by: disposeBag)
         
         mockData.mockedDataWithTimer(for: self, and: tableView) //Timer for displaying mocked CLLocations over time using publishCoordSubject
+        
     }
 
-    @IBAction func didChangeStartDate(_ sender: Any) {
-        if let datePicker = sender as? UIDatePicker {
-            publishDatePickerSubject.onNext((datePicker.date, "startDate"))
+    //publish onNext event as a tuple of current slider value and a hardcoded string to be able to recognize which slider fired the event
+    @objc func didChangeStartDate(_ sender: Any) { //detects changes in maxSlider
+        if let slider = sender as? UISlider {
+            publishDateSliderSubject.onNext((slider.value, "startDate"))
         }
     }
-    @IBAction func didChangeEndDate(_ sender: Any) {
-        if let datePicker = sender as? UIDatePicker {
-            publishDatePickerSubject.onNext((datePicker.date, "endDate"))
+    @objc func didChangeEndDate(_ sender: Any) { //detects changes in minSlider
+        if let slider = sender as? UISlider {
+            publishDateSliderSubject.onNext((slider.value, "endDate"))
         }
     }
     
     //MARK: - Helper methods -
+    
+    //Hides the tableView with slide-down animation and alpha decrease to 0.0
     fileprivate func removeTableView() {
         self.mapView.clear()
         DispatchQueue.main.async {
@@ -106,6 +121,7 @@ class ViewController: UIViewController {
         }
     }
     
+    //Shows the tableView with slide-up animation and alpha increase 1.0
     fileprivate func displayTableView() {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 1, animations: {
@@ -124,31 +140,17 @@ class ViewController: UIViewController {
         
         //add left and right navigationBar buttons for removing and adding new Devices
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Disconnect", style: .done, target: self, action: #selector(disconnectDevice))
-       let connectButton = UIBarButtonItem(title: "Connect", style: .done, target: self, action: #selector(connectDevice))
-        let dateButton = UIBarButtonItem(title: "Select Date", style: .done, target: self, action: #selector(dateRange))
+        let connectButton = UIBarButtonItem(title: "Connect", style: .done, target: self, action: #selector(connectDevice))
+        let dateButton = UIBarButtonItem(title: "Select Range", style: .done, target: self, action: #selector(dateRange))
         
         self.navigationItem.rightBarButtonItems = [connectButton, dateButton]
     }
     
-    @objc func dateRange() {
-        pickerSetup()
-        datePickerStackView.isHidden = !datePickerStackView.isHidden
-        if datePickerStackView.isHidden {
-            datePickerStackView.isHidden = true
-            navigationItem.rightBarButtonItems![1].title = "Select Range"
-        } else {
-            datePickerStackView.isHidden = false
-            navigationItem.rightBarButtonItems![1].title = "Finish"
-        }
-        
-       // drawing.removePolylinesFor(viewModel.devices[tableView.indexPathForSelectedRow!.row])
-       // drawing.drawDateRangePolylinesFor(viewModel.devices[tableView.indexPathForSelectedRow!.row], mapView: mapView)
-    }
     
     fileprivate func locationManagerSetup() {
         locationManager.delegate = self
-        locationManager.showsBackgroundLocationIndicator = true
-        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.showsBackgroundLocationIndicator = true //enables background tracking and indicator
+        locationManager.allowsBackgroundLocationUpdates = true //enables background tracking and indicator
         locationManager.requestAlwaysAuthorization() //request authorisation from the user on initial app run
         locationManager.requestWhenInUseAuthorization() //request authorisation from the user on initial app run
         locationManager.startUpdatingLocation()
@@ -160,19 +162,21 @@ class ViewController: UIViewController {
         }
     }
     
-    fileprivate func pickerSetup() {
-        if let row = tableView.indexPathForSelectedRow?.row {
-            mapView.addSubview(datePickerStackView)
-            startDate.backgroundColor = .green
-            endDate.backgroundColor = .red
-            startDate.timeZone = TimeZone.autoupdatingCurrent
-            endDate.timeZone = TimeZone.autoupdatingCurrent
-            
-            startDate.minimumDate = viewModel.devices[row].coordinates.first!.timestamp
-            startDate.maximumDate = endDate.date
-            
-            endDate.minimumDate = startDate.date
-            endDate.maximumDate = viewModel.devices[row].coordinates.last!.timestamp
+    //Toggles hidden and non-hidden state of sliders and labels related to date range and changes title of the button
+    //Also, displays a warning if no device was selected before pressing the dates button
+    @objc func dateRange() {
+        if tableView.indexPathForSelectedRow != nil {
+            if dateRangeStackView.isHidden {
+                mapView.settings.myLocationButton = false
+                dateRangeStackView.isHidden = false
+                navigationItem.rightBarButtonItems![1].title = "Finish"
+                minSliderLabel.text = "Start date"
+                maxSliderLabel.text = "End date"
+            } else {
+                mapView.settings.myLocationButton = true
+                dateRangeStackView.isHidden = true
+                navigationItem.rightBarButtonItems![1].title = "Select Range"
+            }
         } else {
             let alert = UIAlertController(title: "Date Selection", message: "Please select the device and try again", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
@@ -181,6 +185,34 @@ class ViewController: UIViewController {
         }
     }
     
+    //setup slider position in the superview
+     func setupSliders() {
+        
+        dateRangeStackView.frame = CGRect(x: 10, y: mapView.frame.maxY - 120, width: mapView.frame.size.width - 20, height: 100)
+        self.minSlider.minimumValue = 0.0
+        
+        minSliderLabel.textColor = .white
+        maxSliderLabel.textColor = .white
+        
+        minSliderLabel.textAlignment = .center
+        maxSliderLabel.textAlignment = .center
+        
+        minSliderLabel.backgroundColor = UIColor.red.withAlphaComponent(0.2)
+        maxSliderLabel.backgroundColor = UIColor.green.withAlphaComponent(0.2)
+        
+        minSlider.minimumTrackTintColor = .red
+        minSlider.maximumTrackTintColor = .green
+        
+        maxSlider.maximumTrackTintColor = .red
+        maxSlider.minimumTrackTintColor = .green
+        
+        minSlider.addTarget(self, action: #selector(didChangeStartDate), for: .valueChanged)
+        maxSlider.addTarget(self, action: #selector(didChangeEndDate), for: .valueChanged)
+        
+        mapView.bringSubviewToFront(dateRangeStackView)
+        dateRangeStackView.isHidden = true
+        navigationItem.rightBarButtonItems![1].title = "Select Range"
+    }
     
     fileprivate func mapSetup() {
         mapView.delegate = self //assign mapView delegate to 'self'

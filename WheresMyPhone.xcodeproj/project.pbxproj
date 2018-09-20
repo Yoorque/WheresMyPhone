@@ -18,6 +18,7 @@
 		2622266621382DF3000CB875 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2622266421382DF3000CB875 /* LaunchScreen.storyboard */; };
 		2622267121382DF3000CB875 /* WheresMyPhoneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2622267021382DF3000CB875 /* WheresMyPhoneTests.swift */; };
 		2627C6D8214FE43C00771CAA /* CommunicationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2627C6D7214FE43C00771CAA /* CommunicationProtocol.swift */; };
+		262892CC21541E9F009FCAF3 /* Date+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262892CB21541E9F009FCAF3 /* Date+extension.swift */; };
 		2651CF14214160E500BB20A1 /* ImageView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2651CF13214160E500BB20A1 /* ImageView+extension.swift */; };
 		2687C600214A6FC300606D22 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2687C5FF214A6FC300606D22 /* MockData.swift */; };
 		26D9AA04213924590053F2DA /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D9AA03213924590053F2DA /* Device.swift */; };
@@ -52,6 +53,7 @@
 		2622267021382DF3000CB875 /* WheresMyPhoneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WheresMyPhoneTests.swift; sourceTree = "<group>"; };
 		2622267221382DF3000CB875 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2627C6D7214FE43C00771CAA /* CommunicationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunicationProtocol.swift; sourceTree = "<group>"; };
+		262892CB21541E9F009FCAF3 /* Date+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+extension.swift"; sourceTree = "<group>"; };
 		2651CF13214160E500BB20A1 /* ImageView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageView+extension.swift"; sourceTree = "<group>"; };
 		2687C5FF214A6FC300606D22 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		26D9AA03213924590053F2DA /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 				260718D721412DFA009B36C1 /* Double+extension.swift */,
 				260718D921412E8D009B36C1 /* ViewController+extension.swift */,
 				2651CF13214160E500BB20A1 /* ImageView+extension.swift */,
+				262892CB21541E9F009FCAF3 /* Date+extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -409,6 +412,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				260718DA21412E8D009B36C1 /* ViewController+extension.swift in Sources */,
+				262892CC21541E9F009FCAF3 /* Date+extension.swift in Sources */,
 				2622265B21382DF2000CB875 /* ViewController.swift in Sources */,
 				2627C6D8214FE43C00771CAA /* CommunicationProtocol.swift in Sources */,
 				2651CF14214160E500BB20A1 /* ImageView+extension.swift in Sources */,
@@ -511,7 +515,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -565,7 +569,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;

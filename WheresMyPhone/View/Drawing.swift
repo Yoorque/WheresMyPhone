@@ -87,12 +87,12 @@ class Drawing {
             }
         }
         //Uncomment to delete polylines for selected device, permanently. Otherwise, historical location data will be preserved between sessions
-        //cleanUpPolylinesFor(device)
+        cleanUpPolylinesFor(name)
     }
     
     //clean-up polylines for removed device
-    private func cleanUpPolylinesFor(_ device: Device) {
-        polylines = polylines.filter {$0.title != device.name}
+    private func cleanUpPolylinesFor(_ deviceName: String) {
+        polylines = polylines.filter {$0.title != deviceName}
     }
     
     //choose polyline segment color depending on the speed for that segment
