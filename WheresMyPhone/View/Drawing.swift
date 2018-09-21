@@ -65,7 +65,7 @@ class Drawing {
             }
         }
         let path = GMSMutablePath()
-        let eligibleDates = device.coordinates.filter {$0.timestamp > startDate && $0.timestamp < endDate}
+        let eligibleDates = device.coordinates.filter {$0.timestamp >= startDate && $0.timestamp <= endDate}
         for coord in eligibleDates {
             path.add(CLLocationCoordinate2D(latitude: coord.latitude, longitude: coord.longitude))
         }
