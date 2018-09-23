@@ -25,7 +25,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let device = viewModel.devices[indexPath.row]
         cell.textLabel?.text = device.name
-        cell.detailTextLabel?.text = device.uuid.uuidString
+        cell.detailTextLabel?.text = device.uuid
         
         return cell
     }
@@ -42,9 +42,10 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         CATransaction.setAnimationDuration(0.5)
         CATransaction.begin()
         mapView.animate(toZoom: 3)
-        mapView.animate(toLocation: CLLocationCoordinate2D(latitude: selectedDevice.coordinates.last!.coordinate.latitude, longitude: selectedDevice.coordinates.last!.coordinate.longitude))
+        mapView.animate(toLocation: CLLocationCoordinate2D(latitude: selectedDevice.coordinates.last!.latitude, longitude: selectedDevice.coordinates.last!.longitude))
         CATransaction.commit()
         previouslySelected = indexPath
+        setupSliders()
     }
 }
 

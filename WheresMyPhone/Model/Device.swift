@@ -10,21 +10,26 @@ import UIKit
 import CoreLocation
 import GoogleMaps
 
-struct Device: Comparable {
-    
+struct Device: Comparable, CommunicationProtocol {
     //MARK: - properties -
     let name: String
-    var uuid: UUID
-    var coordinates: [CLLocation]
+    var uuid: String
+    var coordinates: [CoordinateProtocol]
     let image: UIImage
     
     //MARK: - init -
-    init(name: String, uuid: UUID, coordinates: [CLLocation]) {
+    init(name: String, uuid: UUID, coordinates: [CoordinateProtocol]) {
         self.name = name
-        self.uuid = UIDevice.current.identifierForVendor!
+        self.uuid = UIDevice.current.identifierForVendor!.uuidString
         self.coordinates = coordinates
         self.image = UIImage(named: "iPhone")!.scaleImageTo(CGSize(width: 35, height: 40))
     }
+    
+    func fetchDataBetween(_ startDate: Date, and endDate: Date) -> Data {
+        print("Fetching data")
+        return Data()
+    }
+    
     
     //satisfying Comparable protocol
     static func == (lhs: Device, rhs: Device) -> Bool {
@@ -33,5 +38,21 @@ struct Device: Comparable {
     
     static func < (lhs: Device, rhs: Device) -> Bool {
         return lhs.name < rhs.name
+    }
+}
+
+struct Coordinates: CoordinateProtocol {
+    var latitude: Double
+    var longitude: Double
+    var timestamp: Date
+    var speed: Double
+    var accuracy: Double
+    
+    init(latitude: Double, longitude: Double, timestamp: Date, speed: Double, accuracy: Double) {
+        self.latitude = latitude
+        self.longitude = longitude
+        self.timestamp = timestamp
+        self.speed = speed
+        self.accuracy = accuracy
     }
 }

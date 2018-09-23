@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="chJ-9c-tyT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="chJ-9c-tyT">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,6 +18,56 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Ju-b8-9Kl" customClass="GMSMapView">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="437"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="TDl-WB-oRF">
+                                        <rect key="frame" x="10" y="362" width="355" height="65"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="75R-l6-L7Q">
+                                                <rect key="frame" x="0.0" y="0.0" width="172.5" height="65"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MyL-CP-FBd">
+                                                        <rect key="frame" x="65.5" y="0.0" width="42" height="30"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="rVa-E8-xC9">
+                                                        <rect key="frame" x="-2" y="35" width="176.5" height="31"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="172.5" id="WD9-Cw-45M"/>
+                                                        </constraints>
+                                                    </slider>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Ex5-1a-A1f">
+                                                <rect key="frame" x="182.5" y="0.0" width="172.5" height="65"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uc4-bY-PQ3">
+                                                        <rect key="frame" x="65.5" y="0.0" width="42" height="30"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="OqR-4p-8iS">
+                                                        <rect key="frame" x="-2" y="35" width="176.5" height="31"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="172.5" id="Usx-Wd-7aK"/>
+                                                        </constraints>
+                                                    </slider>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="TDl-WB-oRF" secondAttribute="trailing" constant="10" id="cCU-dw-gTm"/>
+                                    <constraint firstAttribute="bottom" secondItem="TDl-WB-oRF" secondAttribute="bottom" constant="10" id="h9n-eW-VhK"/>
+                                    <constraint firstItem="TDl-WB-oRF" firstAttribute="leading" secondItem="7Ju-b8-9Kl" secondAttribute="leading" constant="10" id="mta-z0-QIV"/>
+                                </constraints>
+                            </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QSw-3c-k5F">
                                 <rect key="frame" x="0.0" y="437" width="375" height="230"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -55,26 +105,28 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="BEp-hm-p9G"/>
                                 </connections>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Ju-b8-9Kl" customClass="GMSMapView">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="437"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="QSw-3c-k5F" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="0eQ-vw-xKa"/>
                             <constraint firstItem="QSw-3c-k5F" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="QFD-UF-iCj"/>
                             <constraint firstItem="QSw-3c-k5F" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Qau-4v-3c6"/>
+                            <constraint firstItem="QSw-3c-k5F" firstAttribute="top" secondItem="7Ju-b8-9Kl" secondAttribute="bottom" id="ZDt-9N-7oR"/>
                             <constraint firstItem="QSw-3c-k5F" firstAttribute="top" secondItem="7Ju-b8-9Kl" secondAttribute="bottom" id="aOx-6R-MGO"/>
                             <constraint firstItem="7Ju-b8-9Kl" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="fGa-8Y-Uta"/>
                             <constraint firstItem="7Ju-b8-9Kl" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="gah-RH-but"/>
-                            <constraint firstItem="7Ju-b8-9Kl" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="q7D-Jg-tiM"/>
+                            <constraint firstItem="7Ju-b8-9Kl" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="hXP-1e-CnW"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="UT6-uB-5Fs"/>
                     <connections>
+                        <outlet property="dateRangeStackView" destination="TDl-WB-oRF" id="fdI-Jc-YTm"/>
                         <outlet property="mapView" destination="7Ju-b8-9Kl" id="KnF-iy-4Zg"/>
+                        <outlet property="maxSlider" destination="OqR-4p-8iS" id="rjj-R4-xNQ"/>
+                        <outlet property="maxSliderLabel" destination="Uc4-bY-PQ3" id="qfZ-hP-Io2"/>
+                        <outlet property="minSlider" destination="rVa-E8-xC9" id="DTb-Jp-Hig"/>
+                        <outlet property="minSliderLabel" destination="MyL-CP-FBd" id="Kj0-PE-79x"/>
                         <outlet property="tableView" destination="QSw-3c-k5F" id="9B2-pF-dU7"/>
                     </connections>
                 </viewController>

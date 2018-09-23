@@ -16,7 +16,7 @@ class Drawing {
     
     func drawPolylinesOn(_ mapView: GMSMapView, forDevice device: Device, withZoom zoom: Float) {
         
-        phoneMarker.position = CLLocationCoordinate2D(latitude: device.coordinates.last!.coordinate.latitude, longitude: device.coordinates.last!.coordinate.longitude)
+        phoneMarker.position = CLLocationCoordinate2D(latitude: device.coordinates.last!.latitude, longitude: device.coordinates.last!.longitude)
         let camera = GMSCameraPosition(target: mapView.camera.target, zoom: mapView.camera.zoom, bearing: mapView.camera.bearing, viewingAngle: mapView.camera.bearing)
         mapView.animate(to: camera) //animate camera to center on current/last device location
         //mapView.clear()
@@ -26,7 +26,7 @@ class Drawing {
         //Create new path for every 2 (two) last coordinates in order to observe the speed and color the segment accordingly
         device.coordinates.suffix(2).forEach {
             speed = $0.speed
-            path.add(CLLocationCoordinate2D(latitude: $0.coordinate.latitude, longitude: $0.coordinate.longitude))
+            path.add(CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude))
         }
         
         //create polylines from GMSPath consisting of last two coordinates of device locations
@@ -58,19 +58,41 @@ class Drawing {
         }
     }
     
+    func drawDateRangePolylinesFor(_ device: Device, mapView: GMSMapView, between startDate: Date, and endDate: Date) {
+        polylines.forEach {
+            if $0.title == device.name + "range" {
+                $0.map = nil
+            }
+        }
+        let path = GMSMutablePath()
+        let eligibleDates = device.coordinates.filter {$0.timestamp >= startDate && $0.timestamp <= endDate}
+        for coord in eligibleDates {
+            path.add(CLLocationCoordinate2D(latitude: coord.latitude, longitude: coord.longitude))
+        }
+        
+        let polyline = GMSPolyline(path: path)
+        polyline.title = device.name + "range"
+        polyline.strokeColor = .cyan
+        polyline.strokeWidth = 5
+        polyline.geodesic = true
+        polyline.map = mapView
+        polylines.append(polyline)
+    }
+    
     //set polylines for removed device to nil
-    func removePolylinesFor(_ device: Device) {
+    func removePolylinesFor(_ name: String) {
         for polyline in polylines {
-            if polyline.title == device.name {
+            if polyline.title!.contains(name) {
                 polyline.map = nil //setting polyline map to nil
             }
         }
-        cleanUpPolylinesFor(device)
+        //Uncomment to delete polylines for selected device, permanently. Otherwise, historical location data will be preserved between sessions
+        cleanUpPolylinesFor(name)
     }
     
     //clean-up polylines for removed device
-    private func cleanUpPolylinesFor(_ device: Device) {
-        polylines = polylines.filter {$0.title != device.name}
+    private func cleanUpPolylinesFor(_ deviceName: String) {
+        polylines = polylines.filter {$0.title != deviceName}
     }
     
     //choose polyline segment color depending on the speed for that segment
