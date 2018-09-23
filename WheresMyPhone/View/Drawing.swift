@@ -24,10 +24,22 @@ class Drawing {
         var speed: Double = 0.0
         
         //Create new path for every 2 (two) last coordinates in order to observe the speed and color the segment accordingly
+        var startLocation: CLLocation!
+        var endLocation: CLLocation!
+        var index = 0
         device.coordinates.suffix(2).forEach {
-            speed = $0.speed
+            if index == 0 {
+                startLocation = CLLocation(coordinate: CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude), altitude: 0, horizontalAccuracy: 0, verticalAccuracy: 0, course: 0, speed: 0, timestamp: $0.timestamp)
+                index += 1
+            } else {
+                endLocation = CLLocation(coordinate: CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude), altitude: 0, horizontalAccuracy: 0, verticalAccuracy: 0, course: 0, speed: 0, timestamp: $0.timestamp)
+            }
+            
             path.add(CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude))
         }
+        let distance = endLocation.distance(from: startLocation)
+        let timeInterval = endLocation.timestamp.timeIntervalSince(startLocation.timestamp)
+        speed = distance / timeInterval
         
         //create polylines from GMSPath consisting of last two coordinates of device locations
         let polyline = GMSPolyline(path: path)
@@ -98,15 +110,15 @@ class Drawing {
     //choose polyline segment color depending on the speed for that segment
     private func speedColors(forSpeed speed: Double) -> UIColor{
         switch speed {
-        case 0..<2:
+        case 0..<5:
             return .blue
-        case 2..<4:
+        case 5..<10:
             return .green
-        case 4..<6:
+        case 10..<15:
             return .orange
-        case 6..<8:
+        case 15..<20:
             return .red
-        case 8..<10:
+        case 20..<25:
             return .purple
         default:
             return .black

@@ -59,7 +59,7 @@ class ViewController: UIViewController {
             guard self.viewModel.devices.count != 0 else {return}
             guard let row = self.tableView.indexPathForSelectedRow?.row else {return}
             
-            let passedInLocation = Coordinates(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, timestamp: location.timestamp, speed: location.speed, accuracy: location.horizontalAccuracy)
+            let passedInLocation = Coordinates(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, timestamp: location.timestamp, accuracy: location.horizontalAccuracy)
             
             self.viewModel.devices[row].coordinates.append(passedInLocation)
             self.drawing.drawPolylinesOn(self.mapView, forDevice: self.viewModel.devices[row], withZoom: self.mapView.camera.zoom)

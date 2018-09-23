@@ -45,14 +45,12 @@ struct Coordinates: CoordinateProtocol {
     var latitude: Double
     var longitude: Double
     var timestamp: Date
-    var speed: Double
     var accuracy: Double
     
-    init(latitude: Double, longitude: Double, timestamp: Date, speed: Double, accuracy: Double) {
+    init(latitude: Double, longitude: Double, timestamp: Date, accuracy: Double) {
         self.latitude = latitude
         self.longitude = longitude
         self.timestamp = timestamp
-        self.speed = speed
         self.accuracy = accuracy
     }
 }
