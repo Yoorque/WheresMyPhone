@@ -16,7 +16,6 @@ class MockData {
         Coordinates(latitude: 50.0, longitude: 30.0, timestamp: Date(), speed: 0, accuracy: 3)])
     let mockDevice3 = Device(name: "Third", uuid: UIDevice.current.identifierForVendor!, coordinates: [
         Coordinates(latitude: 15.0, longitude: 10.0, timestamp: Date(), speed: 0, accuracy: 3)])
-    
     let mockDevice4 = Device(name: "Fourth", uuid: UIDevice.current.identifierForVendor!, coordinates: [
         Coordinates(latitude: 40.0, longitude: 40.0, timestamp: Date(), speed: 0, accuracy: 3)])
     
