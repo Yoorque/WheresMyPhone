@@ -11,17 +11,14 @@ import CoreLocation
 
 class MockData {
     let mockDevice = Device(name: "First", uuid: UIDevice.current.identifierForVendor!, coordinates: [
-        Coordinates(latitude: 30, longitude: 20, timestamp: Date(), speed: 0, accuracy: 3),
-        Coordinates(latitude: 35, longitude: 25, timestamp: Date(), speed: 0, accuracy: 3)])
+        Coordinates(latitude: 30.0, longitude: 20.0, timestamp: Date(), speed: 0, accuracy: 3)])
     let mockDevice2 = Device(name: "Second", uuid: UIDevice.current.identifierForVendor!, coordinates: [
-        Coordinates(latitude: 50, longitude: 30, timestamp: Date(), speed: 0, accuracy: 3),
-        Coordinates(latitude: 55, longitude: 35, timestamp: Date(), speed: 0, accuracy: 3)])
+        Coordinates(latitude: 50.0, longitude: 30.0, timestamp: Date(), speed: 0, accuracy: 3)])
     let mockDevice3 = Device(name: "Third", uuid: UIDevice.current.identifierForVendor!, coordinates: [
-        Coordinates(latitude: 15, longitude: 10, timestamp: Date(), speed: 0, accuracy: 3),
-        Coordinates(latitude: 20, longitude: 15, timestamp: Date(), speed: 0, accuracy: 3)])
+        Coordinates(latitude: 15.0, longitude: 10.0, timestamp: Date(), speed: 0, accuracy: 3)])
     let mockDevice4 = Device(name: "Fourth", uuid: UIDevice.current.identifierForVendor!, coordinates: [
-        Coordinates(latitude: 40, longitude: 40, timestamp: Date(), speed: 0, accuracy: 3),
-        Coordinates(latitude: 45, longitude: 45, timestamp: Date(), speed: 0, accuracy: 3)])
+        Coordinates(latitude: 40.0, longitude: 40.0, timestamp: Date(), speed: 0, accuracy: 3)])
+    
     let viewModel: DeviceViewModel
     let devices: [Device]
     init() {
