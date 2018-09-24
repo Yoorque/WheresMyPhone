@@ -15,6 +15,15 @@ class Drawing {
     let phoneMarker = GMSMarker()
     let startMarker = GMSMarker()
     let endMarker = GMSMarker()
+    var iconView: UIView! {
+        didSet {
+            let label = UILabel()
+            iconView = UIView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 50, height: 20)))
+            label.textAlignment = .center
+            label.frame = iconView.frame
+            iconView.addSubview(label)
+        }
+    }
     
     func drawPolylinesOn(_ mapView: GMSMapView, forDevice device: Device, withZoom zoom: Float) {
         
@@ -25,11 +34,11 @@ class Drawing {
         let path = GMSMutablePath()
         var speed: Double = 0.0
         
-        
-        //Create new path for every 2 (two) last coordinates in order to observe the speed and color the segment accordingly
         var startLocation: CLLocation!
         var endLocation: CLLocation!
         var index = 0
+        
+        //Create new path for every 2 (two) last coordinates in order to observe the speed and color the segment accordingly
         device.coordinates.suffix(2).forEach {
             if index == 0 {
                 startLocation = CLLocation(coordinate: CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude), altitude: 0, horizontalAccuracy: 0, verticalAccuracy: 0, course: 0, speed: 0, timestamp: $0.timestamp)
@@ -37,9 +46,9 @@ class Drawing {
             } else {
                 endLocation = CLLocation(coordinate: CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude), altitude: 0, horizontalAccuracy: 0, verticalAccuracy: 0, course: 0, speed: 0, timestamp: $0.timestamp)
             }
-            
             path.add(CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude))
         }
+        
         let distance = endLocation.distance(from: startLocation)
         let timeInterval = endLocation.timestamp.timeIntervalSince(startLocation.timestamp)
         speed = distance / timeInterval
@@ -74,13 +83,14 @@ class Drawing {
     }
     
     func addCustomIconWithText(_ text: String, andColor color: UIColor) -> UIView {
-        let iconView = UIView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 50, height: 20)))
-        let label = UILabel()
-        label.textAlignment = .center
-        label.backgroundColor = color.withAlphaComponent(0.3)
-        label.frame = iconView.frame
-        iconView.addSubview(label)
-        label.text = text
+        iconView = UIView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 50, height: 20)))
+        for subview in iconView.subviews {
+            if subview.isKind(of: UILabel.self) {
+                let label = iconView.subviews.first as! UILabel
+                label.backgroundColor = color.withAlphaComponent(0.3)
+                label.text = text
+            }
+        }
         return iconView
     }
     
@@ -112,6 +122,16 @@ class Drawing {
         polyline.geodesic = true
         polyline.map = mapView
         polylines.append(polyline)
+    }
+    
+    func clearRangePolylines() {
+        for polyline in polylines {
+            if polyline.title!.contains("range") {
+                polyline.map = nil
+                startMarker.map = nil
+                endMarker.map = nil
+            }
+        }
     }
     
     //set polylines for removed device to nil

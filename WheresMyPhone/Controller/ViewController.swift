@@ -31,6 +31,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var maxSliderLabel: UILabel!
     @IBOutlet weak var minSlider: UISlider!
     @IBOutlet weak var maxSlider: UISlider!
+    @IBOutlet weak var distanceLabel: UILabel!
     
     //MARK: - life cycle -
     override func viewDidLoad() {
@@ -103,6 +104,7 @@ class ViewController: UIViewController {
             publishDateSliderSubject.onNext((slider.value, "startDate"))
         }
     }
+    
     @objc func didChangeEndDate(_ sender: Any) { //detects changes in minSlider
         if let slider = sender as? UISlider {
             publishDateSliderSubject.onNext((slider.value, "endDate"))
@@ -143,11 +145,10 @@ class ViewController: UIViewController {
         //add left and right navigationBar buttons for removing and adding new Devices
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Disconnect", style: .done, target: self, action: #selector(disconnectDevice))
         let connectButton = UIBarButtonItem(title: "Connect", style: .done, target: self, action: #selector(connectDevice))
-        let dateButton = UIBarButtonItem(title: "Select Range", style: .done, target: self, action: #selector(dateRange))
+        let dateButton = UIBarButtonItem(title: "Select Range", style: .done, target: self, action: #selector(dateRangeNavButton))
         
         self.navigationItem.rightBarButtonItems = [connectButton, dateButton]
     }
-    
     
     fileprivate func locationManagerSetup() {
         locationManager.delegate = self
@@ -166,7 +167,7 @@ class ViewController: UIViewController {
     
     //Toggles hidden and non-hidden state of sliders and labels related to date range and changes title of the button
     //Also, displays a warning if no device was selected before pressing the dates button
-    @objc func dateRange() {
+    @objc func dateRangeNavButton() {
         if tableView.indexPathForSelectedRow != nil {
             if dateRangeStackView.isHidden {
                 mapView.settings.myLocationButton = false
@@ -178,6 +179,7 @@ class ViewController: UIViewController {
                 mapView.settings.myLocationButton = true
                 dateRangeStackView.isHidden = true
                 navigationItem.rightBarButtonItems![1].title = "Select Range"
+                drawing.clearRangePolylines()
             }
         } else {
             let alert = UIAlertController(title: "Date Selection", message: "Please select the device and try again", preferredStyle: .alert)

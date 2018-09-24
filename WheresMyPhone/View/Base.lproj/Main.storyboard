@@ -21,41 +21,55 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Ju-b8-9Kl" customClass="GMSMapView">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="437"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="TDl-WB-oRF">
-                                        <rect key="frame" x="10" y="362" width="355" height="65"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="kzs-Yc-7Fi">
+                                        <rect key="frame" x="10" y="336.5" width="355" height="90.5"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="75R-l6-L7Q">
-                                                <rect key="frame" x="0.0" y="0.0" width="172.5" height="65"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QeD-Ox-L0f">
+                                                <rect key="frame" x="0.0" y="0.0" width="355" height="20.5"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="20.5" id="Kak-HZ-lJ5"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="TDl-WB-oRF">
+                                                <rect key="frame" x="0.0" y="25.5" width="355" height="65"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MyL-CP-FBd">
-                                                        <rect key="frame" x="65.5" y="0.0" width="42" height="30"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="rVa-E8-xC9">
-                                                        <rect key="frame" x="-2" y="35" width="176.5" height="31"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="172.5" id="WD9-Cw-45M"/>
-                                                        </constraints>
-                                                    </slider>
-                                                </subviews>
-                                            </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Ex5-1a-A1f">
-                                                <rect key="frame" x="182.5" y="0.0" width="172.5" height="65"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uc4-bY-PQ3">
-                                                        <rect key="frame" x="65.5" y="0.0" width="42" height="30"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="OqR-4p-8iS">
-                                                        <rect key="frame" x="-2" y="35" width="176.5" height="31"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="172.5" id="Usx-Wd-7aK"/>
-                                                        </constraints>
-                                                    </slider>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="75R-l6-L7Q">
+                                                        <rect key="frame" x="0.0" y="0.0" width="175" height="65"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MyL-CP-FBd">
+                                                                <rect key="frame" x="66.5" y="0.0" width="42" height="30"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="rVa-E8-xC9">
+                                                                <rect key="frame" x="-1" y="35" width="176.5" height="31"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="172.5" id="WD9-Cw-45M"/>
+                                                                </constraints>
+                                                            </slider>
+                                                        </subviews>
+                                                    </stackView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Ex5-1a-A1f">
+                                                        <rect key="frame" x="180" y="0.0" width="175" height="65"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uc4-bY-PQ3">
+                                                                <rect key="frame" x="66.5" y="0.0" width="42" height="30"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="OqR-4p-8iS">
+                                                                <rect key="frame" x="-1" y="35" width="176.5" height="31"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="172.5" id="Usx-Wd-7aK"/>
+                                                                </constraints>
+                                                            </slider>
+                                                        </subviews>
+                                                    </stackView>
                                                 </subviews>
                                             </stackView>
                                         </subviews>
@@ -63,9 +77,9 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="TDl-WB-oRF" secondAttribute="trailing" constant="10" id="cCU-dw-gTm"/>
-                                    <constraint firstAttribute="bottom" secondItem="TDl-WB-oRF" secondAttribute="bottom" constant="10" id="h9n-eW-VhK"/>
-                                    <constraint firstItem="TDl-WB-oRF" firstAttribute="leading" secondItem="7Ju-b8-9Kl" secondAttribute="leading" constant="10" id="mta-z0-QIV"/>
+                                    <constraint firstItem="kzs-Yc-7Fi" firstAttribute="leading" secondItem="7Ju-b8-9Kl" secondAttribute="leading" constant="10" id="RfO-L6-BGF"/>
+                                    <constraint firstAttribute="trailing" secondItem="kzs-Yc-7Fi" secondAttribute="trailing" constant="10" id="SX6-YD-2DU"/>
+                                    <constraint firstAttribute="bottom" secondItem="kzs-Yc-7Fi" secondAttribute="bottom" constant="10" id="sye-bh-yYj"/>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QSw-3c-k5F">
@@ -121,7 +135,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="UT6-uB-5Fs"/>
                     <connections>
-                        <outlet property="dateRangeStackView" destination="TDl-WB-oRF" id="fdI-Jc-YTm"/>
+                        <outlet property="dateRangeStackView" destination="kzs-Yc-7Fi" id="tU0-M4-ePn"/>
+                        <outlet property="distanceLabel" destination="QeD-Ox-L0f" id="bG0-f4-tB1"/>
                         <outlet property="mapView" destination="7Ju-b8-9Kl" id="KnF-iy-4Zg"/>
                         <outlet property="maxSlider" destination="OqR-4p-8iS" id="rjj-R4-xNQ"/>
                         <outlet property="maxSliderLabel" destination="Uc4-bY-PQ3" id="qfZ-hP-Io2"/>
