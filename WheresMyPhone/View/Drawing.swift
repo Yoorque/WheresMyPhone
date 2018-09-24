@@ -15,6 +15,7 @@ class Drawing {
     let phoneMarker = GMSMarker()
     let startMarker = GMSMarker()
     let endMarker = GMSMarker()
+    var camera: GMSCameraPosition!
     var iconView: UIView! {
         didSet {
             let label = UILabel()
@@ -25,15 +26,12 @@ class Drawing {
         }
     }
     
-    func drawPolylinesOn(_ mapView: GMSMapView, forDevice device: Device, withZoom zoom: Float) {
+    func drawPolylinesOn(_ mapView: GMSMapView, forDevice device: Device) {
         
         phoneMarker.position = CLLocationCoordinate2D(latitude: device.coordinates.last!.latitude, longitude: device.coordinates.last!.longitude)
-        let camera = GMSCameraPosition(target: mapView.camera.target, zoom: mapView.camera.zoom, bearing: mapView.camera.bearing, viewingAngle: mapView.camera.bearing)
-        mapView.animate(to: camera) //animate camera to center on current/last device location
-        //mapView.clear()
+
         let path = GMSMutablePath()
         var speed: Double = 0.0
-        
         var startLocation: CLLocation!
         var endLocation: CLLocation!
         var index = 0
@@ -94,23 +92,28 @@ class Drawing {
         return iconView
     }
     
-    func drawDateRangePolylinesFor(_ device: Device, mapView: GMSMapView, between startDate: Date, and endDate: Date) {
+    func drawDateRangePolylinesFor(_ device: Device, mapView: GMSMapView, between startLocation: CLLocation, and endLocation: CLLocation) {
         polylines.forEach {
             if $0.title == device.name + "range" {
                 $0.map = nil
             }
         }
         let path = GMSMutablePath()
-        let eligibleDates = device.coordinates.filter {$0.timestamp >= startDate && $0.timestamp <= endDate}
-        for coord in eligibleDates {
-            path.add(CLLocationCoordinate2D(latitude: coord.latitude, longitude: coord.longitude))
+        
+        let eligibleLocations = device.coordinates.filter {$0.timestamp >= startLocation.timestamp && $0.timestamp <= endLocation.timestamp}
+        
+        for coords in eligibleLocations {
+            path.add(CLLocationCoordinate2D(latitude: coords.latitude, longitude: coords.longitude))
         }
         
-        startMarker.position = CLLocationCoordinate2D(latitude: eligibleDates.first!.latitude, longitude: eligibleDates.first!.longitude)
-        endMarker.position = CLLocationCoordinate2D(latitude: eligibleDates.last!.latitude, longitude: eligibleDates.last!.longitude)
+        startMarker.position = CLLocationCoordinate2D(latitude: startLocation.coordinate.latitude, longitude: startLocation.coordinate.longitude)
+        endMarker.position = CLLocationCoordinate2D(latitude: endLocation.coordinate.latitude, longitude: endLocation.coordinate.longitude)
         
-        startMarker.iconView = addCustomIconWithText(eligibleDates.first!.timestamp.formatForTime(), andColor: UIColor.green)
-        endMarker.iconView = addCustomIconWithText(eligibleDates.last!.timestamp.formatForTime(), andColor: UIColor.red)
+        startMarker.iconView = addCustomIconWithText(startLocation.timestamp.formatForTime(), andColor: UIColor.green)
+        endMarker.iconView = addCustomIconWithText(endLocation.timestamp.formatForTime(), andColor: UIColor.red)
+        
+        startMarker.title = startLocation.timestamp.formatDate()
+        endMarker.title = endLocation.timestamp.formatDate()
         
         startMarker.map = mapView
         endMarker.map = mapView

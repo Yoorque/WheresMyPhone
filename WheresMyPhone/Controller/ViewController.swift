@@ -27,11 +27,43 @@ class ViewController: UIViewController {
     @IBOutlet weak var mapView: GMSMapView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var dateRangeStackView: UIStackView!
-    @IBOutlet weak var minSliderLabel: UILabel!
-    @IBOutlet weak var maxSliderLabel: UILabel!
-    @IBOutlet weak var minSlider: UISlider!
-    @IBOutlet weak var maxSlider: UISlider!
-    @IBOutlet weak var distanceLabel: UILabel!
+    
+    @IBOutlet weak var minSliderLabel: UILabel! {
+        didSet {
+            minSliderLabel.textColor = .white
+            minSliderLabel.textAlignment = .center
+            minSliderLabel.backgroundColor = UIColor.green.withAlphaComponent(0.2)
+        }
+    }
+    @IBOutlet weak var maxSliderLabel: UILabel! {
+        didSet {
+            maxSliderLabel.textColor = .white
+            maxSliderLabel.textAlignment = .center
+            maxSliderLabel.backgroundColor = UIColor.red.withAlphaComponent(0.2)
+        }
+    }
+    @IBOutlet weak var minSlider: UISlider! {
+        didSet {
+            minSlider.minimumTrackTintColor = .red
+            minSlider.maximumTrackTintColor = .green
+            minSlider.minimumValue = 0.0
+            minSlider.addTarget(self, action: #selector(didChangeStartDate), for: .valueChanged)
+        }
+    }
+    @IBOutlet weak var maxSlider: UISlider! {
+        didSet {
+            maxSlider.minimumTrackTintColor = .green
+            maxSlider.maximumTrackTintColor = .red
+            maxSlider.addTarget(self, action: #selector(didChangeEndDate), for: .valueChanged)
+        }
+    }
+    @IBOutlet weak var distanceLabel: UILabel! {
+        didSet {
+            distanceLabel.backgroundColor = .lightGray
+            distanceLabel.textColor = UIColor.white
+            distanceLabel.textAlignment = .center
+        }
+    }
     
     //MARK: - life cycle -
     override func viewDidLoad() {
@@ -63,17 +95,16 @@ class ViewController: UIViewController {
             let passedInLocation = Coordinates(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, timestamp: location.timestamp, accuracy: location.horizontalAccuracy)
             
             self.viewModel.devices[row].coordinates.append(passedInLocation)
-            self.drawing.drawPolylinesOn(self.mapView, forDevice: self.viewModel.devices[row], withZoom: self.mapView.camera.zoom)
+            self.drawing.drawPolylinesOn(self.mapView, forDevice: self.viewModel.devices[row])
         }).disposed(by: disposeBag)
         
         publishDateSliderSubject.subscribe(onNext: { (value, slider) in
             //Check if there is a row selected
             if let row = self.tableView.indexPathForSelectedRow?.row {
                 //limit min and max values of sliders according to the values of passed in value object
-                self.minSlider.maximumValue = self.maxSlider.value
-                self.maxSlider.minimumValue = self.minSlider.value
                 self.maxSlider.maximumValue = Float(self.viewModel.devices[row].coordinates.count - 1)
-                
+                self.maxSlider.minimumValue = self.minSlider.value
+                self.minSlider.maximumValue = self.maxSlider.value
                 //check the passed in string from tuple passed in to determine which slider was moved
                 if slider == "startDate" {
                     self.maxSlider.minimumValue = value
@@ -82,30 +113,42 @@ class ViewController: UIViewController {
                 }
                 
                 //selct the timestamp value from an array of coordinates, according to the index passed in as value of the passed in element
-                let minDate = self.viewModel.devices[row].coordinates[Int(self.minSlider.value)].timestamp
-                let maxDate = self.viewModel.devices[row].coordinates[Int(self.maxSlider.value)].timestamp
+                let startCoords = CLLocationCoordinate2D(latitude: self.viewModel.devices[row].coordinates[Int(self.minSlider.value.rounded())].latitude, longitude: self.viewModel.devices[row].coordinates[Int(self.minSlider.value.rounded())].longitude)
+                let endCoords = CLLocationCoordinate2D(latitude: self.viewModel.devices[row].coordinates[Int(self.maxSlider.value)].latitude, longitude: self.viewModel.devices[row].coordinates[Int(self.maxSlider.value)].longitude)
+                
+                let startLocation = CLLocation(coordinate: startCoords, altitude: 0, horizontalAccuracy: 0, verticalAccuracy: 0, course: 0, speed: 0, timestamp: self.viewModel.devices[row].coordinates[Int(self.minSlider.value.rounded())].timestamp)
+                let endLocation = CLLocation(coordinate: endCoords, altitude: 0, horizontalAccuracy: 0, verticalAccuracy: 0, course: 0, speed: 0, timestamp: self.viewModel.devices[row].coordinates[Int(self.maxSlider.value.rounded())].timestamp)
+                
+                //calculate distance between two selected coordinates
+                self.distanceLabel.text = self.getDistanceBetweenLocation(startLocation, and: endLocation)
                 
                 //draw selected range
-                self.drawing.drawDateRangePolylinesFor(self.viewModel.devices[row], mapView: self.mapView, between: minDate, and: maxDate)
+                self.drawing.drawDateRangePolylinesFor(self.viewModel.devices[row], mapView: self.mapView, between: startLocation, and: endLocation)
+                
                 
                 //use converted timestamp to display in the appropriate label
-                self.minSliderLabel.text = self.viewModel.devices[row].coordinates[Int(self.minSlider.value)].timestamp.formatDate()
-                self.maxSliderLabel.text = self.viewModel.devices[row].coordinates[Int(self.maxSlider.value)].timestamp.formatDate()
+                self.minSliderLabel.text = startLocation.timestamp.formatDate()
+                self.maxSliderLabel.text = endLocation.timestamp.formatDate()
             }
         }).disposed(by: disposeBag)
         
         mockData.mockedDataWithTimer(for: self, and: tableView) //Timer for displaying mocked CLLocations over time using publishCoordSubject
         
     }
+    
+    func getDistanceBetweenLocation(_ startLocation: CLLocation, and endLocation: CLLocation) -> String{
+        let distance = startLocation.distance(from: endLocation)
+        return distance.toKm
+    }
 
     //publish onNext event as a tuple of current slider value and a hardcoded string to be able to recognize which slider fired the event
-    @objc func didChangeStartDate(_ sender: Any) { //detects changes in maxSlider
+    @objc func didChangeStartDate(_ sender: Any) { //detects changes in minSlider
         if let slider = sender as? UISlider {
             publishDateSliderSubject.onNext((slider.value, "startDate"))
         }
     }
     
-    @objc func didChangeEndDate(_ sender: Any) { //detects changes in minSlider
+    @objc func didChangeEndDate(_ sender: Any) { //detects changes in maxSlider
         if let slider = sender as? UISlider {
             publishDateSliderSubject.onNext((slider.value, "endDate"))
         }
@@ -191,27 +234,7 @@ class ViewController: UIViewController {
     
     //setup slider position in the superview
      func setupSliders() {
-        
         dateRangeStackView.frame = CGRect(x: 10, y: mapView.frame.maxY - 120, width: mapView.frame.size.width - 20, height: 100)
-        self.minSlider.minimumValue = 0.0
-        
-        minSliderLabel.textColor = .white
-        maxSliderLabel.textColor = .white
-        
-        minSliderLabel.textAlignment = .center
-        maxSliderLabel.textAlignment = .center
-        
-        minSliderLabel.backgroundColor = UIColor.red.withAlphaComponent(0.2)
-        maxSliderLabel.backgroundColor = UIColor.green.withAlphaComponent(0.2)
-        
-        minSlider.minimumTrackTintColor = .red
-        minSlider.maximumTrackTintColor = .green
-        
-        maxSlider.maximumTrackTintColor = .red
-        maxSlider.minimumTrackTintColor = .green
-        
-        minSlider.addTarget(self, action: #selector(didChangeStartDate), for: .valueChanged)
-        maxSlider.addTarget(self, action: #selector(didChangeEndDate), for: .valueChanged)
         
         mapView.bringSubviewToFront(dateRangeStackView)
         dateRangeStackView.isHidden = true
@@ -246,7 +269,6 @@ class ViewController: UIViewController {
     }
 }
 //MARK: Extensions in Extensions folder
-
 
 
 
