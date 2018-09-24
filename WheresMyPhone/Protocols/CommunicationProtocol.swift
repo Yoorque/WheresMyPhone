@@ -21,7 +21,6 @@ protocol CoordinateProtocol {
     var latitude: Double {get}
     var longitude: Double {get}
     var timestamp: Date {get}
-    var speed: Double {get}
     var accuracy: Double {get}
 }
 
