@@ -1,0 +1,6 @@
+framework module Pods_WheresMyPhoneTests {
+  umbrella header "Pods-WheresMyPhoneTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
