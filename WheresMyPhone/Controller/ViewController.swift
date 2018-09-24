@@ -263,6 +263,8 @@ class ViewController: UIViewController {
         //viewModel.removeLastDevice() // remove last device from devices array
         guard let row = tableView.indexPathForSelectedRow?.row else {return} //if device row is selected, extract the row Int
         drawing.removePolylinesFor(viewModel.devices[row].name)
+        drawing.clearRangePolylines()
+        setupSliders()
         viewModel.removeDevice(named: viewModel.devices[row].name) //remove specific Device.
         publishDeviceCountSubject.onNext(viewModel.devices.count) //advertise onNext event once the 'viewModel.devices.count' changes
         tableView.reloadData() //reload tableView

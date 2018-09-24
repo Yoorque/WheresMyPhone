@@ -19,7 +19,6 @@ class Drawing {
     var iconView: UIView! {
         didSet {
             let label = UILabel()
-            iconView = UIView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 50, height: 20)))
             label.textAlignment = .center
             label.frame = iconView.frame
             iconView.addSubview(label)
@@ -104,7 +103,12 @@ class Drawing {
         
         for coords in eligibleLocations {
             path.add(CLLocationCoordinate2D(latitude: coords.latitude, longitude: coords.longitude))
+            
+            print(eligibleLocations.count)
         }
+        
+        
+        
         
         startMarker.position = CLLocationCoordinate2D(latitude: startLocation.coordinate.latitude, longitude: startLocation.coordinate.longitude)
         endMarker.position = CLLocationCoordinate2D(latitude: endLocation.coordinate.latitude, longitude: endLocation.coordinate.longitude)
