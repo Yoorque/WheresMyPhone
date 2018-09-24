@@ -13,6 +13,8 @@ class Drawing {
     
     var polylines = [GMSOverlay]()
     let phoneMarker = GMSMarker()
+    let startMarker = GMSMarker()
+    let endMarker = GMSMarker()
     
     func drawPolylinesOn(_ mapView: GMSMapView, forDevice device: Device, withZoom zoom: Float) {
         
@@ -22,6 +24,7 @@ class Drawing {
         //mapView.clear()
         let path = GMSMutablePath()
         var speed: Double = 0.0
+        
         
         //Create new path for every 2 (two) last coordinates in order to observe the speed and color the segment accordingly
         device.coordinates.suffix(2).forEach {
@@ -58,6 +61,17 @@ class Drawing {
         }
     }
     
+    func addCustomIconWithText(_ text: String, andColor color: UIColor) -> UIView {
+        let iconView = UIView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 50, height: 20)))
+        let label = UILabel()
+        label.textAlignment = .center
+        label.backgroundColor = color.withAlphaComponent(0.3)
+        label.frame = iconView.frame
+        iconView.addSubview(label)
+        label.text = text
+        return iconView
+    }
+    
     func drawDateRangePolylinesFor(_ device: Device, mapView: GMSMapView, between startDate: Date, and endDate: Date) {
         polylines.forEach {
             if $0.title == device.name + "range" {
@@ -69,6 +83,15 @@ class Drawing {
         for coord in eligibleDates {
             path.add(CLLocationCoordinate2D(latitude: coord.latitude, longitude: coord.longitude))
         }
+        
+        startMarker.position = CLLocationCoordinate2D(latitude: eligibleDates.first!.latitude, longitude: eligibleDates.first!.longitude)
+        endMarker.position = CLLocationCoordinate2D(latitude: eligibleDates.last!.latitude, longitude: eligibleDates.last!.longitude)
+        
+        startMarker.iconView = addCustomIconWithText(eligibleDates.first!.timestamp.formatForTime(), andColor: UIColor.green)
+        endMarker.iconView = addCustomIconWithText(eligibleDates.last!.timestamp.formatForTime(), andColor: UIColor.red)
+        
+        startMarker.map = mapView
+        endMarker.map = mapView
         
         let polyline = GMSPolyline(path: path)
         polyline.title = device.name + "range"
