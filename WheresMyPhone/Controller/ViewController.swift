@@ -77,13 +77,9 @@ class ViewController: UIViewController {
         //Subscribing to onNext events for count property of viewModel.devices array and
         //Modifying UI according to the result
         publishDeviceCountSubject.subscribe(onNext: { count in
-            
-            if count == 0 { //If viewModel.devices.count is 0, tableView is hidden and mapView spans over the entire screen
-                self.removeTableView()
-                
-            } else { //else, tableView is showing with the list of devices and mapView takes up it's position above tableView
-                self.displayTableView()
-            }
+            //If viewModel.devices.count is 0, tableView is hidden and mapView spans over the entire screen
+            //else, tableView is showing with the list of devices and mapView takes up it's position above tableView
+            count == 0 ? self.removeTableView() : self.displayTableView()
         }).disposed(by: disposeBag)
         
         publishDeviceCountSubject.onNext(viewModel.devices.count) //Initially checks count property of viewModel.devices array
@@ -99,46 +95,50 @@ class ViewController: UIViewController {
         }).disposed(by: disposeBag)
         
         publishDateSliderSubject.subscribe(onNext: { (value, slider) in
-            //Check if there is a row selected
-            if let row = self.tableView.indexPathForSelectedRow?.row {
-                //Check the passed in string from tuple passed in to determine which slider was moved
-                if slider == "startDate" {
-                    self.minSlider.value = value
-                } else if slider == "endDate" {
-                    self.maxSlider.value = value
-                }
-                
-                //Limit min and max values of sliders according to the values of passed in value object
-                self.minSlider.minimumValue = 0.0
-                self.maxSlider.maximumValue = Float(self.viewModel.devices[row].coordinates.count - 1)
-                self.maxSlider.minimumValue = self.minSlider.value
-                self.minSlider.maximumValue = self.maxSlider.value
-                
-                //Select the timestamp value from an array of coordinates, according to the index passed in as value of the passed in element
-                let startCoords = CLLocationCoordinate2D(latitude: self.viewModel.devices[row].coordinates[Int(self.minSlider.value.rounded())].latitude, longitude: self.viewModel.devices[row].coordinates[Int(self.minSlider.value.rounded())].longitude)
-                let endCoords = CLLocationCoordinate2D(latitude: self.viewModel.devices[row].coordinates[Int(self.maxSlider.value.rounded())].latitude, longitude: self.viewModel.devices[row].coordinates[Int(self.maxSlider.value.rounded())].longitude)
-                
-                let startLocation = CLLocation(coordinate: startCoords, altitude: 0, horizontalAccuracy: 0, verticalAccuracy: 0, course: 0, speed: 0, timestamp: self.viewModel.devices[row].coordinates[Int(self.minSlider.value.rounded())].timestamp)
-                let endLocation = CLLocation(coordinate: endCoords, altitude: 0, horizontalAccuracy: 0, verticalAccuracy: 0, course: 0, speed: 0, timestamp: self.viewModel.devices[row].coordinates[Int(self.maxSlider.value.rounded())].timestamp)
-                
-                //Calculate distance between two selected coordinates
-                self.distanceLabel.text = self.getDistanceBetweenLocation(startLocation, and: endLocation)
-                
-                //Draw selected range
-                self.drawing.drawDateRangePolylinesFor(self.viewModel.devices[row], mapView: self.mapView, between: startLocation, and: endLocation)
-                
-                
-                //Use converted timestamp to display in the appropriate label
-                self.minSliderLabel.text = startLocation.timestamp.formatDate()
-                self.maxSliderLabel.text = endLocation.timestamp.formatDate()
-            }
+            self.getValuefrom(slider, value)
         }).disposed(by: disposeBag)
         
         mockData.mockedDataWithTimer(for: self, and: tableView) //Timer for displaying mocked CLLocations over time using publishCoordSubject
         
     }
     
-    func getDistanceBetweenLocation(_ startLocation: CLLocation, and endLocation: CLLocation) -> String{
+    //Update sliders on new values and call range drawing method
+    fileprivate func getValuefrom(_ slider: String, _ value: Float) {
+        //Check if there is a row selected
+        if let row = self.tableView.indexPathForSelectedRow?.row {
+            //Check the passed in string from tuple passed in to determine which slider was moved
+            if slider == "startDate" {
+                self.minSlider.value = value
+            } else if slider == "endDate" {
+                self.maxSlider.value = value
+            }
+            
+            //Limit min and max values of sliders according to the values of passed in value object
+            self.minSlider.minimumValue = 0.0
+            self.maxSlider.maximumValue = Float(self.viewModel.devices[row].coordinates.count - 1)
+            self.maxSlider.minimumValue = self.minSlider.value
+            self.minSlider.maximumValue = self.maxSlider.value
+            
+            //Select the timestamp value from an array of coordinates, according to the index passed in as value of the passed in element
+            let startCoords = CLLocationCoordinate2D(latitude: self.viewModel.devices[row].coordinates[Int(self.minSlider.value.rounded())].latitude, longitude: self.viewModel.devices[row].coordinates[Int(self.minSlider.value.rounded())].longitude)
+            let endCoords = CLLocationCoordinate2D(latitude: self.viewModel.devices[row].coordinates[Int(self.maxSlider.value.rounded())].latitude, longitude: self.viewModel.devices[row].coordinates[Int(self.maxSlider.value.rounded())].longitude)
+            
+            let startLocation = CLLocation(coordinate: startCoords, altitude: 0, horizontalAccuracy: 0, verticalAccuracy: 0, course: 0, speed: 0, timestamp: self.viewModel.devices[row].coordinates[Int(self.minSlider.value.rounded())].timestamp)
+            let endLocation = CLLocation(coordinate: endCoords, altitude: 0, horizontalAccuracy: 0, verticalAccuracy: 0, course: 0, speed: 0, timestamp: self.viewModel.devices[row].coordinates[Int(self.maxSlider.value.rounded())].timestamp)
+            
+            //Calculate distance between two selected coordinates
+            self.distanceLabel.text = self.getDistanceBetweenLocation(startLocation, and: endLocation)
+            
+            //Draw selected range
+            self.drawing.drawDateRangePolylinesFor(self.viewModel.devices[row], mapView: self.mapView, between: startLocation, and: endLocation)
+            
+            //Use converted timestamp to display in the appropriate label
+            self.minSliderLabel.text = startLocation.timestamp.formatDate()
+            self.maxSliderLabel.text = endLocation.timestamp.formatDate()
+        }
+    }
+    
+    func getDistanceBetweenLocation(_ startLocation: CLLocation, and endLocation: CLLocation) -> String {
         let distance = startLocation.distance(from: endLocation)
         return distance.toKm
     }

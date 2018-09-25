@@ -11,6 +11,6 @@ import CoreLocation
 
 extension CLLocationDistance {
     var toKm: String {
-        return self > 1000 ? "--> \(self.rounded() / 1000) km <--" : "\(Int(self.rounded())) meters"
+        return self > 1000 ? "\(self.rounded() / 1000) km" : "\(Int(self.rounded())) meters"
     }
 }
