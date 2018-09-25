@@ -109,10 +109,10 @@ class ViewController: UIViewController {
                 }
                 
                 //Limit min and max values of sliders according to the values of passed in value object
+                self.minSlider.minimumValue = 0.0
                 self.maxSlider.maximumValue = Float(self.viewModel.devices[row].coordinates.count - 1)
                 self.maxSlider.minimumValue = self.minSlider.value
                 self.minSlider.maximumValue = self.maxSlider.value
-                
                 
                 //Select the timestamp value from an array of coordinates, according to the index passed in as value of the passed in element
                 let startCoords = CLLocationCoordinate2D(latitude: self.viewModel.devices[row].coordinates[Int(self.minSlider.value.rounded())].latitude, longitude: self.viewModel.devices[row].coordinates[Int(self.minSlider.value.rounded())].longitude)
@@ -237,7 +237,8 @@ class ViewController: UIViewController {
     //Setup slider position in the superview
      func setupSliders() {
         dateRangeStackView.frame = CGRect(x: 10, y: mapView.frame.maxY - 120, width: mapView.frame.size.width - 20, height: 100)
-        
+        minSlider.value = 0
+        maxSlider.value = 0
         mapView.bringSubviewToFront(dateRangeStackView)
         dateRangeStackView.isHidden = true
         navigationItem.rightBarButtonItems![1].title = "Select Range"

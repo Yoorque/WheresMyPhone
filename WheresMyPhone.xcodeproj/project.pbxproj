@@ -60,12 +60,12 @@
 		2698A62321591725007685A5 /* CLLocation+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocation+extension.swift"; sourceTree = "<group>"; };
 		26D9AA03213924590053F2DA /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		26D9AA06213924BC0053F2DA /* DeviceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceViewModel.swift; sourceTree = "<group>"; };
-		464153AFAC6ECD5FBC6D1C83 /* Pods-WheresMyPhone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WheresMyPhone.release.xcconfig"; path = "Pods/Target Support Files/Pods-WheresMyPhone/Pods-WheresMyPhone.release.xcconfig"; sourceTree = "<group>"; };
-		510E2B67D0E88B6DE6213999 /* Pods-WheresMyPhone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WheresMyPhone.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WheresMyPhone/Pods-WheresMyPhone.debug.xcconfig"; sourceTree = "<group>"; };
 		BA1D594D1EC9F824E6D40329 /* Pods_WheresMyPhone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WheresMyPhone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C614415807B7CB7B95A0F66C /* Pods-WheresMyPhoneTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WheresMyPhoneTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WheresMyPhoneTests/Pods-WheresMyPhoneTests.debug.xcconfig"; sourceTree = "<group>"; };
+		BED9EEED3052D88F4396A902 /* Pods-WheresMyPhone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WheresMyPhone.release.xcconfig"; path = "Pods/Target Support Files/Pods-WheresMyPhone/Pods-WheresMyPhone.release.xcconfig"; sourceTree = "<group>"; };
 		D1A9EDF733A168BA5209EDE4 /* Pods_WheresMyPhoneTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WheresMyPhoneTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DB43F6E547122FC662711DAA /* Pods-WheresMyPhoneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WheresMyPhoneTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-WheresMyPhoneTests/Pods-WheresMyPhoneTests.release.xcconfig"; sourceTree = "<group>"; };
+		DA883AA54F1982C37DE21DAE /* Pods-WheresMyPhoneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WheresMyPhoneTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-WheresMyPhoneTests/Pods-WheresMyPhoneTests.release.xcconfig"; sourceTree = "<group>"; };
+		E50B56EE29E3ADBC9BBEA3D6 /* Pods-WheresMyPhone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WheresMyPhone.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WheresMyPhone/Pods-WheresMyPhone.debug.xcconfig"; sourceTree = "<group>"; };
+		F63B7259916A12CD3C80BA9D /* Pods-WheresMyPhoneTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WheresMyPhoneTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WheresMyPhoneTests/Pods-WheresMyPhoneTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,8 +106,8 @@
 				2622265721382DF2000CB875 /* WheresMyPhone */,
 				2622266F21382DF3000CB875 /* WheresMyPhoneTests */,
 				2622265621382DF2000CB875 /* Products */,
-				ECEAC97E40E4774773FC7220 /* Pods */,
 				3054C39969880111D376D1B4 /* Frameworks */,
+				F982ADCBD43DCDB02F82691B /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -214,13 +214,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		ECEAC97E40E4774773FC7220 /* Pods */ = {
+		F982ADCBD43DCDB02F82691B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				510E2B67D0E88B6DE6213999 /* Pods-WheresMyPhone.debug.xcconfig */,
-				464153AFAC6ECD5FBC6D1C83 /* Pods-WheresMyPhone.release.xcconfig */,
-				C614415807B7CB7B95A0F66C /* Pods-WheresMyPhoneTests.debug.xcconfig */,
-				DB43F6E547122FC662711DAA /* Pods-WheresMyPhoneTests.release.xcconfig */,
+				E50B56EE29E3ADBC9BBEA3D6 /* Pods-WheresMyPhone.debug.xcconfig */,
+				BED9EEED3052D88F4396A902 /* Pods-WheresMyPhone.release.xcconfig */,
+				F63B7259916A12CD3C80BA9D /* Pods-WheresMyPhoneTests.debug.xcconfig */,
+				DA883AA54F1982C37DE21DAE /* Pods-WheresMyPhoneTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -584,7 +584,7 @@
 		};
 		2622267621382DF3000CB875 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 510E2B67D0E88B6DE6213999 /* Pods-WheresMyPhone.debug.xcconfig */;
+			baseConfigurationReference = E50B56EE29E3ADBC9BBEA3D6 /* Pods-WheresMyPhone.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -603,7 +603,7 @@
 		};
 		2622267721382DF3000CB875 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 464153AFAC6ECD5FBC6D1C83 /* Pods-WheresMyPhone.release.xcconfig */;
+			baseConfigurationReference = BED9EEED3052D88F4396A902 /* Pods-WheresMyPhone.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -622,7 +622,7 @@
 		};
 		2622267921382DF3000CB875 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C614415807B7CB7B95A0F66C /* Pods-WheresMyPhoneTests.debug.xcconfig */;
+			baseConfigurationReference = F63B7259916A12CD3C80BA9D /* Pods-WheresMyPhoneTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -644,7 +644,7 @@
 		};
 		2622267A21382DF3000CB875 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DB43F6E547122FC662711DAA /* Pods-WheresMyPhoneTests.release.xcconfig */;
+			baseConfigurationReference = DA883AA54F1982C37DE21DAE /* Pods-WheresMyPhoneTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";

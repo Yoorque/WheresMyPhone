@@ -41,7 +41,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         
         CATransaction.setAnimationDuration(0.5)
         CATransaction.begin()
-        mapView.animate(toZoom: 7)
+        mapView.animate(toZoom: 10)
         mapView.animate(toLocation: CLLocationCoordinate2D(latitude: selectedDevice.coordinates.last!.latitude, longitude: selectedDevice.coordinates.last!.longitude))
         CATransaction.commit()
         previouslySelected = indexPath

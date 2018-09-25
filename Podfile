@@ -7,8 +7,8 @@ target 'WheresMyPhone' do
 
   # Pods for WheresMyPhone
 pod 'GoogleMaps'
-pod 'RxSwift', '~> 4.0'
-pod 'RxCocoa', '~> 4.0'
+pod 'RxSwift'
+pod 'RxCocoa'
   target 'WheresMyPhoneTests' do
     inherit! :search_paths
     # Pods for testing
