@@ -20,13 +20,14 @@ class MockData {
     let mockDevice4 = Device(name: "Fourth", uuid: UIDevice.current.identifierForVendor!, coordinates: [
         Coordinates(latitude: 40.0, longitude: 40.0, timestamp: Date(), accuracy: 3)])
     
-
     let viewModel: DeviceViewModel
     let devices: [Device]
+    
     init() {
          devices = [mockDevice, mockDevice2, mockDevice3, mockDevice4]
          viewModel = DeviceViewModel(devices: devices)
     }
+    
     //Mock movement of the devices on the screen by adding random coordinates
     func mockedDataWithTimer(for viewController: ViewController, and tableView: UITableView) {
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
@@ -41,11 +42,10 @@ class MockData {
             let randomNumber = Double(arc4random_uniform(8) + 1)
             let randomNumber1 = Double(arc4random_uniform(8) + 1)
             
+            //Create CLLocation object to be sent
+            let cll = CLLocation(coordinate: CLLocationCoordinate2D(latitude: CLLocationDegrees(lat + randomNumber / 1000), longitude: CLLocationDegrees(lon + randomNumber1 / 1000)), altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, course: 0, speed: CLLocationSpeed(randomNumber), timestamp: viewController.viewModel.devices[row].coordinates.last!.timestamp + 7 * randomNumber)
             
-            //create CLLocation object to be sent
-            let cll = CLLocation(coordinate: CLLocationCoordinate2D(latitude: CLLocationDegrees(lat + randomNumber / 10), longitude: CLLocationDegrees(lon + randomNumber1 / 10)), altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, course: 0, speed: CLLocationSpeed(randomNumber), timestamp: viewController.viewModel.devices[row].coordinates.last!.timestamp + 700 * randomNumber)
-            
-            //advertise onNext event with newly created CLLocation object
+            //Advertise onNext event with newly created CLLocation object
             viewController.publishCoordSubject.onNext(cll)
         }
     }

@@ -65,20 +65,20 @@ class ViewController: UIViewController {
         }
     }
     
-    //MARK: - life cycle -
+    //MARK: - Life cycle -
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        locationManagerSetup() //setup locationManager
-        mapSetup() //setup settings for mapView
-        setupNavigationBar() //setup navigationBar buttons
-        setupSliders() //setup slider views
+        locationManagerSetup() //Setup locationManager
+        mapSetup() //Setup settings for mapView
+        setupNavigationBar() //Setup navigationBar buttons
+        setupSliders() //Setup slider views
         
-        //subscribing to onNext events for count property of viewModel.devices array and
-        //modifying UI according to the result
+        //Subscribing to onNext events for count property of viewModel.devices array and
+        //Modifying UI according to the result
         publishDeviceCountSubject.subscribe(onNext: { count in
             
-            if count == 0 { //if viewModel.devices.count is 0, tableView is hidden and mapView spans over the entire screen
+            if count == 0 { //If viewModel.devices.count is 0, tableView is hidden and mapView spans over the entire screen
                 self.removeTableView()
                 
             } else { //else, tableView is showing with the list of devices and mapView takes up it's position above tableView
@@ -101,32 +101,34 @@ class ViewController: UIViewController {
         publishDateSliderSubject.subscribe(onNext: { (value, slider) in
             //Check if there is a row selected
             if let row = self.tableView.indexPathForSelectedRow?.row {
-                //limit min and max values of sliders according to the values of passed in value object
+                //Check the passed in string from tuple passed in to determine which slider was moved
+                if slider == "startDate" {
+                    self.minSlider.value = value
+                } else if slider == "endDate" {
+                    self.maxSlider.value = value
+                }
+                
+                //Limit min and max values of sliders according to the values of passed in value object
                 self.maxSlider.maximumValue = Float(self.viewModel.devices[row].coordinates.count - 1)
                 self.maxSlider.minimumValue = self.minSlider.value
                 self.minSlider.maximumValue = self.maxSlider.value
-                //check the passed in string from tuple passed in to determine which slider was moved
-                if slider == "startDate" {
-                    self.maxSlider.minimumValue = value
-                } else if slider == "endDate" {
-                    self.minSlider.maximumValue = value
-                }
                 
-                //selct the timestamp value from an array of coordinates, according to the index passed in as value of the passed in element
+                
+                //Select the timestamp value from an array of coordinates, according to the index passed in as value of the passed in element
                 let startCoords = CLLocationCoordinate2D(latitude: self.viewModel.devices[row].coordinates[Int(self.minSlider.value.rounded())].latitude, longitude: self.viewModel.devices[row].coordinates[Int(self.minSlider.value.rounded())].longitude)
-                let endCoords = CLLocationCoordinate2D(latitude: self.viewModel.devices[row].coordinates[Int(self.maxSlider.value)].latitude, longitude: self.viewModel.devices[row].coordinates[Int(self.maxSlider.value)].longitude)
+                let endCoords = CLLocationCoordinate2D(latitude: self.viewModel.devices[row].coordinates[Int(self.maxSlider.value.rounded())].latitude, longitude: self.viewModel.devices[row].coordinates[Int(self.maxSlider.value.rounded())].longitude)
                 
                 let startLocation = CLLocation(coordinate: startCoords, altitude: 0, horizontalAccuracy: 0, verticalAccuracy: 0, course: 0, speed: 0, timestamp: self.viewModel.devices[row].coordinates[Int(self.minSlider.value.rounded())].timestamp)
                 let endLocation = CLLocation(coordinate: endCoords, altitude: 0, horizontalAccuracy: 0, verticalAccuracy: 0, course: 0, speed: 0, timestamp: self.viewModel.devices[row].coordinates[Int(self.maxSlider.value.rounded())].timestamp)
                 
-                //calculate distance between two selected coordinates
+                //Calculate distance between two selected coordinates
                 self.distanceLabel.text = self.getDistanceBetweenLocation(startLocation, and: endLocation)
                 
-                //draw selected range
+                //Draw selected range
                 self.drawing.drawDateRangePolylinesFor(self.viewModel.devices[row], mapView: self.mapView, between: startLocation, and: endLocation)
                 
                 
-                //use converted timestamp to display in the appropriate label
+                //Use converted timestamp to display in the appropriate label
                 self.minSliderLabel.text = startLocation.timestamp.formatDate()
                 self.maxSliderLabel.text = endLocation.timestamp.formatDate()
             }
@@ -141,14 +143,14 @@ class ViewController: UIViewController {
         return distance.toKm
     }
 
-    //publish onNext event as a tuple of current slider value and a hardcoded string to be able to recognize which slider fired the event
+    //Publish onNext event as a tuple of current slider value and a hardcoded string to be able to recognize which slider fired the event
     @objc func didChangeStartDate(_ sender: Any) { //detects changes in minSlider
         if let slider = sender as? UISlider {
             publishDateSliderSubject.onNext((slider.value, "startDate"))
         }
     }
     
-    @objc func didChangeEndDate(_ sender: Any) { //detects changes in maxSlider
+    @objc func didChangeEndDate(_ sender: Any) { //Detects changes in maxSlider
         if let slider = sender as? UISlider {
             publishDateSliderSubject.onNext((slider.value, "endDate"))
         }
@@ -183,9 +185,9 @@ class ViewController: UIViewController {
     }
     
     fileprivate func setupNavigationBar() {
-        view.backgroundColor = UIColor.lightText //set view background color
+        view.backgroundColor = UIColor.lightText //Set view background color
         
-        //add left and right navigationBar buttons for removing and adding new Devices
+        //Add left and right navigationBar buttons for removing and adding new Devices
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Disconnect", style: .done, target: self, action: #selector(disconnectDevice))
         let connectButton = UIBarButtonItem(title: "Connect", style: .done, target: self, action: #selector(connectDevice))
         let dateButton = UIBarButtonItem(title: "Select Range", style: .done, target: self, action: #selector(dateRangeNavButton))
@@ -195,13 +197,13 @@ class ViewController: UIViewController {
     
     fileprivate func locationManagerSetup() {
         locationManager.delegate = self
-        locationManager.showsBackgroundLocationIndicator = true //enables background tracking and indicator
-        locationManager.allowsBackgroundLocationUpdates = true //enables background tracking and indicator
-        locationManager.requestAlwaysAuthorization() //request authorisation from the user on initial app run
-        locationManager.requestWhenInUseAuthorization() //request authorisation from the user on initial app run
+        locationManager.showsBackgroundLocationIndicator = true //Enables background tracking and indicator
+        locationManager.allowsBackgroundLocationUpdates = true //Enables background tracking and indicator
+        locationManager.requestAlwaysAuthorization() //Request authorisation from the user on initial app run
+        locationManager.requestWhenInUseAuthorization() //Request authorisation from the user on initial app run
         locationManager.startUpdatingLocation()
         
-        //center map on current user location if location available
+        //Center map on current user location if location available
         if let currentLocation = locationManager.location {
             let camera = GMSCameraPosition.camera(withTarget: CLLocationCoordinate2D(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude), zoom: 10)
             mapView.camera = camera
@@ -232,7 +234,7 @@ class ViewController: UIViewController {
         }
     }
     
-    //setup slider position in the superview
+    //Setup slider position in the superview
      func setupSliders() {
         dateRangeStackView.frame = CGRect(x: 10, y: mapView.frame.maxY - 120, width: mapView.frame.size.width - 20, height: 100)
         
@@ -242,16 +244,16 @@ class ViewController: UIViewController {
     }
     
     fileprivate func mapSetup() {
-        mapView.delegate = self //assign mapView delegate to 'self'
-        mapView.settings.compassButton = true //displays compas on the map when map heading is changed
-        mapView.settings.myLocationButton = true //displays round myLocation button
-        mapView.isMyLocationEnabled = true //enables user location
+        mapView.delegate = self //Assign mapView delegate to 'self'
+        mapView.settings.compassButton = true //Displays compas on the map when map heading is changed
+        mapView.settings.myLocationButton = true //Displays round myLocation button
+        mapView.isMyLocationEnabled = true //Enables user location
     }
     
     @objc func connectDevice() {        
-        for device in mockData.devices { //add mock devices from devices array
+        for device in mockData.devices { //Add mock devices from devices array
             if viewModel.addDevice(device) == true {
-                publishDeviceCountSubject.onNext(viewModel.devices.count) //advertises onNext event once the 'viewModel.devices.count' changes
+                publishDeviceCountSubject.onNext(viewModel.devices.count) //Advertises onNext event once the 'viewModel.devices.count' changes
                 tableView.reloadData()
             }
         }
@@ -259,15 +261,15 @@ class ViewController: UIViewController {
     
     //Remove Device from the array of devices
     @objc func disconnectDevice() {
-        guard viewModel.devices.count != 0 else {return} //check the count of devices, if 0, return
-        //viewModel.removeLastDevice() // remove last device from devices array
-        guard let row = tableView.indexPathForSelectedRow?.row else {return} //if device row is selected, extract the row Int
+        guard viewModel.devices.count != 0 else {return} //Check the count of devices, if 0, return
+        //viewModel.removeLastDevice() // Remove last device from devices array
+        guard let row = tableView.indexPathForSelectedRow?.row else {return} //If device row is selected, extract the row Int
         drawing.removePolylinesFor(viewModel.devices[row].name)
         drawing.clearRangePolylines()
         setupSliders()
-        viewModel.removeDevice(named: viewModel.devices[row].name) //remove specific Device.
-        publishDeviceCountSubject.onNext(viewModel.devices.count) //advertise onNext event once the 'viewModel.devices.count' changes
-        tableView.reloadData() //reload tableView
+        viewModel.removeDevice(named: viewModel.devices[row].name) //Remove specific Device.
+        publishDeviceCountSubject.onNext(viewModel.devices.count) //Advertise onNext event once the 'viewModel.devices.count' changes
+        tableView.reloadData() //Reload tableView
     }
 }
 //MARK: Extensions in Extensions folder

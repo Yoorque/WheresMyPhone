@@ -11,13 +11,13 @@ import CoreLocation
 import GoogleMaps
 
 struct Device: Comparable, CommunicationProtocol {
-    //MARK: - properties -
+    //MARK: - Properties -
     let name: String
     var uuid: String
     var coordinates: [CoordinateProtocol]
     let image: UIImage
     
-    //MARK: - init -
+    //MARK: - Init -
     init(name: String, uuid: UUID, coordinates: [CoordinateProtocol]) {
         self.name = name
         self.uuid = UIDevice.current.identifierForVendor!.uuidString
@@ -31,7 +31,7 @@ struct Device: Comparable, CommunicationProtocol {
     }
     
     
-    //satisfying Comparable protocol
+    //Satisfying Comparable protocol
     static func == (lhs: Device, rhs: Device) -> Bool {
         return lhs.name == rhs.name
     }

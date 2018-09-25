@@ -14,10 +14,10 @@ import GoogleMaps
 
 class DeviceViewModel {
     
-    //MARK: - properties -
+    //MARK: - Properties -
     var devices: [Device]
 
-    //MARK: - init -
+    //MARK: - Init -
     init(devices: [Device]) {
         self.devices = devices
     }
@@ -37,20 +37,20 @@ class DeviceViewModel {
     
     //Remove device methods
     func removeLastDevice() {
-        if !devices.isEmpty { // check is the array is empty
+        if !devices.isEmpty { //Check is the array is empty
             print("Removed \(devices.last!.name)")
-            devices.removeLast() // remove last item in the array
+            devices.removeLast() //Remove last item in the array
         }
     }
     
      func removeDevice(named name: String) {
-        for (index, device) in devices.enumerated() { // enumerate devices array to get the index of each element
-            if !devices.isEmpty { // check if the array is empty
-                if device.name == name { // compare device.name with passed in name
+        for (index, device) in devices.enumerated() { //Enumerate devices array to get the index of each element
+            if !devices.isEmpty { //Check if the array is empty
+                if device.name == name { //Compare device.name with passed in name
                     print("Removing \(device.name)")
                     //devices[index].coordinates = []
                     
-                    devices.remove(at: index) // remove element with matching name if it exists in the array
+                    devices.remove(at: index) //Remove element with matching name if it exists in the array
                 }
             }
         }
