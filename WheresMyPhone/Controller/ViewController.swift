@@ -15,13 +15,13 @@ class ViewController: UIViewController {
     
     //MARK: - properties -
     var viewModel = DeviceViewModel(devices: [])
-    let publishDeviceCountSubject = PublishSubject<Int>() // reactive component for tracking viewModel.devices.count values
-    let publishCoordSubject = PublishSubject<CLLocation>()
-    let publishDateSliderSubject = PublishSubject<(Float,String)>()
+    let publishDeviceCountSubject = PublishSubject<Int>() //Reactive component for tracking viewModel.devices.count values
+    let publishCoordSubject = PublishSubject<CLLocation>() //Publishing new coordinate data
+    let publishDateSliderSubject = PublishSubject<(Float,String)>() //Publishing slider values
     let disposeBag = DisposeBag() //disposeBag for Disposables
     let drawing = Drawing() //used for drawing polylines
     let locationManager = CLLocationManager()
-    var previouslySelected = IndexPath()
+    var previouslySelected = IndexPath() //Keeps track if pressed row in tableView is already selected
     var mockData = MockData()
     
     @IBOutlet weak var mapView: GMSMapView!
@@ -65,6 +65,7 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
     //MARK: - Life cycle -
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -164,8 +165,9 @@ class ViewController: UIViewController {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 1, animations: {
                 self.tableView.alpha = 0
-                self.mapView.frame.size.height = self.view.frame.size.height
-                self.tableView.frame.origin.y = self.view.frame.maxY
+                self.tableViewHeight.constant = 0
+//                self.mapView.frame.size.height = self.view.frame.size.height
+//                self.tableView.frame.origin.y = self.view.frame.maxY
             })
         }
     }
@@ -175,11 +177,9 @@ class ViewController: UIViewController {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 1, animations: {
                 self.tableView.alpha = 1
-                let result = self.mapView.frame.intersection(self.tableView.frame)
-                let resultView = UIView(frame: result)
-                resultView.backgroundColor = .red
-                self.mapView.frame.size.height = self.view.frame.size.height - self.tableView.frame.size.height
-                self.tableView.frame.origin.y = self.view.frame.size.height - self.tableView.frame.size.height
+                self.tableViewHeight.constant = CGFloat(self.viewModel.devices.count * 44)
+//                self.mapView.frame.size.height = self.view.frame.size.height - self.tableView.frame.size.height
+//                self.tableView.frame.origin.y = self.view.frame.size.height - self.tableView.frame.size.height
             })
         }
     }
@@ -227,7 +227,7 @@ class ViewController: UIViewController {
                 drawing.clearRangePolylines()
             }
         } else {
-            let alert = UIAlertController(title: "Date Selection", message: "Please select the device and try again", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Date Selection", message: "Please select a device and try again", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
             alert.addAction(okAction)
             self.present(alert, animated: true, completion: nil)
@@ -251,12 +251,13 @@ class ViewController: UIViewController {
         mapView.isMyLocationEnabled = true //Enables user location
     }
     
-    @objc func connectDevice() {        
+    @objc func connectDevice() {
+        //New discovered devices will be connected and added to viewModel devices array, instead of MockDevices
         for device in mockData.devices { //Add mock devices from devices array
-            if viewModel.addDevice(device) == true {
+             viewModel.addDevice(device)
+            
                 publishDeviceCountSubject.onNext(viewModel.devices.count) //Advertises onNext event once the 'viewModel.devices.count' changes
                 tableView.reloadData()
-            }
         }
     }
     
@@ -274,6 +275,3 @@ class ViewController: UIViewController {
     }
 }
 //MARK: Extensions in Extensions folder
-
-
-

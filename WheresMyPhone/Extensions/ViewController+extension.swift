@@ -26,9 +26,10 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         let device = viewModel.devices[indexPath.row]
         cell.textLabel?.text = device.name
         cell.detailTextLabel?.text = device.uuid
-        
+        tableView.frame.size.height = CGFloat(viewModel.devices.count) * cell.contentView.frame.size.height
         return cell
     }
+    
     
     //Delegate
     
@@ -46,6 +47,10 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         CATransaction.commit()
         previouslySelected = indexPath
         setupSliders()
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 44
     }
 }
 
