@@ -26,14 +26,19 @@ class Drawing {
     }
     
     func drawPolylinesOn(_ mapView: GMSMapView, forDevice device: Device) {
-        
-        phoneMarker.position = CLLocationCoordinate2D(latitude: device.coordinates.last!.latitude, longitude: device.coordinates.last!.longitude)
-
         let path = GMSMutablePath()
         var speed: Double = 0.0
         var startLocation: CLLocation!
         var endLocation: CLLocation!
         var counter = 0 //Used to diferentiate between start and end locations
+        
+        phoneMarker.position = CLLocationCoordinate2D(latitude: device.coordinates.last!.latitude, longitude: device.coordinates.last!.longitude)
+        phoneMarker.groundAnchor = CGPoint(x: 0.5, y: 0.5) //Lower the default position of the marker in relation to 'blue dot' representing current device location, so that the marker covers the dot.
+        phoneMarker.icon = device.image
+        phoneMarker.title = device.name
+        phoneMarker.map = mapView
+        phoneMarker.tracksInfoWindowChanges = true //Monitors changes in infoWindow and updates it once new data arrives
+        
         
         //Create new path for every 2 (two) last coordinates in order to observe the speed and color the segment accordingly
         device.coordinates.suffix(2).forEach {
@@ -53,6 +58,7 @@ class Drawing {
         let distance = endLocation.distance(from: startLocation) //Calculate distance between 2 locations in meters
         let timeInterval = endLocation.timestamp.timeIntervalSince(startLocation.timestamp) //Calculates time difference between to timestamps in seconds
         speed = distance / timeInterval //Calculates speed in m/s
+        phoneMarker.snippet = speed.toStringOfkmPerHour() //Convert speed in m/s to return km/h as a String
         
         //Create polylines from GMSPath consisting of last two coordinates of device locations
         let polyline = GMSPolyline(path: path)
@@ -61,13 +67,6 @@ class Drawing {
         polyline.geodesic = true
         polyline.strokeColor = speedColors(forSpeed: speed) //Color polyline segment, depending on the speed
         polyline.map = mapView
-        
-        phoneMarker.groundAnchor = CGPoint(x: 0.5, y: 0.5) //Lower the default position of the marker in relation to 'blue dot' representing current device location, so that the marker covers the dot.
-        phoneMarker.icon = device.image
-        phoneMarker.title = device.name
-        phoneMarker.snippet = speed.toStringOfkmPerHour() //Convert speed in m/s to return km/h as a String
-        phoneMarker.map = mapView
-        phoneMarker.tracksInfoWindowChanges = true //Monitors changes in infoWindow and updates it once new data arrives
         
         polylines.append(polyline) //Append created polyline segment to polyline array for storage, so it can be cleared by device.name property
         polylines.append(phoneMarker) //Append created marker segment to polyline array for storage, so it can be cleared by device.name property

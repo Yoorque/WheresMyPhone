@@ -18,15 +18,15 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.devices.count
+        return viewModel.devices.value.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let device = viewModel.devices[indexPath.row]
+        let device = viewModel.devices.value[indexPath.row]
         cell.textLabel?.text = device.name
         cell.detailTextLabel?.text = device.uuid
-        tableView.frame.size.height = CGFloat(viewModel.devices.count) * cell.contentView.frame.size.height
+        tableView.frame.size.height = CGFloat(viewModel.devices.value.count) * cell.contentView.frame.size.height
         return cell
     }
     
@@ -38,7 +38,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         if previouslySelected != indexPath {
             mapView.clear()
         }
-        let selectedDevice = viewModel.devices[indexPath.row]
+        let selectedDevice = viewModel.devices.value[indexPath.row]
         
         CATransaction.setAnimationDuration(0.5)
         CATransaction.begin()

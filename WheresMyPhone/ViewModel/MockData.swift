@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import RxSwift
 
 class MockData {
     
@@ -25,25 +26,25 @@ class MockData {
     
     init() {
          devices = [mockDevice, mockDevice2, mockDevice3, mockDevice4]
-         viewModel = DeviceViewModel(devices: devices)
+         viewModel = DeviceViewModel(devices: Variable(devices))
     }
     
     //Mock movement of the devices on the screen by adding random coordinates
     func mockedDataWithTimer(for viewController: ViewController, and tableView: UITableView) {
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             guard let row = tableView.indexPathForSelectedRow?.row else {return}
-            guard viewController.viewModel.devices.count != 0 else {return}
+            guard viewController.viewModel.devices.value.count != 0 else {return}
             
-            let lat = viewController.viewModel.devices[row].coordinates.last!.latitude
-            let lon = viewController.viewModel.devices[row].coordinates.last!.longitude
-            let accuracy = viewController.viewModel.devices[row].coordinates.last!.accuracy
+            let lat = viewController.viewModel.devices.value[row].coordinates.last!.latitude
+            let lon = viewController.viewModel.devices.value[row].coordinates.last!.longitude
+            let accuracy = viewController.viewModel.devices.value[row].coordinates.last!.accuracy
             
             //Produce new random coordinates every 'timeInterval' seconds
             let randomNumber = Double(arc4random_uniform(8) + 1)
             let randomNumber1 = Double(arc4random_uniform(8) + 1)
             
             //Create CLLocation object to be sent
-            let cll = CLLocation(coordinate: CLLocationCoordinate2D(latitude: CLLocationDegrees(lat + randomNumber / 1000), longitude: CLLocationDegrees(lon + randomNumber1 / 1000)), altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, course: 0, speed: CLLocationSpeed(randomNumber), timestamp: viewController.viewModel.devices[row].coordinates.last!.timestamp + 7 * randomNumber)
+            let cll = CLLocation(coordinate: CLLocationCoordinate2D(latitude: CLLocationDegrees(lat + randomNumber / 1000), longitude: CLLocationDegrees(lon + randomNumber1 / 1000)), altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, course: 0, speed: CLLocationSpeed(randomNumber), timestamp: viewController.viewModel.devices.value[row].coordinates.last!.timestamp + 7 * randomNumber)
             
             //Advertise onNext event with newly created CLLocation object
             viewController.publishCoordSubject.onNext(cll)

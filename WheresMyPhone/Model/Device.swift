@@ -9,8 +9,11 @@
 import UIKit
 import CoreLocation
 import GoogleMaps
+import RxSwift
+import RxCocoa
 
 struct Device: Comparable, CommunicationProtocol {
+    
     //MARK: - Properties -
     let name: String
     var uuid: String

@@ -9,23 +9,27 @@
 import UIKit
 import GoogleMaps
 import RxSwift
+import RxCocoa
 
 //MARK: - Mocked data -
 class ViewController: UIViewController {
     
     //MARK: - properties -
-    var viewModel = DeviceViewModel(devices: [])
-    let publishDeviceCountSubject = PublishSubject<Int>() //Reactive component for tracking viewModel.devices.count values
+    var viewModel = DeviceViewModel(devices: Variable([]))
     let publishCoordSubject = PublishSubject<CLLocation>() //Publishing new coordinate data
-    let publishDateSliderSubject = PublishSubject<(Float,String)>() //Publishing slider values
     let disposeBag = DisposeBag() //disposeBag for Disposables
     let drawing = Drawing() //used for drawing polylines
     let locationManager = CLLocationManager()
     var previouslySelected = IndexPath() //Keeps track if pressed row in tableView is already selected
     var mockData = MockData()
+    var binder = Variable<[Int]>([])
     
     @IBOutlet weak var mapView: GMSMapView!
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tableView: UITableView! {
+        didSet {
+            tableView.estimatedRowHeight = 44
+        }
+    }
     @IBOutlet weak var dateRangeStackView: UIStackView!
     
     @IBOutlet weak var minSliderLabel: UILabel! {
@@ -47,14 +51,12 @@ class ViewController: UIViewController {
             minSlider.minimumTrackTintColor = .red
             minSlider.maximumTrackTintColor = .green
             minSlider.minimumValue = 0.0
-            minSlider.addTarget(self, action: #selector(didChangeStartDate), for: .valueChanged)
         }
     }
     @IBOutlet weak var maxSlider: UISlider! {
         didSet {
             maxSlider.minimumTrackTintColor = .green
             maxSlider.maximumTrackTintColor = .red
-            maxSlider.addTarget(self, action: #selector(didChangeEndDate), for: .valueChanged)
         }
     }
     @IBOutlet weak var distanceLabel: UILabel! {
@@ -66,6 +68,7 @@ class ViewController: UIViewController {
     }
     
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
+    
     //MARK: - Life cycle -
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,90 +78,71 @@ class ViewController: UIViewController {
         setupNavigationBar() //Setup navigationBar buttons
         setupSliders() //Setup slider views
         
-        //Subscribing to onNext events for count property of viewModel.devices array and
-        //Modifying UI according to the result
-        publishDeviceCountSubject.subscribe(onNext: { count in
-            //If viewModel.devices.count is 0, tableView is hidden and mapView spans over the entire screen
-            //else, tableView is showing with the list of devices and mapView takes up it's position above tableView
-            count == 0 ? self.removeTableView() : self.displayTableView()
+        //Subscribing to events for count property change of viewModel.devices array and
+        //modifying UI according to the result
+        viewModel.devices.asObservable().subscribe(onNext: { (devices) in
+            devices.count == 0 ? self.removeTableView() : self.displayTableView()
         }).disposed(by: disposeBag)
         
-        publishDeviceCountSubject.onNext(viewModel.devices.count) //Initially checks count property of viewModel.devices array
+        //Combine values from both sliders and update range lines
+        Observable.combineLatest(minSlider.rx.value, maxSlider.rx.value) {[weak self] (min, max) in
+            self?.updateRangeLines(with: min, and: max)
+            }.subscribe().disposed(by: disposeBag)
         
-        publishCoordSubject.subscribe(onNext: { location in //Subscribe to onNext events
-            guard self.viewModel.devices.count != 0 else {return}
+        //Subscribe to onNext events for new locations
+        publishCoordSubject.subscribe(onNext: { location in
+            guard self.viewModel.devices.value.count != 0 else {return}
             guard let row = self.tableView.indexPathForSelectedRow?.row else {return}
             
             let passedInLocation = Coordinates(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, timestamp: location.timestamp, accuracy: location.horizontalAccuracy)
             
-            self.viewModel.devices[row].coordinates.append(passedInLocation)
-            self.drawing.drawPolylinesOn(self.mapView, forDevice: self.viewModel.devices[row])
-        }).disposed(by: disposeBag)
-        
-        publishDateSliderSubject.subscribe(onNext: { (value, slider) in
-            self.getValuefrom(slider, value)
+            self.viewModel.devices.value[row].coordinates.append(passedInLocation)
+            self.drawing.drawPolylinesOn(self.mapView, forDevice: self.viewModel.devices.value[row])
         }).disposed(by: disposeBag)
         
         mockData.mockedDataWithTimer(for: self, and: tableView) //Timer for displaying mocked CLLocations over time using publishCoordSubject
         
     }
     
-    //Update sliders on new values and call range drawing method
-    fileprivate func getValuefrom(_ slider: String, _ value: Float) {
+    func updateRangeLines(with start: Float, and end: Float) {
         //Check if there is a row selected
         if let row = self.tableView.indexPathForSelectedRow?.row {
-            //Check the passed in string from tuple passed in to determine which slider was moved
-            if slider == "startDate" {
-                self.minSlider.value = value
-            } else if slider == "endDate" {
-                self.maxSlider.value = value
-            }
+    
+            self.minSlider.value = start
+            self.maxSlider.value = end
             
             //Limit min and max values of sliders according to the values of passed in value object
             self.minSlider.minimumValue = 0.0
-            self.maxSlider.maximumValue = Float(self.viewModel.devices[row].coordinates.count - 1)
+            self.maxSlider.maximumValue = Float(self.viewModel.devices.value[row].coordinates.count - 1)
             self.maxSlider.minimumValue = self.minSlider.value
             self.minSlider.maximumValue = self.maxSlider.value
             
             //Select the timestamp value from an array of coordinates, according to the index passed in as value of the passed in element
-            let startCoords = CLLocationCoordinate2D(latitude: self.viewModel.devices[row].coordinates[Int(self.minSlider.value.rounded())].latitude, longitude: self.viewModel.devices[row].coordinates[Int(self.minSlider.value.rounded())].longitude)
-            let endCoords = CLLocationCoordinate2D(latitude: self.viewModel.devices[row].coordinates[Int(self.maxSlider.value.rounded())].latitude, longitude: self.viewModel.devices[row].coordinates[Int(self.maxSlider.value.rounded())].longitude)
+            let startCoords = CLLocationCoordinate2D(latitude: self.viewModel.devices.value[row].coordinates[Int(start.rounded())].latitude, longitude: self.viewModel.devices.value[row].coordinates[Int(start.rounded())].longitude)
+            let endCoords = CLLocationCoordinate2D(latitude: self.viewModel.devices.value[row].coordinates[Int(end.rounded())].latitude, longitude: self.viewModel.devices.value[row].coordinates[Int(end.rounded())].longitude)
             
-            let startLocation = CLLocation(coordinate: startCoords, altitude: 0, horizontalAccuracy: 0, verticalAccuracy: 0, course: 0, speed: 0, timestamp: self.viewModel.devices[row].coordinates[Int(self.minSlider.value.rounded())].timestamp)
-            let endLocation = CLLocation(coordinate: endCoords, altitude: 0, horizontalAccuracy: 0, verticalAccuracy: 0, course: 0, speed: 0, timestamp: self.viewModel.devices[row].coordinates[Int(self.maxSlider.value.rounded())].timestamp)
+            let startLocation = CLLocation(coordinate: startCoords, altitude: 0, horizontalAccuracy: 0, verticalAccuracy: 0, course: 0, speed: 0, timestamp: self.viewModel.devices.value[row].coordinates[Int(self.minSlider.value.rounded())].timestamp)
+            let endLocation = CLLocation(coordinate: endCoords, altitude: 0, horizontalAccuracy: 0, verticalAccuracy: 0, course: 0, speed: 0, timestamp: self.viewModel.devices.value[row].coordinates[Int(self.maxSlider.value.rounded())].timestamp)
             
             //Calculate distance between two selected coordinates
             self.distanceLabel.text = self.getDistanceBetweenLocation(startLocation, and: endLocation)
             
             //Draw selected range
-            self.drawing.drawDateRangePolylinesFor(self.viewModel.devices[row], mapView: self.mapView, between: startLocation, and: endLocation)
+            self.drawing.drawDateRangePolylinesFor(self.viewModel.devices.value[row], mapView: self.mapView, between: startLocation, and: endLocation)
             
             //Use converted timestamp to display in the appropriate label
             self.minSliderLabel.text = startLocation.timestamp.formatDate()
             self.maxSliderLabel.text = endLocation.timestamp.formatDate()
         }
+
     }
     
     func getDistanceBetweenLocation(_ startLocation: CLLocation, and endLocation: CLLocation) -> String {
         let distance = startLocation.distance(from: endLocation)
         return distance.toKm
     }
-
-    //Publish onNext event as a tuple of current slider value and a hardcoded string to be able to recognize which slider fired the event
-    @objc func didChangeStartDate(_ sender: Any) { //detects changes in minSlider
-        if let slider = sender as? UISlider {
-            publishDateSliderSubject.onNext((slider.value, "startDate"))
-        }
-    }
-    
-    @objc func didChangeEndDate(_ sender: Any) { //Detects changes in maxSlider
-        if let slider = sender as? UISlider {
-            publishDateSliderSubject.onNext((slider.value, "endDate"))
-        }
-    }
     
     //MARK: - Helper methods -
-    
     //Hides the tableView with slide-down animation and alpha decrease to 0.0
     fileprivate func removeTableView() {
         self.mapView.clear()
@@ -166,8 +150,6 @@ class ViewController: UIViewController {
             UIView.animate(withDuration: 1, animations: {
                 self.tableView.alpha = 0
                 self.tableViewHeight.constant = 0
-//                self.mapView.frame.size.height = self.view.frame.size.height
-//                self.tableView.frame.origin.y = self.view.frame.maxY
             })
         }
     }
@@ -177,9 +159,7 @@ class ViewController: UIViewController {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 1, animations: {
                 self.tableView.alpha = 1
-                self.tableViewHeight.constant = CGFloat(self.viewModel.devices.count * 44)
-//                self.mapView.frame.size.height = self.view.frame.size.height - self.tableView.frame.size.height
-//                self.tableView.frame.origin.y = self.view.frame.size.height - self.tableView.frame.size.height
+                self.tableViewHeight.constant = CGFloat(self.viewModel.devices.value.count * Int(self.tableView.estimatedRowHeight))
             })
         }
     }
@@ -254,24 +234,20 @@ class ViewController: UIViewController {
     @objc func connectDevice() {
         //New discovered devices will be connected and added to viewModel devices array, instead of MockDevices
         for device in mockData.devices { //Add mock devices from devices array
-             viewModel.addDevice(device)
-            
-                publishDeviceCountSubject.onNext(viewModel.devices.count) //Advertises onNext event once the 'viewModel.devices.count' changes
-                tableView.reloadData()
+            viewModel.addDevice(device)
+            tableView.reloadData()
         }
     }
     
     //Remove Device from the array of devices
     @objc func disconnectDevice() {
-        guard viewModel.devices.count != 0 else {return} //Check the count of devices, if 0, return
+        guard viewModel.devices.value.count != 0 else {return} //Check the count of devices, if 0, return
         //viewModel.removeLastDevice() // Remove last device from devices array
         guard let row = tableView.indexPathForSelectedRow?.row else {return} //If device row is selected, extract the row Int
-        drawing.removePolylinesFor(viewModel.devices[row].name)
+        drawing.removePolylinesFor(viewModel.devices.value[row].name)
         drawing.clearRangePolylines()
         setupSliders()
-        viewModel.removeDevice(named: viewModel.devices[row].name) //Remove specific Device.
-        publishDeviceCountSubject.onNext(viewModel.devices.count) //Advertise onNext event once the 'viewModel.devices.count' changes
-        tableView.reloadData() //Reload tableView
+        viewModel.removeDevice(named: viewModel.devices.value[row].name) //Remove specific Device.
     }
 }
 //MARK: Extensions in Extensions folder

@@ -12,22 +12,22 @@ import GoogleMaps
 
 //DeviceViewModel can accept any data type that adopts DeviceProtocol and subsequently CoordinateProtocol as one of the requirements for 'devices' array
 
-class DeviceViewModel {
+class DeviceViewModel{
     
     //MARK: - Properties -
-    var devices: [Device]
+    var devices: Variable<[Device]>
 
     //MARK: - Init -
-    init(devices: [Device]) {
+    init(devices: Variable<[Device]>) {
         self.devices = devices
     }
     
     //MARK: - Helper methods -
     //Add device method
     func addDevice(_ device: Device) {
-        if !devices.contains(where: {$0.name == device.name}) {
+        if !devices.value.contains(where: {$0.name == device.name}) {
             print("Adding \(device.name)")
-            devices.append(device)
+            devices.value.append(device)
         } else {
             print("\(device.name) is already added.")
         }
@@ -35,20 +35,20 @@ class DeviceViewModel {
     
     //Remove device methods
     func removeLastDevice() {
-        if !devices.isEmpty { //Check is the array is empty
-            print("Removed \(devices.last!.name)")
-            devices.removeLast() //Remove last item in the array
+        if !devices.value.isEmpty { //Check is the array is empty
+            print("Removed \(devices.value.last!.name)")
+            devices.value.removeLast() //Remove last item in the array
         }
     }
     
      func removeDevice(named name: String) {
-        for (index, device) in devices.enumerated() { //Enumerate devices array to get the index of each element
-            if !devices.isEmpty { //Check if the array is empty
+        for (index, device) in devices.value.enumerated() { //Enumerate devices array to get the index of each element
+            if !devices.value.isEmpty { //Check if the array is empty
                 if device.name == name { //Compare device.name with passed in name
                     print("Removing \(device.name)")
                     //devices[index].coordinates = []
                     
-                    devices.remove(at: index) //Remove element with matching name if it exists in the array
+                    devices.value.remove(at: index) //Remove element with matching name if it exists in the array
                 }
             }
         }
