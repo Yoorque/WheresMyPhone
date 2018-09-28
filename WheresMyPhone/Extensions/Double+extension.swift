@@ -9,7 +9,13 @@
 import UIKit
 
 extension Double {
-    func toStringOfkmPerHour() -> String {
+    /**
+     Converts m/s into *String* representation od km/h
+     
+     - Author:
+     Dusan Juranovic
+     */
+    func toStringOfkPH() -> String {
         return "\((self * 3.6).rounded()) km/h"
     }
 }

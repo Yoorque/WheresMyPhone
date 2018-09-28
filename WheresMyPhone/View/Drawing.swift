@@ -25,6 +25,12 @@ class Drawing {
         }
     }
     
+    /**
+     Draw polylines for a selected *Device*
+     - parameters:
+        - mapView: Map view on which polylines will be applied to
+        - device: Device for which polylines will be drawn
+    */
     func drawPolylinesOn(_ mapView: GMSMapView, forDevice device: Device) {
         let path = GMSMutablePath()
         var speed: Double = 0.0
@@ -58,7 +64,7 @@ class Drawing {
         let distance = endLocation.distance(from: startLocation) //Calculate distance between 2 locations in meters
         let timeInterval = endLocation.timestamp.timeIntervalSince(startLocation.timestamp) //Calculates time difference between to timestamps in seconds
         speed = distance / timeInterval //Calculates speed in m/s
-        phoneMarker.snippet = speed.toStringOfkmPerHour() //Convert speed in m/s to return km/h as a String
+        phoneMarker.snippet = speed.toStringOfkPH() //Convert speed in m/s to return km/h as a String
         
         //Create polylines from GMSPath consisting of last two coordinates of device locations
         let polyline = GMSPolyline(path: path)
@@ -73,7 +79,7 @@ class Drawing {
         history(forDeviceTitle: device.name, onMap: mapView) //Retrieve historical data saved in polylines array, for selected device
     }
     
-    //Historical data for a selected device
+    ///Historical data for a selected device
     private func history(forDeviceTitle title: String, onMap map: GMSMapView) {
         polylines.forEach {
             if $0.title == title {
@@ -82,7 +88,7 @@ class Drawing {
         }
     }
     
-    //Add custom marker icon for Start and End markers
+    ///Add custom marker icon for Start and End markers
     func addCustomIconWithText(_ text: String, andColor color: UIColor) -> UIView {
         iconView = UIView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 50, height: 20)))
         for subview in iconView.subviews {
@@ -95,7 +101,7 @@ class Drawing {
         return iconView
     }
     
-    //Used for drawing polylines between two passed-in locations
+    ///Used for drawing polylines on a map, between two passed-in locations
     func drawDateRangePolylinesFor(_ device: Device, mapView: GMSMapView, between startLocation: CLLocation, and endLocation: CLLocation) {
         //Initialy clear the range overlays before drawing new ones
         clearRangePolylines()
@@ -113,13 +119,13 @@ class Drawing {
         
         //Instantiate Start and End markers
         startMarker.position = CLLocationCoordinate2D(latitude: startLocation.coordinate.latitude, longitude: startLocation.coordinate.longitude)
-        startMarker.iconView = addCustomIconWithText(startLocation.timestamp.formatForTime(), andColor: UIColor.green)
-        startMarker.title = startLocation.timestamp.formatDate()
+        startMarker.iconView = addCustomIconWithText(startLocation.timestamp.stringOfTime, andColor: UIColor.green)
+        startMarker.title = startLocation.timestamp.stringOfDate
         startMarker.map = mapView
 
         endMarker.position = CLLocationCoordinate2D(latitude: endLocation.coordinate.latitude, longitude: endLocation.coordinate.longitude)
-        endMarker.iconView = addCustomIconWithText(endLocation.timestamp.formatForTime(), andColor: UIColor.red)
-        endMarker.title = endLocation.timestamp.formatDate()
+        endMarker.iconView = addCustomIconWithText(endLocation.timestamp.stringOfTime, andColor: UIColor.red)
+        endMarker.title = endLocation.timestamp.stringOfDate
         endMarker.map = mapView
         
         //Create polylines and set properties
@@ -132,7 +138,7 @@ class Drawing {
         polylines.append(polyline)
     }
     
-    //Clear polylines that contain 'range' string in order to clear range overlays by setting map properties to nil
+    ///Clear polylines that contain 'range' string in order to clear range overlays by setting map properties to nil
     func clearRangePolylines() {
         for polyline in polylines {
             if polyline.title!.contains("range") {
@@ -143,7 +149,11 @@ class Drawing {
         }
     }
     
-    //Set polylines for removed device to nil
+    ///Set polylines for removed device to nil
+    ///- parameters:
+    ///     - name: Name of the device needing removal - *String*
+    ///- Important:
+    ///This only sets the polylines for a selected device to *nil*
     func removePolylinesFor(_ name: String) {
         for polyline in polylines {
             if polyline.title!.contains(name) {
@@ -154,12 +164,16 @@ class Drawing {
         cleanUpPolylinesFor(name)
     }
     
-    //Clean-up polylines for removed device
+    ///Clean-up polylines for removed device
+    ///- parameters:
+    ///     - deviceName: Name of the device needing removal - *String*
+    ///- Important:
+    ///This completely removes polylines for a selected device
     private func cleanUpPolylinesFor(_ deviceName: String) {
         polylines = polylines.filter {$0.title != deviceName}
     }
     
-    //Choose polyline segment color depending on the speed for that segment
+    ///Choose polyline segment color depending on the speed for that segment
     private func speedColors(forSpeed speed: Double) -> UIColor{
         switch speed {
         case 0..<5:

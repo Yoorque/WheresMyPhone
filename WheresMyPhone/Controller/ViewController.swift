@@ -104,6 +104,15 @@ class ViewController: UIViewController {
         
     }
     
+    /**
+     Used to select values that represent the starting and ending point of a range
+     - parameters:
+        - start: starting value
+        - end: ending value
+     
+     Values received from UISlider are used to represent the *index* of coordinates array
+    */
+    
     func updateRangeLines(with start: Float, and end: Float) {
         //Check if there is a row selected
         if let row = self.tableView.indexPathForSelectedRow?.row {
@@ -131,12 +140,21 @@ class ViewController: UIViewController {
             self.drawing.drawDateRangePolylinesFor(self.viewModel.devices.value[row], mapView: self.mapView, between: startLocation, and: endLocation)
             
             //Use converted timestamp to display in the appropriate label
-            self.minSliderLabel.text = startLocation.timestamp.formatDate()
-            self.maxSliderLabel.text = endLocation.timestamp.formatDate()
+            self.minSliderLabel.text = startLocation.timestamp.stringOfDate
+            self.maxSliderLabel.text = endLocation.timestamp.stringOfDate
         }
 
     }
     
+    /**
+     Measures distance between two locations
+     - parameters:
+        - startLocation: starting location
+        - endLocation: ending location
+     
+     - returns:
+        String representation of distance in kilometers
+    */
     func getDistanceBetweenLocation(_ startLocation: CLLocation, and endLocation: CLLocation) -> String {
         let distance = startLocation.distance(from: endLocation)
         return distance.toKm

@@ -10,7 +10,17 @@ import UIKit
 import Foundation
 
 extension UIImage {
-    
+    /**
+     Scales image to desired *CGSize* maintaining aspect ratio
+     - Author:
+     Dusan Juranovic
+     
+     - returns:
+     Resized *UIImage*
+     
+     - parameters:
+        - size: *CGSize*
+     */
     func scaleImageTo(_ size: CGSize) -> UIImage {
         
         let imageSize = self.size
