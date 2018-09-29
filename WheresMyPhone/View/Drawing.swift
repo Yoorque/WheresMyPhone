@@ -25,12 +25,8 @@ class Drawing {
         }
     }
     
-    /**
-     Draw polylines for a selected *Device*
-     - parameters:
-        - mapView: Map view on which polylines will be applied to
-        - device: Device for which polylines will be drawn
-    */
+    
+    ///Draw polylines for a selected *Device*
     func drawPolylinesOn(_ mapView: GMSMapView, forDevice device: Device) {
         let path = GMSMutablePath()
         var speed: Double = 0.0
@@ -149,10 +145,7 @@ class Drawing {
         }
     }
     
-    ///Set polylines for removed device to nil
-    ///- parameters:
-    ///     - name: Name of the device needing removal - *String*
-    ///- Important:
+    ///Set polylines for removed device to nil.
     ///This only sets the polylines for a selected device to *nil*
     func removePolylinesFor(_ name: String) {
         for polyline in polylines {
@@ -164,10 +157,7 @@ class Drawing {
         cleanUpPolylinesFor(name)
     }
     
-    ///Clean-up polylines for removed device
-    ///- parameters:
-    ///     - deviceName: Name of the device needing removal - *String*
-    ///- Important:
+    ///Clean-up polylines for removed device.
     ///This completely removes polylines for a selected device
     private func cleanUpPolylinesFor(_ deviceName: String) {
         polylines = polylines.filter {$0.title != deviceName}

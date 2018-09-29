@@ -104,15 +104,8 @@ class ViewController: UIViewController {
         
     }
     
-    /**
-     Used to select values that represent the starting and ending point of a range
-     - parameters:
-        - start: starting value
-        - end: ending value
-     
-     Values received from UISlider are used to represent the *index* of coordinates array
-    */
     
+    ///Used to select values that represent the starting and ending point of a range
     func updateRangeLines(with start: Float, and end: Float) {
         //Check if there is a row selected
         if let row = self.tableView.indexPathForSelectedRow?.row {
@@ -146,22 +139,15 @@ class ViewController: UIViewController {
 
     }
     
-    /**
-     Measures distance between two locations
-     - parameters:
-        - startLocation: starting location
-        - endLocation: ending location
-     
-     - returns:
-        String representation of distance in kilometers
-    */
+    
+    ///Measures distance between two locations
     func getDistanceBetweenLocation(_ startLocation: CLLocation, and endLocation: CLLocation) -> String {
         let distance = startLocation.distance(from: endLocation)
         return distance.toKm
     }
     
     //MARK: - Helper methods -
-    //Hides the tableView with slide-down animation and alpha decrease to 0.0
+    ///Hides the tableView with slide-down animation and alpha decrease to 0.0
     fileprivate func removeTableView() {
         self.mapView.clear()
         DispatchQueue.main.async {
@@ -172,7 +158,7 @@ class ViewController: UIViewController {
         }
     }
     
-    //Shows the tableView with slide-up animation and alpha increase 1.0
+    ///Shows the tableView with slide-up animation and alpha increase 1.0
     fileprivate func displayTableView() {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 1, animations: {
@@ -182,17 +168,16 @@ class ViewController: UIViewController {
         }
     }
     
+    ///Add left and right navigationBar buttons for removing and adding new Devices
     fileprivate func setupNavigationBar() {
         view.backgroundColor = UIColor.lightText //Set view background color
-        
-        //Add left and right navigationBar buttons for removing and adding new Devices
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Disconnect", style: .done, target: self, action: #selector(disconnectDevice))
         let connectButton = UIBarButtonItem(title: "Connect", style: .done, target: self, action: #selector(connectDevice))
         let dateButton = UIBarButtonItem(title: "Select Range", style: .done, target: self, action: #selector(dateRangeNavButton))
-        
         self.navigationItem.rightBarButtonItems = [connectButton, dateButton]
     }
     
+    ///Setup Location Manager
     fileprivate func locationManagerSetup() {
         locationManager.delegate = self
         locationManager.showsBackgroundLocationIndicator = true //Enables background tracking and indicator
@@ -208,8 +193,8 @@ class ViewController: UIViewController {
         }
     }
     
-    //Toggles hidden and non-hidden state of sliders and labels related to date range and changes title of the button
-    //Also, displays a warning if no device was selected before pressing the dates button
+    ///Toggles hidden and non-hidden state of sliders and labels related to date range and changes title of the button
+    ///Also, displays a warning if no device was selected before pressing the dates button
     @objc func dateRangeNavButton() {
         if tableView.indexPathForSelectedRow != nil {
             if dateRangeStackView.isHidden {
@@ -232,7 +217,7 @@ class ViewController: UIViewController {
         }
     }
     
-    //Setup slider position in the superview
+    ///Setup slider position in the superview
      func setupSliders() {
         dateRangeStackView.frame = CGRect(x: 10, y: mapView.frame.maxY - 120, width: mapView.frame.size.width - 20, height: 100)
         minSlider.value = 0
@@ -242,6 +227,7 @@ class ViewController: UIViewController {
         navigationItem.rightBarButtonItems![1].title = "Select Range"
     }
     
+    ///Setup map
     fileprivate func mapSetup() {
         mapView.delegate = self //Assign mapView delegate to 'self'
         mapView.settings.compassButton = true //Displays compas on the map when map heading is changed
@@ -249,6 +235,7 @@ class ViewController: UIViewController {
         mapView.isMyLocationEnabled = true //Enables user location
     }
     
+    ///Connect dvices
     @objc func connectDevice() {
         //New discovered devices will be connected and added to viewModel devices array, instead of MockDevices
         for device in mockData.devices { //Add mock devices from devices array
@@ -257,7 +244,7 @@ class ViewController: UIViewController {
         }
     }
     
-    //Remove Device from the array of devices
+    ///Remove Device from the array of devices
     @objc func disconnectDevice() {
         guard viewModel.devices.value.count != 0 else {return} //Check the count of devices, if 0, return
         //viewModel.removeLastDevice() // Remove last device from devices array
