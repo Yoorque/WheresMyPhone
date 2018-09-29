@@ -15,7 +15,7 @@ extension Double {
      - Author:
      Dusan Juranovic
      */
-    func toStringOfkPH() -> String {
+    var toStringOfKPH: String {
         return "\((self * 3.6).rounded()) km/h"
     }
 }

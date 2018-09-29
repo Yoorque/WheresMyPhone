@@ -60,7 +60,7 @@ class Drawing {
         let distance = endLocation.distance(from: startLocation) //Calculate distance between 2 locations in meters
         let timeInterval = endLocation.timestamp.timeIntervalSince(startLocation.timestamp) //Calculates time difference between to timestamps in seconds
         speed = distance / timeInterval //Calculates speed in m/s
-        phoneMarker.snippet = speed.toStringOfkPH() //Convert speed in m/s to return km/h as a String
+        phoneMarker.snippet = speed.toStringOfKPH //Convert speed in m/s to return km/h as a String
         
         //Create polylines from GMSPath consisting of last two coordinates of device locations
         let polyline = GMSPolyline(path: path)
