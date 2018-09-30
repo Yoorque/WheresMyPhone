@@ -10,8 +10,7 @@ import UIKit
 import RxSwift
 import GoogleMaps
 
-//DeviceViewModel can accept any data type that adopts DeviceProtocol and subsequently CoordinateProtocol as one of the requirements for 'devices' array
-
+//DeviceViewModel can accept any data type that adopts CommunicationProtocol and subsequently CoordinateProtocol as one of the requirements for 'devices' array
 class DeviceViewModel{
     
     //MARK: - Properties -
@@ -23,7 +22,7 @@ class DeviceViewModel{
     }
     
     //MARK: - Helper methods -
-    //Add device method
+    ///Add a device 
     func addDevice(_ device: Device) {
         if !devices.value.contains(where: {$0.name == device.name}) {
             print("Adding \(device.name)")
@@ -33,14 +32,14 @@ class DeviceViewModel{
         }
     }
     
-    //Remove device methods
+    ///Remove last device
     func removeLastDevice() {
         if !devices.value.isEmpty { //Check is the array is empty
             print("Removed \(devices.value.last!.name)")
             devices.value.removeLast() //Remove last item in the array
         }
     }
-    
+    ///Remove a device by name
      func removeDevice(named name: String) {
         for (index, device) in devices.value.enumerated() { //Enumerate devices array to get the index of each element
             if !devices.value.isEmpty { //Check if the array is empty

@@ -10,10 +10,11 @@ import UIKit
 
 extension Double {
     /**
-     Converts m/s into *String* representation od km/h
-     
+     Converts m/s into *String* representation od km/h.
      - Author:
      Dusan Juranovic
+     - Note:
+     This is an extension of the *Double* class.
      */
     var toStringOfKPH: String {
         return "\((self * 3.6).rounded()) km/h"

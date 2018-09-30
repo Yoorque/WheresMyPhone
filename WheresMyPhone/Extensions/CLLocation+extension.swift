@@ -11,13 +11,15 @@ import CoreLocation
 
 extension CLLocationDistance {
     /**
-    Converts meters represented as Double into String
+     Converts meters represented as a number, into *String*.
      - Author:
      Dusan Juranovic
-     - Important:
-         - Double < 1000 is represented in meters
-         - Double > 1000 is represented in km
-    */
+     - Remark:
+        * Numbers < 1000 are represented in meters
+        * Numbers > 1000 are represented in km
+     - Note:
+     This is an extension of the CLLocationDistance *class*.
+     */
     var toKm: String {
         return self > 1000 ? "\(self.rounded() / 1000) km" : "\(Int(self.rounded())) meters"
     }

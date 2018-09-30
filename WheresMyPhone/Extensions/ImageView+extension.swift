@@ -11,15 +11,13 @@ import Foundation
 
 extension UIImage {
     /**
-     Scales image to desired *CGSize* maintaining aspect ratio
+     Scales image to desired *CGSize* maintaining aspect ratio.
      - Author:
      Dusan Juranovic
-     
-     - returns:
-     Resized *UIImage*
-     
-     - parameters:
-        - size: *CGSize*
+     - Parameter size: Output *CGSize*
+     - Returns: Resized image of type *UIImage*.
+     - Note:
+     This is an extension of the *UIImage* class.
      */
     func scaleImageTo(_ size: CGSize) -> UIImage {
         

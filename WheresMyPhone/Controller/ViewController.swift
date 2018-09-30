@@ -106,12 +106,12 @@ class ViewController: UIViewController {
     
     
     ///Used to select values that represent the starting and ending point of a range
-    func updateRangeLines(with start: Float, and end: Float) {
+    func updateRangeLines(with start: Int, and end: Int) {
         //Check if there is a row selected
         if let row = self.tableView.indexPathForSelectedRow?.row {
     
-            self.minSlider.value = start
-            self.maxSlider.value = end
+            self.minSlider.value = Float(start)
+            self.maxSlider.value = Float(end)
             
             //Limit min and max values of sliders according to the values of passed in value object
             self.minSlider.minimumValue = 0.0
@@ -120,11 +120,11 @@ class ViewController: UIViewController {
             self.minSlider.maximumValue = self.maxSlider.value
             
             //Select the timestamp value from an array of coordinates, according to the index passed in as value of the passed in element
-            let startCoords = CLLocationCoordinate2D(latitude: self.viewModel.devices.value[row].coordinates[Int(start.rounded())].latitude, longitude: self.viewModel.devices.value[row].coordinates[Int(start.rounded())].longitude)
-            let endCoords = CLLocationCoordinate2D(latitude: self.viewModel.devices.value[row].coordinates[Int(end.rounded())].latitude, longitude: self.viewModel.devices.value[row].coordinates[Int(end.rounded())].longitude)
+            let startCoords = CLLocationCoordinate2D(latitude: self.viewModel.devices.value[row].coordinates[start].latitude, longitude: self.viewModel.devices.value[row].coordinates[start].longitude)
+            let endCoords = CLLocationCoordinate2D(latitude: self.viewModel.devices.value[row].coordinates[end].latitude, longitude: self.viewModel.devices.value[row].coordinates[end].longitude)
             
-            let startLocation = CLLocation(coordinate: startCoords, altitude: 0, horizontalAccuracy: 0, verticalAccuracy: 0, course: 0, speed: 0, timestamp: self.viewModel.devices.value[row].coordinates[Int(self.minSlider.value.rounded())].timestamp)
-            let endLocation = CLLocation(coordinate: endCoords, altitude: 0, horizontalAccuracy: 0, verticalAccuracy: 0, course: 0, speed: 0, timestamp: self.viewModel.devices.value[row].coordinates[Int(self.maxSlider.value.rounded())].timestamp)
+            let startLocation = CLLocation(coordinate: startCoords, altitude: 0, horizontalAccuracy: 0, verticalAccuracy: 0, course: 0, speed: 0, timestamp: self.viewModel.devices.value[row].coordinates[start].timestamp)
+            let endLocation = CLLocation(coordinate: endCoords, altitude: 0, horizontalAccuracy: 0, verticalAccuracy: 0, course: 0, speed: 0, timestamp: self.viewModel.devices.value[row].coordinates[end].timestamp)
             
             //Calculate distance between two selected coordinates
             self.distanceLabel.text = self.getDistanceBetweenLocation(startLocation, and: endLocation)
@@ -235,7 +235,7 @@ class ViewController: UIViewController {
         mapView.isMyLocationEnabled = true //Enables user location
     }
     
-    ///Connect dvices
+    ///Connect mock devices
     @objc func connectDevice() {
         //New discovered devices will be connected and added to viewModel devices array, instead of MockDevices
         for device in mockData.devices { //Add mock devices from devices array
