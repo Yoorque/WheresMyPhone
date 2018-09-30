@@ -86,7 +86,7 @@ class ViewController: UIViewController {
         
         //Combine values from both sliders and update range lines
         Observable.combineLatest(minSlider.rx.value, maxSlider.rx.value) {[weak self] (min, max) in
-            self?.updateRangeLines(with: min, and: max)
+            self?.updateRangeLines(with: Int(min), and: Int(max))
             }.subscribe().disposed(by: disposeBag)
         
         //Subscribe to onNext events for new locations
