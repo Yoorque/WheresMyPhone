@@ -12,7 +12,7 @@ import GoogleMaps
 import RxSwift
 import RxCocoa
 
-struct Device: Comparable, CommunicationProtocol {
+class Device: Comparable, CommunicationProtocol {
     
     //MARK: - Properties -
     let name: String
@@ -28,11 +28,18 @@ struct Device: Comparable, CommunicationProtocol {
         self.image = UIImage(named: "iPhone")!.scaleImageTo(CGSize(width: 35, height: 40))
     }
     
-    func fetchDataBetween(_ startDate: Date, and endDate: Date) -> Data {
-        print("Fetching data")
-        return Data()
+    func fetchDataBetween(_ startDate: Date, and endDate: Date) {
+        print("Fetching data between \(startDate) and \(endDate)")
     }
     
+    func fetchNew(_ data: CoordinateProtocol) {
+        print("Fetching new data...\(data)")
+        coordinates.append(data)
+    }
+    
+    func fetchAll(_ data: [CoordinateProtocol]) {
+        coordinates = data
+    }
     
     //Satisfying Comparable protocol
     static func == (lhs: Device, rhs: Device) -> Bool {

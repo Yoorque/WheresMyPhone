@@ -21,14 +21,6 @@ class MockData {
     let mockDevice4 = Device(name: "Fourth", uuid: UIDevice.current.identifierForVendor!, coordinates: [
         Coordinates(latitude: 40.0, longitude: 40.0, timestamp: Date(), accuracy: 3)])
     
-    let viewModel: DeviceViewModel
-    let devices: [Device]
-    
-    init() {
-         devices = [mockDevice, mockDevice2, mockDevice3, mockDevice4]
-         viewModel = DeviceViewModel(devices: Variable(devices))
-    }
-    
     //Mock movement of the devices on the screen by adding random coordinates
     func mockedDataWithTimer(for viewController: ViewController, and tableView: UITableView) {
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in

@@ -14,7 +14,9 @@ protocol CommunicationProtocol {
     var uuid: String {get}
     var coordinates: [CoordinateProtocol] {get}
     
-    func fetchDataBetween(_ startDate: Date, and endDate: Date) -> Data
+    func fetchDataBetween(_ startDate: Date, and endDate: Date)
+    func fetchNew(_ data: CoordinateProtocol)
+    func fetchAll(_ data: [CoordinateProtocol])
 }
 
 protocol CoordinateProtocol {

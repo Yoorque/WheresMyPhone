@@ -10,7 +10,6 @@ import UIKit
 import GoogleMaps
 
 class Drawing {
-    
     var polylines = [GMSOverlay]()
     let phoneMarker = GMSMarker()
     let startMarker = GMSMarker()

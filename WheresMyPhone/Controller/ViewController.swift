@@ -96,7 +96,7 @@ class ViewController: UIViewController {
             
             let passedInLocation = Coordinates(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, timestamp: location.timestamp, accuracy: location.horizontalAccuracy)
             
-            self.viewModel.devices.value[row].coordinates.append(passedInLocation)
+            self.viewModel.devices.value[row].fetchNew(passedInLocation)
             self.drawing.drawPolylinesOn(self.mapView, forDevice: self.viewModel.devices.value[row])
         }).disposed(by: disposeBag)
         
@@ -238,10 +238,12 @@ class ViewController: UIViewController {
     ///Connect mock devices
     @objc func connectDevice() {
         //New discovered devices will be connected and added to viewModel devices array, instead of MockDevices
-        for device in mockData.devices { //Add mock devices from devices array
-            viewModel.addDevice(device)
-            tableView.reloadData()
-        }
+         //Add mock devices from devices array
+        viewModel.addDevice(mockData.mockDevice)
+        viewModel.addDevice(mockData.mockDevice2)
+        viewModel.addDevice(mockData.mockDevice3)
+        viewModel.addDevice(mockData.mockDevice4)
+        tableView.reloadData()
     }
     
     ///Remove Device from the array of devices
