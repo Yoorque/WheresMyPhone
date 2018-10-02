@@ -44,4 +44,13 @@ class MapManager: UIView {
             marker.iconView?.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
         })
     }
+    
+    func drawPolylinesFor(_ device: DeviceProtocol) {
+        let path = GMSMutablePath()
+        for coordinate in device.coordinates {
+            path.add(CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude))
+        }
+        let polylines = GMSPolyline(path: path)
+        polylines.map = mapView
+    }
 }
