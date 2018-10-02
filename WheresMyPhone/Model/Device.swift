@@ -15,13 +15,11 @@ class Device: Comparable, DeviceProtocol {
     let name: String
     var uuid: String
     var coordinates: [CoordinateProtocol]
-    var deviceType: DeviceType
 
     //MARK: - Init -
-    required init(name: String, uuid: String, deviceType: DeviceType, coordinates: [CoordinateProtocol]) {
+    required init(name: String, uuid: String, coordinates: [CoordinateProtocol]) {
         self.name = name
         self.uuid = uuid
-        self.deviceType = deviceType
         self.coordinates = coordinates
     }
     

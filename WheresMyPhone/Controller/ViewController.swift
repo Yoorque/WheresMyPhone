@@ -67,15 +67,25 @@ class ViewController: UIViewController {
     let disposeBag = DisposeBag() //disposeBag for Disposables
     let deviceManager = DeviceManager()
     let mapManager = MapManager.sharedInstance
+    let newCoordinates = PublishSubject<Coordinates>()
+    var selectedRow: Int?
 
     //MARK: - Life cycle -
     override func viewDidLoad() {
         super.viewDidLoad()
         mapManager.createMapFor(mapView) //Create map on UIView (mapView property)
         mapView.bringSubviewToFront(dateRangeStackView) //Bring stackView to front
+        
         deviceManager.devices.asObservable().subscribe(onNext: {device in
             self.tableViewHeight.constant = self.tableView.estimatedRowHeight * CGFloat(device.count)
             self.tableView.reloadData()
+        }).disposed(by: disposeBag)
+        
+        
+        newCoordinates.subscribe(onNext: {coordinates in
+            guard let row = self.selectedRow else { return }
+            self.deviceManager.devices.value[row].coordinates.append(coordinates)
+            self.mapManager.drawPolylinesFor(self.deviceManager.devices.value[row])
         }).disposed(by: disposeBag)
         
         //Add Mock Devices
@@ -89,7 +99,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func rangeButtonAction(_ sender: Any) {
-        guard let row = tableView.indexPathForSelectedRow?.row else {
+        guard let row = selectedRow else {
             self.noRowSelectedAlert()
             return
         }
@@ -99,7 +109,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func syncAction(_ sender: Any) {
-        guard let row = tableView.indexPathForSelectedRow?.row else {
+        guard let row = selectedRow else {
             self.noRowSelectedAlert()
             return
         }

@@ -11,7 +11,6 @@
 		260718DA21412E8D009B36C1 /* ViewController+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 260718D921412E8D009B36C1 /* ViewController+extension.swift */; };
 		261AC018216382F800DD5197 /* CoordinateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261AC017216382F800DD5197 /* CoordinateProtocol.swift */; };
 		261AC01A2163830E00DD5197 /* DeviceManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261AC0192163830E00DD5197 /* DeviceManagerProtocol.swift */; };
-		261AC01C2163A19B00DD5197 /* DeviceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261AC01B2163A19B00DD5197 /* DeviceType.swift */; };
 		261AC01E2163A69E00DD5197 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261AC01D2163A69E00DD5197 /* MapManager.swift */; };
 		261AC0222163B03900DD5197 /* MockedDevices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261AC0212163B03900DD5197 /* MockedDevices.swift */; };
 		261AC0242163B65F00DD5197 /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261AC0232163B65F00DD5197 /* DeviceManager.swift */; };
@@ -46,7 +45,6 @@
 		260718D921412E8D009B36C1 /* ViewController+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+extension.swift"; sourceTree = "<group>"; };
 		261AC017216382F800DD5197 /* CoordinateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateProtocol.swift; sourceTree = "<group>"; };
 		261AC0192163830E00DD5197 /* DeviceManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManagerProtocol.swift; sourceTree = "<group>"; };
-		261AC01B2163A19B00DD5197 /* DeviceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceType.swift; sourceTree = "<group>"; };
 		261AC01D2163A69E00DD5197 /* MapManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
 		261AC0212163B03900DD5197 /* MockedDevices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedDevices.swift; sourceTree = "<group>"; };
 		261AC0232163B65F00DD5197 /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
@@ -191,7 +189,6 @@
 			isa = PBXGroup;
 			children = (
 				2622265F21382DF2000CB875 /* WheresMyPhone.xcdatamodeld */,
-				261AC01B2163A19B00DD5197 /* DeviceType.swift */,
 				26D9AA03213924590053F2DA /* Device.swift */,
 				261AC0212163B03900DD5197 /* MockedDevices.swift */,
 			);
@@ -425,7 +422,6 @@
 			files = (
 				260718DA21412E8D009B36C1 /* ViewController+extension.swift in Sources */,
 				261AC018216382F800DD5197 /* CoordinateProtocol.swift in Sources */,
-				261AC01C2163A19B00DD5197 /* DeviceType.swift in Sources */,
 				2698A62421591725007685A5 /* CLLocation+extension.swift in Sources */,
 				262892CC21541E9F009FCAF3 /* Date+extension.swift in Sources */,
 				261AC01E2163A69E00DD5197 /* MapManager.swift in Sources */,

@@ -25,7 +25,6 @@ class DeviceManager: DeviceManagerProtocol {
     
     private func trackDevice(_ device: DeviceProtocol) {
         mapManager.addMarkerFor(device)
-        mapManager.drawPolylinesFor(device)
     }
     
     func addDevice(_ device: DeviceProtocol) {

@@ -15,12 +15,10 @@ protocol DeviceProtocol {
     var name: String {get}
     ///UUID used for identifying device
     var uuid: String {get}
-    ///Type of the device
-    var deviceType: DeviceType {get}
     ///Array of coordinates for a selected device
     var coordinates: [CoordinateProtocol] {get set}
     ///Required initializer for a device
-   // init(name: String, uuid: String, coordinates: [CoordinateProtocol])
+    init(name: String, uuid: String, coordinates: [CoordinateProtocol])
 }
 
 
