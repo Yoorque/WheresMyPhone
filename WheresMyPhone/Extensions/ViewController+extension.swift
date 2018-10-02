@@ -18,15 +18,15 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.devices.value.count
+        return deviceManager.devices.value.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let device = viewModel.devices.value[indexPath.row]
+        let device = deviceManager.devices.value[indexPath.row]
         cell.textLabel?.text = device.name
-        cell.detailTextLabel?.text = device.uuid
-        tableView.frame.size.height = CGFloat(viewModel.devices.value.count) * cell.contentView.frame.size.height
+        cell.detailTextLabel?.text = device.deviceType.rawValue
+        
         return cell
     }
     
@@ -34,51 +34,21 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     //Delegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        if previouslySelected != indexPath {
-            mapView.clear()
-        }
-        let selectedDevice = viewModel.devices.value[indexPath.row]
-        
-        CATransaction.setAnimationDuration(0.5)
-        CATransaction.begin()
-        mapView.animate(toZoom: 10)
-        mapView.animate(toLocation: CLLocationCoordinate2D(latitude: selectedDevice.coordinates.last!.latitude, longitude: selectedDevice.coordinates.last!.longitude))
-        CATransaction.commit()
-        previouslySelected = indexPath
-        setupSliders()
+        let device = deviceManager.devices.value[indexPath.row]
+        mapManager.mapView.camera = GMSCameraPosition(target: CLLocationCoordinate2D(latitude: device.coordinates.last!.latitude, longitude: device.coordinates.last!.longitude), zoom: 10, bearing: 0, viewingAngle: 0)
+        deviceManager.liveTrack(device)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44
     }
-}
-
-//MARK: - LocationManagerDelegate -
-extension ViewController: CLLocationManagerDelegate {
     
-//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-       
-//        guard let location = locations.last else {return} //takes the last user location
-//        guard viewModel.devices.count != 0 else {return}
-//
-//        if index > viewModel.devices.count - 1 {
-//            index = viewModel.devices.count - 1
-//        }
-//        viewModel.devices[index].coordinates.append(location)
-//
-//        if viewModel.devices[index].coordinates.count > 50 {
-//            viewModel.devices[index].coordinates.removeFirst()
-//        }
-//         let coords = CLLocationCoordinate2D(latitude: viewModel.devices[index].coordinates.last!.coordinate.latitude, longitude: viewModel.devices[index].coordinates.last!.coordinate.longitude)
-//         mapView.animate(toLocation: coords)
-//    
-//        drawing.drawPolylinesOn(mapView, forLocations: viewModel.devices[index].coordinates, forDevice: viewModel.devices[index])
-        //viewModel.drawPolylines(forMap: mapView)
-//    }
-}
-
-//MARK: - MapViewDelegates -
-extension ViewController: GMSMapViewDelegate {
-    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete", handler: { _,_,_ in
+            self.deviceManager.devices.value.remove(at: indexPath.row)
+            self.tableView.reloadData()
+        })
+        let config = UISwipeActionsConfiguration(actions: [deleteAction])
+        return config
+    }
 }

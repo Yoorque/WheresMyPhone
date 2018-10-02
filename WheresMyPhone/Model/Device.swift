@@ -9,36 +9,20 @@
 import UIKit
 import CoreLocation
 import GoogleMaps
-import RxSwift
-import RxCocoa
 
-class Device: Comparable, CommunicationProtocol {
-    
+class Device: Comparable, DeviceProtocol {
     //MARK: - Properties -
     let name: String
     var uuid: String
     var coordinates: [CoordinateProtocol]
-    let image: UIImage
-    
+    var deviceType: DeviceType
+
     //MARK: - Init -
-    init(name: String, uuid: UUID, coordinates: [CoordinateProtocol]) {
+    required init(name: String, uuid: String, deviceType: DeviceType, coordinates: [CoordinateProtocol]) {
         self.name = name
-        self.uuid = UIDevice.current.identifierForVendor!.uuidString
+        self.uuid = uuid
+        self.deviceType = deviceType
         self.coordinates = coordinates
-        self.image = UIImage(named: "iPhone")!.scaleImageTo(CGSize(width: 35, height: 40))
-    }
-    
-    func fetchDataBetween(_ startDate: Date, and endDate: Date) {
-        print("Fetching data between \(startDate) and \(endDate)")
-    }
-    
-    func fetchNew(_ data: CoordinateProtocol) {
-        print("Fetching new data...\(data)")
-        coordinates.append(data)
-    }
-    
-    func fetchAll(_ data: [CoordinateProtocol]) {
-        coordinates = data
     }
     
     //Satisfying Comparable protocol

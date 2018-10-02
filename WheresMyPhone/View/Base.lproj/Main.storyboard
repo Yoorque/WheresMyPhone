@@ -18,13 +18,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Ju-b8-9Kl" customClass="GMSMapView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Ju-b8-9Kl">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="632"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="kzs-Yc-7Fi">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="kzs-Yc-7Fi" customClass="DateRangeStackView" customModule="WheresMyPhone" customModuleProvider="target">
                                         <rect key="frame" x="10" y="531" width="394" height="91"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="11" translatesAutoresizingMaskIntoConstraints="NO" id="53M-6Y-pIU">
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="11" translatesAutoresizingMaskIntoConstraints="NO" id="53M-6Y-pIU" customClass="DateRangeStackView" customModule="WheresMyPhone" customModuleProvider="target">
                                                 <rect key="frame" x="85" y="0.0" width="224" height="21"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kaa-Ax-Cyo">
@@ -50,7 +50,7 @@
                                                     </label>
                                                 </subviews>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="TDl-WB-oRF">
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="TDl-WB-oRF" customClass="DateRangeStackView" customModule="WheresMyPhone" customModuleProvider="target">
                                                 <rect key="frame" x="22" y="26" width="350.33333333333331" height="65"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="75R-l6-L7Q">
@@ -151,11 +151,22 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" id="UT6-uB-5Fs"/>
+                    <navigationItem key="navigationItem" id="UT6-uB-5Fs">
+                        <barButtonItem key="leftBarButtonItem" title="Sync" id="Dvl-P6-vmh">
+                            <connections>
+                                <action selector="syncAction:" destination="BYZ-38-t0r" id="0Yd-TD-4sH"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Range" id="ZdW-WB-d5u">
+                            <connections>
+                                <action selector="rangeButtonAction:" destination="BYZ-38-t0r" id="siE-Jb-ioT"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="dateRangeStackView" destination="kzs-Yc-7Fi" id="tU0-M4-ePn"/>
                         <outlet property="distanceLabel" destination="QeD-Ox-L0f" id="bG0-f4-tB1"/>
-                        <outlet property="mapView" destination="7Ju-b8-9Kl" id="KnF-iy-4Zg"/>
+                        <outlet property="mapView" destination="7Ju-b8-9Kl" id="EC5-4o-RrS"/>
                         <outlet property="maxSlider" destination="OqR-4p-8iS" id="rjj-R4-xNQ"/>
                         <outlet property="maxSliderLabel" destination="Uc4-bY-PQ3" id="qfZ-hP-Io2"/>
                         <outlet property="minSlider" destination="rVa-E8-xC9" id="DTb-Jp-Hig"/>
