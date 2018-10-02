@@ -15,6 +15,7 @@ class MapManager: UIView {
     ///- Parameter view: View to which the map will be added as a subview.
     func createMapFor(_ view: UIView) {
         mapView = GMSMapView(frame: view.frame)
+        mapView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         mapView.settings.compassButton = true
         mapView.settings.myLocationButton = true
         view.addSubview(mapView)
@@ -42,9 +43,5 @@ class MapManager: UIView {
         UIView.animate(withDuration: 1, delay: 0, options: [.autoreverse, .repeat], animations: {
             marker.iconView?.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
         })
-    }
-    
-    func trackLocationOf(_ device: DeviceProtocol) {
-        
     }
 }

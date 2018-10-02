@@ -35,7 +35,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let device = deviceManager.devices.value[indexPath.row]
-        mapManager.mapView.camera = GMSCameraPosition(target: CLLocationCoordinate2D(latitude: device.coordinates.last!.latitude, longitude: device.coordinates.last!.longitude), zoom: 10, bearing: 0, viewingAngle: 0)
+        mapManager.mapView.camera = GMSCameraPosition(target: CLLocationCoordinate2D(latitude: device.coordinates.last!.latitude, longitude: device.coordinates.last!.longitude), zoom: 6, bearing: 0, viewingAngle: 0)
         deviceManager.liveTrack(device)
     }
     
