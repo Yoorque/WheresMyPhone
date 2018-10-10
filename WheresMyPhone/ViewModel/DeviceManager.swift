@@ -9,30 +9,51 @@
 import Foundation
 import RxSwift
 
+enum Error: String {
+    case NoCoordinatesError = "No avaliable coordinates"
+    case TransferError = "TransferError"
+}
+
 class DeviceManager: DeviceManagerProtocol {
-    
-    let devices = Variable<[DeviceProtocol]>([])
+    var devices = Variable<[DeviceProtocol]>([])
     let mapManager = MapManager.sharedInstance
     
-    func getDateRangeFor(_ device: DeviceProtocol, startDate: Date, endDate: Date) {
-        print("Fetching range between \(startDate) and \(endDate) for Device: \(device.name)")
+    func getDateRangeFor(_ device: DeviceProtocol, startDate: Date, endDate: Date) -> (Observable<CoordinateProtocol>, Int) {
+        let filteredCoordinates = device.coordinates.value.filter {$0.timestamp >= startDate && $0.timestamp <= endDate}
+        return fetchDataFor(filteredCoordinates)
     }
     
-    func liveTrack(_ device: DeviceProtocol) {
-        print("Live tracking \(device.name)")
-        trackDevice(device)
+    func liveTrack(_ device: DeviceProtocol) -> Observable<CoordinateProtocol> {
+        let observable = Observable<CoordinateProtocol>.of(device.coordinates.value.last!)
+        return observable
     }
     
-    private func trackDevice(_ device: DeviceProtocol) {
-        mapManager.addMarkerFor(device)
+    func fetchDataFor(_ coordinates: [CoordinateProtocol]) -> (Observable<CoordinateProtocol>, Int) {
+        let publish = PublishSubject<CoordinateProtocol>()
+        let queue = DispatchQueue.init(label: "TemoSerialQueue")
+        
+        queue.async {
+            coordinates.forEach({ (coordinate) in
+                Thread.sleep(forTimeInterval: 0.01)
+                publish.onNext(coordinate)
+            })
+            publish.onCompleted()
+        }
+        return (publish, coordinates.count)
+    }
+    
+    func syncDataFor(_ device: DeviceProtocol) -> (Observable<CoordinateProtocol>, Int) {
+        return fetchDataFor(device.coordinates.value)
     }
     
     func addDevice(_ device: DeviceProtocol) {
         devices.value.append(device)
-        mapManager.addMarkerFor(device)
     }
     
-    func syncDataFor(_ device: DeviceProtocol) {
-        print("Syncing data for \(device.name)")
+    func delayFor(_ interval: TimeInterval, completion: @escaping ()->()) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + interval) {
+            completion()
+        }
     }
+   
 }

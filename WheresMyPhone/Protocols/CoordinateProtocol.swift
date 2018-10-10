@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RxSwift
 
 ///Ensures that the coordinates contained in the connected device coordinates property are of required type
 protocol CoordinateProtocol {

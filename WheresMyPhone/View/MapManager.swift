@@ -7,13 +7,17 @@
 //
 
 import GoogleMaps
+import RxSwift
 
-class MapManager: UIView {
+class MapManager: UIView, GMSMapViewDelegate {
     static var sharedInstance = MapManager()
+    let deviceMarker = GMSMarker()
     var mapView: GMSMapView!
     var marker = GMSMarker()
+    var polylinesArray = [GMSPolyline]()
+    var progressBar = UIProgressView()
     ///Creates GMSMapView on a parameter view.
-    ///- Parameter view: View to which the map will be added as a subview.
+    ///- Parameter view: View to which the map will be added to as a subview.
     func createMapFor(_ view: UIView) {
         mapView = GMSMapView(frame: view.frame)
         mapView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
@@ -21,40 +25,75 @@ class MapManager: UIView {
         mapView.settings.myLocationButton = true
         view.addSubview(mapView)
     }
-    
-    func addMarkerFor(_ device: DeviceProtocol) {
-        mapView.clear()
-        let location = CLLocationCoordinate2D(latitude: device.coordinates.last!.latitude, longitude: device.coordinates.last!.longitude)
-        marker = GMSMarker(position: location)
-        marker.title = device.name
-        marker.snippet = device.uuid
-        marker.map = mapView
-        
-        switch device.name.lowercased() {
-        case let n where n.contains("speaker"):
-            marker.iconView = UIImageView(image: UIImage(named: "iSpeaker")?.scaleImageTo(CGSize(width: 30, height: 40)))
-        case let n where n.contains("watch"):
-            marker.iconView = UIImageView(image: UIImage(named: "iWatch")?.scaleImageTo(CGSize(width: 30, height: 40)))
-        case let n where n.contains("bracelet"):
-            marker.iconView = UIImageView(image: UIImage(named: "iBracelet")?.scaleImageTo(CGSize(width: 30, height: 40)))
-        default:
-            marker.iconView = UIImageView(image: UIImage(named: "iPhone")?.scaleImageTo(CGSize(width: 30, height: 40)))
+
+    func drawRangeFor(_ coordinates: [CoordinateProtocol]) {
+        polylinesArray.forEach {
+            if $0.title == "range" {
+                $0.map = nil
+            }
         }
-        
-        UIView.animate(withDuration: 1, delay: 0, options: [.autoreverse, .repeat], animations: {
-            self.marker.iconView?.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-        })
-    }
-    
-    func drawPolylinesFor(_ device: DeviceProtocol) {
         let path = GMSMutablePath()
-        for coordinate in device.coordinates {
-            path.add(CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude))
+        coordinates.forEach { coord in
+            let coordinate = CLLocationCoordinate2D(latitude: coord.latitude, longitude: coord.longitude)
+            path.add(coordinate)
         }
-        let polylines = GMSPolyline(path: path)
-        polylines.geodesic = true
-        polylines.strokeWidth = 3
-        polylines.map = mapView
-        marker.position = CLLocationCoordinate2D(latitude: device.coordinates.last!.latitude, longitude: device.coordinates.last!.longitude)
+        let polyline = GMSPolyline(path: path)
+        polyline.geodesic = true
+        polyline.title = "range"
+        print(polyline.path!.count(), polyline.path!.count())
+        polyline.spans = [GMSStyleSpan(color: .green, segments: 1), GMSStyleSpan(color: .white, segments: Double(polyline.path!.count()) - 3), GMSStyleSpan(color: .red, segments: 1)]
+        polyline.strokeWidth = 4
+        polyline.map = mapView
+        polylinesArray.append(polyline)
     }
+    
+    func drawSyncPolylinesFor(_ coordinates: [CoordinateProtocol]) {
+        polylinesArray.forEach {
+            if $0.title == "sync" {
+                $0.map = nil
+            }
+        }
+        let startLocation = CLLocationCoordinate2D(latitude: coordinates.first!.latitude, longitude: coordinates.first!.longitude)
+        let endLocation = CLLocationCoordinate2D(latitude: coordinates.last!.latitude, longitude: coordinates.last!.longitude)
+        let path = GMSMutablePath()
+        coordinates.forEach { coord in
+            let coordinate = CLLocationCoordinate2D(latitude: coord.latitude, longitude: coord.longitude)
+            path.add(coordinate)
+        }
+        let polyline = GMSPolyline(path: path)
+        polyline.geodesic = true
+        polyline.strokeColor = .blue
+        polyline.strokeWidth = 2
+        polyline.map = mapView
+        polyline.title = "sync"
+        polylinesArray.append(polyline)
+        let coordinateBounds = GMSCoordinateBounds(coordinate: startLocation, coordinate: endLocation)
+        mapView.animate(with: GMSCameraUpdate.fit(coordinateBounds))
+    }
+    
+    func trackDevice(_ device: DeviceProtocol) {
+        deviceMarker.position = CLLocationCoordinate2D(latitude: device.coordinates.value.last!.latitude, longitude: device.coordinates.value.last!.longitude)
+        deviceMarker.title = device.name
+        deviceMarker.tracksInfoWindowChanges = true
+        deviceMarker.icon = chooseIconImageFor(device)!.scaleImageTo(CGSize(width: 30, height: 40))
+        deviceMarker.map = mapView
+    }
+    
+    func chooseIconImageFor(_ device: DeviceProtocol) -> UIImage? {
+        switch device.name.lowercased() {
+        case let x where x.contains("watch"):
+            return UIImage(named: "iWatch")
+        case let x where x.contains("bracelet"):
+            return UIImage(named: "iBracelet")
+        case let x where x.contains("speaker"):
+            return UIImage(named: "iSpeaker")
+        default:
+            return UIImage(named: "iPhone")
+        }
+    }
+    
+    func centerMapOnLocation(_ location: CLLocationCoordinate2D) {
+        mapView.camera = GMSCameraPosition(target: location, zoom: 7, bearing: 0, viewingAngle: 0)
+    }
+    
 }

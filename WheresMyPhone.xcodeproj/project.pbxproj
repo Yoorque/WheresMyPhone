@@ -25,6 +25,8 @@
 		262892CC21541E9F009FCAF3 /* Date+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262892CB21541E9F009FCAF3 /* Date+extension.swift */; };
 		2651CF14214160E500BB20A1 /* ImageView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2651CF13214160E500BB20A1 /* ImageView+extension.swift */; };
 		2698A62421591725007685A5 /* CLLocation+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2698A62321591725007685A5 /* CLLocation+extension.swift */; };
+		269AF31E216769D800446AB6 /* DeviceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269AF31D216769D800446AB6 /* DeviceCell.swift */; };
+		269AF3222167803600446AB6 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269AF3212167803600446AB6 /* AlertManager.swift */; };
 		26D9AA04213924590053F2DA /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D9AA03213924590053F2DA /* Device.swift */; };
 		95DC57EF425F3696436AFC4B /* Pods_WheresMyPhoneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A9EDF733A168BA5209EDE4 /* Pods_WheresMyPhoneTests.framework */; };
 		CA937446F0E13CAC0020B38C /* Pods_WheresMyPhone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA1D594D1EC9F824E6D40329 /* Pods_WheresMyPhone.framework */; };
@@ -63,6 +65,8 @@
 		262892CB21541E9F009FCAF3 /* Date+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+extension.swift"; sourceTree = "<group>"; };
 		2651CF13214160E500BB20A1 /* ImageView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageView+extension.swift"; sourceTree = "<group>"; };
 		2698A62321591725007685A5 /* CLLocation+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocation+extension.swift"; sourceTree = "<group>"; };
+		269AF31D216769D800446AB6 /* DeviceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceCell.swift; sourceTree = "<group>"; };
+		269AF3212167803600446AB6 /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 		26D9AA03213924590053F2DA /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		BA1D594D1EC9F824E6D40329 /* Pods_WheresMyPhone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WheresMyPhone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BED9EEED3052D88F4396A902 /* Pods-WheresMyPhone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WheresMyPhone.release.xcconfig"; path = "Pods/Target Support Files/Pods-WheresMyPhone/Pods-WheresMyPhone.release.xcconfig"; sourceTree = "<group>"; };
@@ -181,6 +185,8 @@
 				2622265C21382DF2000CB875 /* Main.storyboard */,
 				2622266421382DF3000CB875 /* LaunchScreen.storyboard */,
 				261AC01D2163A69E00DD5197 /* MapManager.swift */,
+				269AF31D216769D800446AB6 /* DeviceCell.swift */,
+				269AF3212167803600446AB6 /* AlertManager.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -427,10 +433,12 @@
 				261AC01E2163A69E00DD5197 /* MapManager.swift in Sources */,
 				261AC01A2163830E00DD5197 /* DeviceManagerProtocol.swift in Sources */,
 				2622265B21382DF2000CB875 /* ViewController.swift in Sources */,
+				269AF3222167803600446AB6 /* AlertManager.swift in Sources */,
 				2627C6D8214FE43C00771CAA /* DeviceProtocol.swift in Sources */,
 				261AC0242163B65F00DD5197 /* DeviceManager.swift in Sources */,
 				2651CF14214160E500BB20A1 /* ImageView+extension.swift in Sources */,
 				26D9AA04213924590053F2DA /* Device.swift in Sources */,
+				269AF31E216769D800446AB6 /* DeviceCell.swift in Sources */,
 				261AC0222163B03900DD5197 /* MockedDevices.swift in Sources */,
 				2622266121382DF2000CB875 /* WheresMyPhone.xcdatamodeld in Sources */,
 				260718D821412DFA009B36C1 /* Double+extension.swift in Sources */,

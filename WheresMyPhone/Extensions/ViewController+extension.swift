@@ -22,11 +22,9 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let device = deviceManager.devices.value[indexPath.row]
-        cell.textLabel?.text = device.name
-        cell.detailTextLabel?.text = device.uuid
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! DeviceCell
+        cell.nameLabel.text = deviceManager.devices.value[indexPath.row].name
+        cell.movesLabel.text = "\(deviceManager.devices.value[indexPath.row].coordinates.value.count)"
         return cell
     }
     
@@ -34,12 +32,9 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     //Delegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let device = deviceManager.devices.value[indexPath.row]
         selectedRow = indexPath.row
-        mapManager.mapView.camera = GMSCameraPosition(target: CLLocationCoordinate2D(latitude: device.coordinates.last!.latitude, longitude: device.coordinates.last!.longitude), zoom: 6, bearing: 0, viewingAngle: 0)
-        deviceManager.liveTrack(device)
-         MockedDevices.mockMovementFor(vc: self)
-    }
+        trackCoordinateObservable.onNext(deviceManager.devices.value[indexPath.row].coordinates.value.last!)        
+    } 
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44
@@ -47,7 +42,9 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete", handler: { _,_,_ in
+            self.selectedRow = 0
             self.deviceManager.devices.value.remove(at: indexPath.row)
+           // tableView.deleteRows(at: [indexPath], with: .left)
             self.tableView.reloadData()
         })
         let config = UISwipeActionsConfiguration(actions: [deleteAction])
