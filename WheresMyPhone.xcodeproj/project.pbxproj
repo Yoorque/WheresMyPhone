@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		260718D821412DFA009B36C1 /* Double+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 260718D721412DFA009B36C1 /* Double+extension.swift */; };
-		260718DA21412E8D009B36C1 /* ViewController+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 260718D921412E8D009B36C1 /* ViewController+extension.swift */; };
 		261AC018216382F800DD5197 /* CoordinateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261AC017216382F800DD5197 /* CoordinateProtocol.swift */; };
 		261AC01A2163830E00DD5197 /* DeviceManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261AC0192163830E00DD5197 /* DeviceManagerProtocol.swift */; };
 		261AC01E2163A69E00DD5197 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261AC01D2163A69E00DD5197 /* MapManager.swift */; };
@@ -44,7 +43,6 @@
 
 /* Begin PBXFileReference section */
 		260718D721412DFA009B36C1 /* Double+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+extension.swift"; sourceTree = "<group>"; };
-		260718D921412E8D009B36C1 /* ViewController+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+extension.swift"; sourceTree = "<group>"; };
 		261AC017216382F800DD5197 /* CoordinateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateProtocol.swift; sourceTree = "<group>"; };
 		261AC0192163830E00DD5197 /* DeviceManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManagerProtocol.swift; sourceTree = "<group>"; };
 		261AC01D2163A69E00DD5197 /* MapManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
@@ -100,7 +98,6 @@
 			isa = PBXGroup;
 			children = (
 				260718D721412DFA009B36C1 /* Double+extension.swift */,
-				260718D921412E8D009B36C1 /* ViewController+extension.swift */,
 				2651CF13214160E500BB20A1 /* ImageView+extension.swift */,
 				262892CB21541E9F009FCAF3 /* Date+extension.swift */,
 				2698A62321591725007685A5 /* CLLocation+extension.swift */,
@@ -426,7 +423,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				260718DA21412E8D009B36C1 /* ViewController+extension.swift in Sources */,
 				261AC018216382F800DD5197 /* CoordinateProtocol.swift in Sources */,
 				2698A62421591725007685A5 /* CLLocation+extension.swift in Sources */,
 				262892CC21541E9F009FCAF3 /* Date+extension.swift in Sources */,
