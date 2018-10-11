@@ -49,11 +49,4 @@ class DeviceManager: DeviceManagerProtocol {
     func addDevice(_ device: DeviceProtocol) {
         devices.value.append(device)
     }
-    
-    func delayFor(_ interval: TimeInterval, completion: @escaping ()->()) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + interval) {
-            completion()
-        }
-    }
-   
 }

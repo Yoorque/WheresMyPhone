@@ -80,7 +80,7 @@ class ViewController: UIViewController {
     let newCoordinates = PublishSubject<(CoordinateProtocol, Int)>()
     var selectedRow: Int?
     let mock = MockedDevices()
-    var trackCoordinateObservable = PublishSubject<CoordinateProtocol>()
+    var trackCoordinatePublishSubject = PublishSubject<CoordinateProtocol>()
     
     
     //MARK: - Life cycle -
@@ -110,7 +110,8 @@ class ViewController: UIViewController {
         self.progressBar.progress = Float(progress / 100)
     }
     
-    ///Modify tableView height depending on the number of devices connected
+    ///Observes changes in list of connected devices and modifies tableView height depending on the number of connected devices.
+    ///- Note: Called from `viewDidLoad()`
     func deviceListObservable() {
         let maxHeight = 4 * tableView.estimatedRowHeight
         deviceManager.devices.asObservable().subscribe(onNext: { device in
@@ -118,6 +119,8 @@ class ViewController: UIViewController {
         }).disposed(by: disposeBag)
     }
     
+    ///Observes changes in selected device's coordinate array and tracks device on screen.
+    ///- Note: Called from `centerDeviceOnMapObservable()` method when device is selected.
     func trackDeviceObservable() {
         deviceManager.devices.value[selectedRow!].coordinates
             .asObservable()
@@ -136,15 +139,16 @@ class ViewController: UIViewController {
         
     }
     
-    ///Center device on map
+    ///Observes selection of the device from the `tableView` and centers map on the selected device's last coordinate upon receipt of `onNext()` event from `trackCoordinatePublishSubject`
+    ///- Note: Called from `viewDidLoad()`. `onNext` event is sent from `tableView(_ tableView:indexPath:)`.
     func centerDeviceOnMapObservable() {
-        trackCoordinateObservable.subscribe(onNext: { coord in
+        trackCoordinatePublishSubject.subscribe(onNext: { coord in
             self.mapManager.centerMapOnLocation(CLLocationCoordinate2D(latitude: coord.latitude, longitude: coord.longitude))
             self.trackDeviceObservable()
         }).disposed(by: disposeBag)
     }
     
-    //Reset slider values when switching between devices
+    ///Reset slider values when switching between devices.
     func resetSliders() {
         guard let selectedRow = selectedRow else {return}
         minSlider.maximumValue = maxSlider.value
@@ -152,7 +156,7 @@ class ViewController: UIViewController {
         maxSlider.maximumValue = Float(deviceManager.devices.value[selectedRow].coordinates.value.count - 1)
     }
     
-    //Toggle isHidden state of UI elements and Range button title
+    ///Toggle UI elements, Range button title and navigationItem title.
     fileprivate func toggleUIElements() {
         progressBar.progress = 0.0
         self.dateRangeStackView.isHidden = !self.dateRangeStackView.isHidden
@@ -162,16 +166,20 @@ class ViewController: UIViewController {
         self.tableView.reloadData() //MARK: TEMP conveniance
     }
     
+    
     @IBAction func rangeButtonAction(_ sender: Any) {
         toggleUIElements()
     }
     
+    ///Updates slider labels with current selected dates.
+    ///- Parameter minDate: Starting date.
+    ///- Parameter maxDate: Ending date.
     func updateLabelsWith(_ minDate: String, end maxDate: String) {
         minSliderLabel.text = minDate
         maxSliderLabel.text = maxDate
     }
     
-    ///Track slider value changes
+    ///Track slider value changes and calls `updateLabelsWith(minDate:maxDate:)` method.
     func trackSliderChangesObservable() {
         Observable.combineLatest(minSlider.rx.value, maxSlider.rx.value) { (min, max) in
             guard let selectedRow = self.selectedRow else {return}
@@ -186,6 +194,8 @@ class ViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    ///Tracks slider changes and subscribes to `Observable` received as a return value of `getDateRangeFor(startDate:endDate:)` method in `deviceManager` class.
+    ///- Note: Called from `trackSliderChangesObservable()` method when slider values change.
     func trackSliderChanges(minValue min: Int, maxValue max: Int) {
         guard let selectedRow = selectedRow else {return}
         var tempArray = [CoordinateProtocol]()
@@ -236,18 +246,12 @@ class ViewController: UIViewController {
             }).disposed(by: disposeBag)
     }
     
-    //No selected row alert
+    ///No selected row alert.
     func noRowSelectedAlert() {
         let alert = UIAlertController(title: "Warning", message: "You need to select a device from the list first", preferredStyle: .alert)
         let okButton = UIAlertAction(title: "OK", style: .default, handler: nil)
         alert.addAction(okButton)
         present(alert, animated: true, completion: nil)
-    }
-    
-    func delayFor(_ interval: TimeInterval, completion: @escaping ()->()) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + interval) {
-            completion()
-        }
     }
 }
 
@@ -275,7 +279,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedRow = indexPath.row
-        trackCoordinateObservable.onNext(deviceManager.devices.value[indexPath.row].coordinates.value.last!)
+        trackCoordinatePublishSubject.onNext(deviceManager.devices.value[indexPath.row].coordinates.value.last!)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
