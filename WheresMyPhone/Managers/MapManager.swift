@@ -15,7 +15,7 @@ class MapManager: UIView, GMSMapViewDelegate {
     var mapView: GMSMapView!
     var marker = GMSMarker()
     var polylinesArray = [GMSPolyline]()
-    var progressBar = UIProgressView()
+    
     ///Creates GMSMapView on a parameter view.
     ///- Parameter view: View to which the map will be added to as a subview.
     func createMapFor(_ view: UIView) {
@@ -27,11 +27,8 @@ class MapManager: UIView, GMSMapViewDelegate {
     }
 
     func drawRangeFor(_ coordinates: [CoordinateProtocol]) {
-        polylinesArray.forEach {
-            if $0.title == "range" {
-                $0.map = nil
-            }
-        }
+        removeRangePolylines()
+        
         let path = GMSMutablePath()
         coordinates.forEach { coord in
             let coordinate = CLLocationCoordinate2D(latitude: coord.latitude, longitude: coord.longitude)
@@ -48,11 +45,8 @@ class MapManager: UIView, GMSMapViewDelegate {
     }
     
     func drawSyncPolylinesFor(_ coordinates: [CoordinateProtocol]) {
-        polylinesArray.forEach {
-            if $0.title == "sync" {
-                $0.map = nil
-            }
-        }
+        removeSyncPolylines()
+        
         let startLocation = CLLocationCoordinate2D(latitude: coordinates.first!.latitude, longitude: coordinates.first!.longitude)
         let endLocation = CLLocationCoordinate2D(latitude: coordinates.last!.latitude, longitude: coordinates.last!.longitude)
         let path = GMSMutablePath()
@@ -69,6 +63,24 @@ class MapManager: UIView, GMSMapViewDelegate {
         polylinesArray.append(polyline)
         let coordinateBounds = GMSCoordinateBounds(coordinate: startLocation, coordinate: endLocation)
         mapView.animate(with: GMSCameraUpdate.fit(coordinateBounds))
+    }
+    
+    func removeSyncPolylines() {
+        for polyline in polylinesArray {
+            if polyline.title == "sync" {
+                polyline.map = nil
+            }
+        }
+        polylinesArray = polylinesArray.compactMap {$0}
+    }
+    
+    func removeRangePolylines() {
+        for polyline in polylinesArray {
+            if polyline.title == "range" {
+                polyline.map = nil
+            }
+        }
+        polylinesArray = polylinesArray.compactMap {$0}
     }
     
     func trackDevice(_ device: DeviceProtocol) {

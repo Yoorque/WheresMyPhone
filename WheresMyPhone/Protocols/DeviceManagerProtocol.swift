@@ -21,7 +21,7 @@ protocol DeviceManagerProtocol {
     ///Provides tracking of a connected device by drawing devices's current location on a map.
     ///- Parameter device: Tracked device
     ///- Returns: Observable CoordinateProtocol object representing last device coordinate.
-    func liveTrack(_ device : DeviceProtocol) -> Observable<CoordinateProtocol>
+    func liveTrack(_ device : DeviceProtocol) -> Observable<DeviceProtocol>
     
     ///Requests all of the coordinates data from a connected device.
     ///- Note: This is an `Optional` method.

@@ -8,6 +8,7 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 
 enum Error: String {
     case NoCoordinatesError = "No avaliable coordinates"
@@ -15,7 +16,7 @@ enum Error: String {
 }
 
 class DeviceManager: DeviceManagerProtocol {
-    var devices = Variable<[DeviceProtocol]>([])
+    var devices = BehaviorRelay<[DeviceProtocol]>(value: [])
     let mapManager = MapManager.sharedInstance
     
     func getDateRangeFor(_ device: DeviceProtocol, startDate: Date, endDate: Date) -> (Observable<CoordinateProtocol>, Int) {
@@ -23,8 +24,8 @@ class DeviceManager: DeviceManagerProtocol {
         return fetchDataFor(filteredCoordinates)
     }
     
-    func liveTrack(_ device: DeviceProtocol) -> Observable<CoordinateProtocol> {
-        let observable = Observable<CoordinateProtocol>.of(device.coordinates.value.last!)
+    func liveTrack(_ device: DeviceProtocol) -> Observable<DeviceProtocol> {
+        let observable = Observable<DeviceProtocol>.just(device)
         return observable
     }
     
@@ -47,6 +48,12 @@ class DeviceManager: DeviceManagerProtocol {
     }
     
     func addDevice(_ device: DeviceProtocol) {
-        devices.value.append(device)
+        devices.accept(devices.value + [device])
+    }
+    
+    func removeDevice(at indexPath: IndexPath) {
+        var temp = devices.value
+        temp.remove(at: indexPath.row)
+        devices.accept(temp)
     }
 }

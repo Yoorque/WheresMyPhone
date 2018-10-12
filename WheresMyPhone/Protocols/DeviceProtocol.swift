@@ -8,6 +8,7 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 
 ///Adopting this protocol ensures that the connected device contains required data.
 ///- Note: In order to fully adopt to this protocol, you must adopt to Coordinate protocol as well.
@@ -19,10 +20,11 @@ protocol DeviceProtocol {
     ///UUID used for identifying device
     var uuid: String {get}
     ///Array of coordinates for a selected device
-    var coordinates: Variable<[CoordinateProtocol]> {get set}
-    var timer: Timer {get set}
+    var coordinates: BehaviorRelay<[CoordinateProtocol]> {get set}
+    ///Exposes `selected` state of an object.
+    var isSelected: Bool {get set}
     ///Required initializer for a device
-    init(name: String, uuid: String, coordinates: Variable<[CoordinateProtocol]>)
+    init(name: String, uuid: String, coordinates: BehaviorRelay<[CoordinateProtocol]>, isSelected: Bool)
 }
 
 

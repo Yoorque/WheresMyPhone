@@ -79,9 +79,8 @@ class ViewController: UIViewController {
     let mapManager = MapManager.sharedInstance
     let newCoordinates = PublishSubject<(CoordinateProtocol, Int)>()
     var selectedRow: Int?
-    let mock = MockedDevices()
     var trackCoordinatePublishSubject = PublishSubject<CoordinateProtocol>()
-    
+    var previouslySelected: IndexPath!
     
     //MARK: - Life cycle -
     override func viewDidLoad() {
@@ -101,8 +100,17 @@ class ViewController: UIViewController {
         trackSliderChangesObservable()
         
         //Add Mock Devices
-        deviceManager.addDevice(mock.mock1)
-        deviceManager.addDevice(mock.mock2)        
+        
+        let mock1 = MockedDevices(name: "Dusan's phone" , uuid: "D-u-s-a-n", coordinates: BehaviorRelay<[CoordinateProtocol]>(value: [
+            Coordinates(latitude: 40.0, longitude: 30.0, timestamp: Date(), accuracy: 0),
+            Coordinates(latitude: 40.5, longitude: 30.5, timestamp: Date() + 30, accuracy: 0)]), isSelected: false, timeInterval: 1)
+        
+        let mock2 = MockedDevices(name: "Marko's iWatch", uuid: "M-a-r-k-o", coordinates: BehaviorRelay<[CoordinateProtocol]>(value: [
+            Coordinates(latitude: 42.0, longitude: 32.0, timestamp: Date(), accuracy: 0),
+            Coordinates(latitude: 42.5, longitude: 32.5, timestamp: Date() + 30, accuracy: 0)]), isSelected: false, timeInterval: 2)
+        
+        deviceManager.addDevice(mock1)
+        deviceManager.addDevice(mock2)
     }
     
     func showProgress(_ progress: Double) {
@@ -143,6 +151,7 @@ class ViewController: UIViewController {
     ///- Note: Called from `viewDidLoad()`. `onNext` event is sent from `tableView(_ tableView:indexPath:)`.
     func centerDeviceOnMapObservable() {
         trackCoordinatePublishSubject.subscribe(onNext: { coord in
+            self.resetSliders()
             self.mapManager.centerMapOnLocation(CLLocationCoordinate2D(latitude: coord.latitude, longitude: coord.longitude))
             self.trackDeviceObservable()
         }).disposed(by: disposeBag)
@@ -150,10 +159,38 @@ class ViewController: UIViewController {
     
     ///Reset slider values when switching between devices.
     func resetSliders() {
-        guard let selectedRow = selectedRow else {return}
+        guard let selectedRow = selectedRow else {
+            AlertManager.noRowSelectedAlert(self)
+            return
+        }
         minSlider.maximumValue = maxSlider.value
         maxSlider.minimumValue = minSlider.value
         maxSlider.maximumValue = Float(deviceManager.devices.value[selectedRow].coordinates.value.count - 1)
+        maxSlider.value = 0.0
+        minSlider.value = 0.0
+    }
+    
+    
+    @IBAction func liveTrackButton(_ sender: Any) { //MARK: - TODO -
+        guard let selectedRow = selectedRow else {
+            AlertManager.noRowSelectedAlert(self)
+            return
+        }
+        deviceManager.devices.value[selectedRow].coordinates.asObservable()
+            //.filter {$0.isSelected}
+            .subscribe(onNext: { _ in
+                self.mapManager.trackDevice(self.deviceManager.devices.value[selectedRow])
+            }, onError: { error in
+                AlertManager.showAlertWith(error.localizedDescription, inViewController: self)
+            }, onCompleted: {
+                print("Completed")
+            }) {
+                print("Disposed")
+        }.disposed(by: disposeBag)
+    }
+    
+    @IBAction func rangeButtonAction(_ sender: Any) {
+        toggleUIElements()
     }
     
     ///Toggle UI elements, Range button title and navigationItem title.
@@ -163,12 +200,8 @@ class ViewController: UIViewController {
         self.mapManager.mapView.settings.myLocationButton = !self.mapManager.mapView.settings.myLocationButton
         self.rangebutton.title = self.dateRangeStackView.isHidden ? "Range" : "Finish"
         navigationItem.title = self.dateRangeStackView.isHidden ? "" : "Syncing data"
+        self.mapManager.removeRangePolylines()
         self.tableView.reloadData() //MARK: TEMP conveniance
-    }
-    
-    
-    @IBAction func rangeButtonAction(_ sender: Any) {
-        toggleUIElements()
     }
     
     ///Updates slider labels with current selected dates.
@@ -197,7 +230,10 @@ class ViewController: UIViewController {
     ///Tracks slider changes and subscribes to `Observable` received as a return value of `getDateRangeFor(startDate:endDate:)` method in `deviceManager` class.
     ///- Note: Called from `trackSliderChangesObservable()` method when slider values change.
     func trackSliderChanges(minValue min: Int, maxValue max: Int) {
-        guard let selectedRow = selectedRow else {return}
+        guard let selectedRow = selectedRow else {
+            AlertManager.noRowSelectedAlert(self)
+            return
+        }
         var tempArray = [CoordinateProtocol]()
         let observable = deviceManager.getDateRangeFor(deviceManager.devices.value[selectedRow], startDate: deviceManager.devices.value[selectedRow].coordinates.value[min].timestamp, endDate: deviceManager.devices.value[selectedRow].coordinates.value[max].timestamp)
         observable.0
@@ -220,7 +256,11 @@ class ViewController: UIViewController {
     }
     
     @IBAction func syncAction(_ sender: Any) {
-        guard let selectedRow = selectedRow else {return}
+        guard let selectedRow = selectedRow else {
+            AlertManager.noRowSelectedAlert(self)
+            return
+        }
+        
         let observable = deviceManager.syncDataFor(deviceManager.devices.value[selectedRow])
         var tempArray = [CoordinateProtocol]()
         
@@ -244,14 +284,6 @@ class ViewController: UIViewController {
             }, onDisposed: {
                 print("Disposed")
             }).disposed(by: disposeBag)
-    }
-    
-    ///No selected row alert.
-    func noRowSelectedAlert() {
-        let alert = UIAlertController(title: "Warning", message: "You need to select a device from the list first", preferredStyle: .alert)
-        let okButton = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alert.addAction(okButton)
-        present(alert, animated: true, completion: nil)
     }
 }
 
@@ -280,6 +312,11 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedRow = indexPath.row
         trackCoordinatePublishSubject.onNext(deviceManager.devices.value[indexPath.row].coordinates.value.last!)
+        if previouslySelected != indexPath {
+            mapManager.removeSyncPolylines()
+            mapManager.removeRangePolylines()
+        }
+        previouslySelected = indexPath
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -289,7 +326,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete", handler: { _,_,_ in
             self.selectedRow = 0
-            self.deviceManager.devices.value.remove(at: indexPath.row)
+            self.deviceManager.removeDevice(at: indexPath)
             // tableView.deleteRows(at: [indexPath], with: .left)
             self.tableView.reloadData()
         })

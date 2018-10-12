@@ -187,11 +187,18 @@
                                 <action selector="syncAction:" destination="BYZ-38-t0r" id="0Yd-TD-4sH"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Range" id="ZdW-WB-d5u">
-                            <connections>
-                                <action selector="rangeButtonAction:" destination="BYZ-38-t0r" id="siE-Jb-ioT"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Range" id="ZdW-WB-d5u">
+                                <connections>
+                                    <action selector="rangeButtonAction:" destination="BYZ-38-t0r" id="siE-Jb-ioT"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Live" id="lZM-G1-C8f">
+                                <connections>
+                                    <action selector="liveTrackButton:" destination="BYZ-38-t0r" id="j0t-Dw-lEq"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="dateRangeStackView" destination="kzs-Yc-7Fi" id="tU0-M4-ePn"/>
