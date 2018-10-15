@@ -139,7 +139,6 @@
 				2627C6D9214FE44200771CAA /* Protocols */,
 				26D9A9FF213923EA0053F2DA /* Support */,
 				26D9AA01213924040053F2DA /* View */,
-				26D9AA05213924A70053F2DA /* ViewModel */,
 			);
 			path = WheresMyPhone;
 			sourceTree = "<group>";
@@ -216,13 +215,6 @@
 				26356F342170860800BD7DC5 /* CoordinateModel.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		26D9AA05213924A70053F2DA /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		26D9AA08213925630053F2DA /* AppDelegate */ = {
