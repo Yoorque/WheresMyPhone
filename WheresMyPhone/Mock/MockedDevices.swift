@@ -14,16 +14,16 @@ class MockedDevices: DeviceProtocol {
     var name: String
     var uuid: String
     var coordinates: BehaviorRelay<[CoordinateProtocol]>
-    var isSelected: Bool
+    var isSelected: BehaviorRelay<Bool>
     
-    required init(name: String, uuid: String, coordinates: BehaviorRelay<[CoordinateProtocol]>, isSelected: Bool) {
+    required init(name: String, uuid: String, coordinates: BehaviorRelay<[CoordinateProtocol]>, isSelected: BehaviorRelay<Bool>) {
         self.name = name
         self.uuid = uuid
         self.coordinates = coordinates
         self.isSelected = isSelected
     }
     
-    convenience init(name: String, uuid: String, coordinates: BehaviorRelay<[CoordinateProtocol]>, isSelected: Bool, timeInterval: TimeInterval) {
+    convenience init(name: String, uuid: String, coordinates: BehaviorRelay<[CoordinateProtocol]>, isSelected: BehaviorRelay<Bool>, timeInterval: TimeInterval) {
         self.init(name: name, uuid: uuid, coordinates: coordinates, isSelected: isSelected)
         self.name = name
         self.uuid = uuid

@@ -18,10 +18,14 @@ protocol DeviceManagerProtocol {
     ///- Returns: Observable sequence of CoordinateProtocol objects within given `Date` range.
     func getDateRangeFor(_ device: DeviceProtocol, startDate: Date, endDate: Date) -> (Observable<CoordinateProtocol>, Int)
     
-    ///Provides tracking of a connected device by drawing devices's current location on a map.
-    ///- Parameter device: Tracked device
-    ///- Returns: Observable CoordinateProtocol object representing last device coordinate.
-    func liveTrack(_ device : DeviceProtocol) -> Observable<DeviceProtocol>
+    ///Initiates scanning for peripherals.
+    ///- Returns: Observable sequence of devices adopting `DeviceProtocol`.
+    func scanForPeripherals() -> Observable<DeviceProtocol>
+    
+    ///Connects to a selected peripheral.
+    ///- Parameter peripheral: A device we wish to connect to.
+    ///- Returns: Device adopting `DeviceProtocol`.
+    func connectTo(_ peripheral: DeviceProtocol) -> Observable<DeviceProtocol>
     
     ///Requests all of the coordinates data from a connected device.
     ///- Note: This is an `Optional` method.

@@ -193,9 +193,9 @@
                                     <action selector="rangeButtonAction:" destination="BYZ-38-t0r" id="siE-Jb-ioT"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="Live" id="lZM-G1-C8f">
+                            <barButtonItem title="Scan" id="lZM-G1-C8f">
                                 <connections>
-                                    <action selector="liveTrackButton:" destination="BYZ-38-t0r" id="j0t-Dw-lEq"/>
+                                    <action selector="scanButton:" destination="BYZ-38-t0r" id="zyI-TC-thc"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>

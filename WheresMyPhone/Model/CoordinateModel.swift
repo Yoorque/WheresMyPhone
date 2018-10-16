@@ -8,16 +8,17 @@
 
 import Foundation
 
-struct Coordinates: CoordinateProtocol {
+struct Coordinates:Comparable, CoordinateProtocol {
     var latitude: Double
     var longitude: Double
     var timestamp: Date
     var accuracy: Double
     
-    init(latitude: Double, longitude: Double, timestamp: Date, accuracy: Double) {
-        self.latitude = latitude
-        self.longitude = longitude
-        self.timestamp = timestamp
-        self.accuracy = accuracy
+    static func ==(lhs: Coordinates, rhs: Coordinates) -> Bool {
+        return lhs.timestamp == rhs.timestamp
+    }
+    
+    static func <(lhs: Coordinates, rhs: Coordinates) -> Bool {
+        return lhs.timestamp < rhs.timestamp
     }
 }

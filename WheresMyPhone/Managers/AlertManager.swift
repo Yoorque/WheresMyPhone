@@ -10,16 +10,10 @@ import Foundation
 import UIKit
 
 struct AlertManager {
-    static func showAlertWith(_ message: String, inViewController vc: ViewController) {
-        let alert = UIAlertController(title: "Warning", message: message, preferredStyle: .alert)
-        let okButtonAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alert.addAction(okButtonAction)
-        vc.present(alert, animated: true, completion: nil)
-    }
     
-    ///No selected row alert.
-    static func noRowSelectedAlert(_ viewController: ViewController) {
-        let alert = UIAlertController(title: "Warning", message: "You need to select a device from the list first", preferredStyle: .alert)
+    
+    static func errorAlert(withError error: WMPError ,_ viewController: ViewController) {
+        let alert = UIAlertController(title: "Warning", message: error.recoveryInstruction, preferredStyle: .alert)
         let okButton = UIAlertAction(title: "OK", style: .default, handler: nil)
         alert.addAction(okButton)
         viewController.present(alert, animated: true, completion: nil)

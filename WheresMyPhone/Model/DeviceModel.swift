@@ -7,31 +7,24 @@
 //
 
 import RxSwift
+import RxCocoa
 import GoogleMaps
 
-class DeviceModel: Comparable {
+struct Device: Comparable, DeviceProtocol {
     
     //MARK: - Properties -
-    var name: BehaviorSubject<String>
-    var uuid: BehaviorSubject<String>
-    
-    var coordinates: BehaviorSubject<[CoordinateProtocol]>
-    
-    //MARK: - Init -
-    required init(name: BehaviorSubject<String>, uuid: BehaviorSubject<String>, coordinates: BehaviorSubject<[CoordinateProtocol]>) {
-        self.name = name
-        self.uuid = uuid
-        self.coordinates = coordinates
-    }
-    
+    var name: String
+    var uuid: String
+    var isSelected: BehaviorRelay<Bool>
+    var coordinates: BehaviorRelay<[CoordinateProtocol]>
     
     //Satisfying Comparable protocol
-    static func == (lhs: DeviceModel, rhs: DeviceModel) -> Bool {
-        return try! lhs.name.value() == rhs.name.value()
+    static func == (lhs: Device, rhs: Device) -> Bool {
+        return lhs.name == rhs.name
     }
     
-    static func < (lhs: DeviceModel, rhs: DeviceModel) -> Bool {
-        return try! lhs.name.value() < rhs.name.value()
+    static func < (lhs: Device, rhs: Device) -> Bool {
+        return lhs.name < rhs.name
     }
 }
 

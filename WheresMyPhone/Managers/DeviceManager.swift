@@ -10,28 +10,69 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-enum Error: String {
-    case NoCoordinatesError = "No avaliable coordinates"
-    case TransferError = "TransferError"
+var mockArrayOfDevices = [
+    MockedDevices(name: "Dusan's phone" , uuid: "D-u-s-a-n", coordinates: BehaviorRelay<[CoordinateProtocol]>(value: [
+Coordinates(latitude: 40.0, longitude: 30.0, timestamp: Date(), accuracy: 0),
+Coordinates(latitude: 40.5, longitude: 30.5, timestamp: Date() + 30, accuracy: 0)]), isSelected: BehaviorRelay<Bool>(value: false), timeInterval: 1),
+    
+    MockedDevices(name: "Marko's iWatch", uuid: "M-a-r-k-o", coordinates: BehaviorRelay<[CoordinateProtocol]>(value: [
+Coordinates(latitude: 42.0, longitude: 32.0, timestamp: Date(), accuracy: 0),
+Coordinates(latitude: 42.5, longitude: 32.5, timestamp: Date() + 30, accuracy: 0)]), isSelected: BehaviorRelay<Bool>(value: false), timeInterval: 2)]
+
+enum WMPError: Error, LocalizedError {
+    case deviceNotFound
+    case noNewCoordinates
+    case deviceNotSelected
+    case unknownError(Error)
+    
+    var recoveryInstruction: String? {
+        switch self {
+        case .deviceNotFound:
+            return "No available devices."
+        case .noNewCoordinates:
+            return "Device has no new coordinates."
+        case .deviceNotSelected:
+            return "Select the device from the list first."
+        case .unknownError(let error):
+            return "Unknown error \(error)"
+        }
+    }
 }
 
+
 class DeviceManager: DeviceManagerProtocol {
-    var devices = BehaviorRelay<[DeviceProtocol]>(value: [])
-    let mapManager = MapManager.sharedInstance
+    var viewModel = ViewModel()
     
     func getDateRangeFor(_ device: DeviceProtocol, startDate: Date, endDate: Date) -> (Observable<CoordinateProtocol>, Int) {
         let filteredCoordinates = device.coordinates.value.filter {$0.timestamp >= startDate && $0.timestamp <= endDate}
         return fetchDataFor(filteredCoordinates)
     }
     
-    func liveTrack(_ device: DeviceProtocol) -> Observable<DeviceProtocol> {
-        let observable = Observable<DeviceProtocol>.just(device)
-        return observable
+    func scanForPeripherals() -> Observable<DeviceProtocol> {
+        let publish = PublishSubject<DeviceProtocol>()
+        let queue = DispatchQueue.init(label: "TempSerialQueue")
+        
+        queue.async {
+            mockArrayOfDevices.forEach({ (device) in
+                Thread.sleep(forTimeInterval: 0.01)
+                print("isSelected: \(device.isSelected.value)")
+                publish.onNext(device)
+            })
+            publish.onCompleted()
+        }
+        return publish
+    }
+    
+    func connectTo(_ peripheral: DeviceProtocol) -> Observable<DeviceProtocol>{
+        return Observable.create { observer in
+            observer.onNext(peripheral)
+            return Disposables.create()
+        }
     }
     
     func fetchDataFor(_ coordinates: [CoordinateProtocol]) -> (Observable<CoordinateProtocol>, Int) {
         let publish = PublishSubject<CoordinateProtocol>()
-        let queue = DispatchQueue.init(label: "TemoSerialQueue")
+        let queue = DispatchQueue.init(label: "TempSerialQueue")
         
         queue.async {
             coordinates.forEach({ (coordinate) in
@@ -45,15 +86,5 @@ class DeviceManager: DeviceManagerProtocol {
     
     func syncDataFor(_ device: DeviceProtocol) -> (Observable<CoordinateProtocol>, Int) {
         return fetchDataFor(device.coordinates.value)
-    }
-    
-    func addDevice(_ device: DeviceProtocol) {
-        devices.accept(devices.value + [device])
-    }
-    
-    func removeDevice(at indexPath: IndexPath) {
-        var temp = devices.value
-        temp.remove(at: indexPath.row)
-        devices.accept(temp)
     }
 }
