@@ -19,8 +19,8 @@ protocol DeviceProtocol {
     var name: String {get}
     ///UUID used for identifying device
     var uuid: String {get}
-    ///Exposes `selected` state of an object.
-    var isSelected: BehaviorRelay<Bool> {get set}
+//    ///Exposes `selected` state of an object.
+//    var isSelected: BehaviorRelay<Bool> {get set}
     ///Array of coordinates for a selected device
     var coordinates: BehaviorRelay<[CoordinateProtocol]> {get set}
 }

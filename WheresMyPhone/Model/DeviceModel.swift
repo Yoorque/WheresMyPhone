@@ -15,7 +15,7 @@ struct Device: Comparable, DeviceProtocol {
     //MARK: - Properties -
     var name: String
     var uuid: String
-    var isSelected: BehaviorRelay<Bool>
+    //var isSelected: BehaviorRelay<Bool>
     var coordinates: BehaviorRelay<[CoordinateProtocol]>
     
     //Satisfying Comparable protocol

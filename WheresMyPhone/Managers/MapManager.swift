@@ -84,11 +84,15 @@ class MapManager: UIView, GMSMapViewDelegate {
     }
     
     func trackDevice(_ device: DeviceProtocol) {
-        deviceMarker.position = CLLocationCoordinate2D(latitude: device.coordinates.value.last!.latitude, longitude: device.coordinates.value.last!.longitude)
+        print("Device:", device.name, device.uuid, device.coordinates.value.last!)
+        let coordinateToDraw = CLLocationCoordinate2D(latitude: device.coordinates.value.last!.latitude, longitude: device.coordinates.value.last!.longitude)
+        deviceMarker.position = coordinateToDraw
+        
         deviceMarker.title = device.name
         deviceMarker.tracksInfoWindowChanges = true
         deviceMarker.icon = chooseIconImageFor(device)!.scaleImageTo(CGSize(width: 30, height: 40))
         deviceMarker.map = mapView
+        mapView.camera = GMSCameraPosition.camera(withTarget: coordinateToDraw, zoom: 7)
     }
     
     func chooseIconImageFor(_ device: DeviceProtocol) -> UIImage? {

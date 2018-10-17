@@ -11,11 +11,10 @@ import RxSwift
 import RxCocoa
 
 class ViewModel {
-    var devices = BehaviorRelay<[DeviceProtocol]>(value: [])
+    var devices = BehaviorRelay<[(name: String, uuid: String)]>(value: [])
     
-    func addDevice(_ device: DeviceProtocol) {
-        devices.accept(devices.value + [device])
-        
+    func addDevice(_ device: (name: String, uuid: String)) {
+        devices.accept(devices.value + [(device.name, device.uuid)])
     }
     
     func removeDevice(AtIndex row: Int) {

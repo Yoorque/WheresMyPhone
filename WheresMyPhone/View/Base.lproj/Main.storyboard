@@ -120,43 +120,34 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="63.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="qJa-aH-mWI">
-                                                    <rect key="frame" x="25" y="16" width="192.66666666666666" height="32"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="0dO-Jk-1d3">
-                                                    <rect key="frame" x="237.66666666666663" y="16" width="161.33333333333337" height="32"/>
+                                                    <rect key="frame" x="5" y="5" width="404" height="53.666666666666664"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ldl-go-bMx">
-                                                            <rect key="frame" x="0.0" y="0.0" width="54" height="32"/>
-                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
-                                                            <color key="textColor" red="0.0" green="0.59999999999999998" blue="0.070588235289999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="qJa-aH-mWI">
+                                                            <rect key="frame" x="0.0" y="0.0" width="184.33333333333334" height="53.666666666666664"/>
+                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                                            <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="moves made" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1dh-2k-dh8">
-                                                            <rect key="frame" x="64.000000000000028" y="0.0" width="97.333333333333343" height="32"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <nil key="textColor"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ldl-go-bMx">
+                                                            <rect key="frame" x="194.33333333333337" y="0.0" width="209.66666666666663" height="53.666666666666664"/>
+                                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
+                                                            <color key="textColor" red="0.0" green="0.59999999999999998" blue="0.070588235289999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
                                                 </stackView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottomMargin" secondItem="qJa-aH-mWI" secondAttribute="bottom" constant="5" id="2Kg-Nn-PMM"/>
-                                                <constraint firstItem="0dO-Jk-1d3" firstAttribute="leading" secondItem="qJa-aH-mWI" secondAttribute="trailing" constant="20" id="IcL-JU-XBD"/>
-                                                <constraint firstItem="0dO-Jk-1d3" firstAttribute="trailing" secondItem="2nk-MA-Jcu" secondAttribute="trailingMargin" constant="5" id="PBq-TC-89J"/>
-                                                <constraint firstItem="qJa-aH-mWI" firstAttribute="top" secondItem="2nk-MA-Jcu" secondAttribute="topMargin" constant="5" id="WvT-q7-x3P"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="0dO-Jk-1d3" secondAttribute="bottom" constant="5" id="XEx-B3-H24"/>
-                                                <constraint firstItem="0dO-Jk-1d3" firstAttribute="top" secondItem="2nk-MA-Jcu" secondAttribute="topMargin" constant="5" id="jQC-Xq-zcB"/>
-                                                <constraint firstItem="qJa-aH-mWI" firstAttribute="leading" secondItem="2nk-MA-Jcu" secondAttribute="leadingMargin" constant="5" id="kJS-qx-1Em"/>
+                                                <constraint firstAttribute="bottom" secondItem="0dO-Jk-1d3" secondAttribute="bottom" constant="5" id="IJO-8s-KYO"/>
+                                                <constraint firstItem="0dO-Jk-1d3" firstAttribute="leading" secondItem="2nk-MA-Jcu" secondAttribute="leading" constant="5" id="KaF-Pr-pHX"/>
+                                                <constraint firstItem="0dO-Jk-1d3" firstAttribute="top" secondItem="2nk-MA-Jcu" secondAttribute="top" constant="5" id="aal-hV-6g5"/>
+                                                <constraint firstAttribute="trailing" secondItem="0dO-Jk-1d3" secondAttribute="trailing" constant="5" id="pU9-2w-bPP"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="movesLabel" destination="Ldl-go-bMx" id="62P-Xl-0C1"/>
                                             <outlet property="nameLabel" destination="qJa-aH-mWI" id="c3m-ir-r1n"/>
+                                            <outlet property="uuidLabel" destination="Ldl-go-bMx" id="haV-OP-ZLO"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

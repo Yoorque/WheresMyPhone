@@ -19,13 +19,19 @@ protocol DeviceManagerProtocol {
     func getDateRangeFor(_ device: DeviceProtocol, startDate: Date, endDate: Date) -> (Observable<CoordinateProtocol>, Int)
     
     ///Initiates scanning for peripherals.
-    ///- Returns: Observable sequence of devices adopting `DeviceProtocol`.
-    func scanForPeripherals() -> Observable<DeviceProtocol>
+    func scanForPeripherals() -> Observable<(name: String, uuid: String)>
     
-    ///Connects to a selected peripheral.
-    ///- Parameter peripheral: A device we wish to connect to.
-    ///- Returns: Device adopting `DeviceProtocol`.
-    func connectTo(_ peripheral: DeviceProtocol) -> Observable<DeviceProtocol>
+    ///Stops scanning for peripherals.
+    func stopScanForPeripherals()
+    /**
+    Connects to a selected peripheral by its `name` parameter.
+    - Parameter name: Name of a device we wish to connect to.
+    - Note: You can also use `UUID` to connect to a device, with `connectTo(uuid:)` optional method.
+    ```
+    func connectTo(_ uuid: String)
+    ```
+    */
+    func connectTo(_ name: String)
     
     ///Requests all of the coordinates data from a connected device.
     ///- Note: This is an `Optional` method.
@@ -33,7 +39,12 @@ protocol DeviceManagerProtocol {
     ///- Warning: Calling this method might cause large amount of data to be transferred, which can be time consuming.
     ///- Returns: Observable sequence of CoordinateProtocol objects.
     func syncDataFor(_ device: DeviceProtocol) -> (Observable<CoordinateProtocol>, Int)
-    
+}
+
+extension DeviceManagerProtocol {
+    ///Connects to a selected peripheral by its `UUID` parameter.
+    ///- Parameter uuid: UUID of a device we wish to connect to.
+    func connectTo(_ uuid: String){}
 }
 
 

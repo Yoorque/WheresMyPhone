@@ -41,6 +41,13 @@ enum WMPError: Error, LocalizedError {
 
 
 class DeviceManager: DeviceManagerProtocol {
+    
+    func stopScanForPeripherals() {
+        //Stop scanning for peripherals
+        
+        
+    }
+    
     var viewModel = ViewModel()
     
     func getDateRangeFor(_ device: DeviceProtocol, startDate: Date, endDate: Date) -> (Observable<CoordinateProtocol>, Int) {
@@ -48,26 +55,33 @@ class DeviceManager: DeviceManagerProtocol {
         return fetchDataFor(filteredCoordinates)
     }
     
-    func scanForPeripherals() -> Observable<DeviceProtocol> {
-        let publish = PublishSubject<DeviceProtocol>()
+    func scanForPeripherals() -> Observable<(name: String, uuid: String)> {
+        let publish = PublishSubject<(name: String, uuid: String)>()
         let queue = DispatchQueue.init(label: "TempSerialQueue")
         
         queue.async {
             mockArrayOfDevices.forEach({ (device) in
-                Thread.sleep(forTimeInterval: 0.01)
+                Thread.sleep(forTimeInterval: 2)
                 print("isSelected: \(device.isSelected.value)")
-                publish.onNext(device)
+                publish.onNext((device.name, device.uuid))
             })
             publish.onCompleted()
         }
         return publish
     }
     
-    func connectTo(_ peripheral: DeviceProtocol) -> Observable<DeviceProtocol>{
-        return Observable.create { observer in
-            observer.onNext(peripheral)
-            return Disposables.create()
+    func connectTo(_ peripheral: String) {
+        mockArrayOfDevices.forEach { device in
+            if device.name == peripheral {
+                MapManager.sharedInstance.trackDevice(device)
+            }
         }
+        //MARK: TODO
+        /*
+        publish.subscribe(onNext: { device in
+             MapManager.sharedInstance.trackDevice(device)
+        })
+         */
     }
     
     func fetchDataFor(_ coordinates: [CoordinateProtocol]) -> (Observable<CoordinateProtocol>, Int) {
@@ -76,7 +90,7 @@ class DeviceManager: DeviceManagerProtocol {
         
         queue.async {
             coordinates.forEach({ (coordinate) in
-                Thread.sleep(forTimeInterval: 0.01)
+                Thread.sleep(forTimeInterval: 1)
                 publish.onNext(coordinate)
             })
             publish.onCompleted()
@@ -87,4 +101,5 @@ class DeviceManager: DeviceManagerProtocol {
     func syncDataFor(_ device: DeviceProtocol) -> (Observable<CoordinateProtocol>, Int) {
         return fetchDataFor(device.coordinates.value)
     }
+    
 }
