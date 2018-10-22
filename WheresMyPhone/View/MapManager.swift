@@ -45,19 +45,20 @@ class MapManager: NSObject {
         var speed: Double = 0.0
         //Create new path for every 2 (two) last coordinates in order to observe the speed and color the segment accordingly
         var counter = 0
-        var startLocation = CLLocation()
-        var endLocation = CLLocation()
+        var startLocation: CLLocation!
+        var endLocation: CLLocation!
+        
         device.coordinates.suffix(2).forEach {
-            path.add(CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude))
+           
             
             if counter == 0 {
-            startLocation = CLLocation(latitude: device.coordinates.first!.latitude, longitude: device.coordinates.first!.longitude)
+            startLocation = CLLocation(latitude: $0.latitude, longitude: $0.longitude)
                 counter += 1
             } else {
-            
-             endLocation = CLLocation(latitude: device.coordinates.last!.latitude, longitude: device.coordinates.last!.longitude)
-                counter = 0
+             endLocation = CLLocation(latitude: $0.latitude, longitude: $0.longitude)
             }
+            
+             path.add(CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude))
         }
         //Speed calculation
         let distance = endLocation.distance(from: startLocation)
