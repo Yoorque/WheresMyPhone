@@ -9,21 +9,28 @@
 import UIKit
 import CoreLocation
 import GoogleMaps
+import RxCocoa
 
-struct Device: Comparable {
+class Device: Comparable, DeviceProtocol {
     
     //MARK: - properties -
-    let name: String
-    var uuid: UUID
-    var coordinates: [CLLocation]
-    let image: UIImage
+    var name: String
+    var uuid: String
+    var coordinates: BehaviorRelay<[CoordinateProtocol]>
     
     //MARK: - init -
-    init(name: String, uuid: UUID, coordinates: [CLLocation]) {
+    init(name: String, uuid: String, coordinates: BehaviorRelay<[CoordinateProtocol]>) {
         self.name = name
-        self.uuid = UIDevice.current.identifierForVendor!
+        self.uuid = UIDevice.current.identifierForVendor!.uuidString
         self.coordinates = coordinates
-        self.image = UIImage(named: "iPhone")!.scaleImageTo(CGSize(width: 35, height: 40))
+        
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            let randomNumber = Double(arc4random_uniform(8) + 1)
+            let randomNumber2 = Double(arc4random_uniform(8) + 1)
+            
+            let newCoordinate = Coordinate(latitude: self.coordinates.value.last!.latitude + randomNumber / 100, longitude: self.coordinates.value.last!.longitude + randomNumber2 / 100, accuracy: 0, timestamp: self.coordinates.value.last!.timestamp + randomNumber)
+            self.coordinates.accept(coordinates.value + [newCoordinate])
+        }.fire()
     }
     
     //satisfying Comparable protocol
