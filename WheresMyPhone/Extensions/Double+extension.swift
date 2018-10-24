@@ -6,7 +6,7 @@
 //  Copyright © 2018 Dusan Juranovic. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 extension Double {
     func toStringOfkmPerHour() -> String {

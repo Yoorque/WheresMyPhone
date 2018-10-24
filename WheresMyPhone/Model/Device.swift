@@ -24,11 +24,13 @@ class Device: Comparable, DeviceProtocol {
         self.uuid = UIDevice.current.identifierForVendor!.uuidString
         self.coordinates = coordinates
         
+        //Used to mock arrival of new coordinates by appending it to the array.
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            let randomNumber = Double(arc4random_uniform(8) + 1)
-            let randomNumber2 = Double(arc4random_uniform(8) + 1)
+            let randomNumber = Double(arc4random_uniform(9)) - 3
+            let randomNumber2 = Double(arc4random_uniform(9)) - 3
+            let positiveTimeRandom = Double(arc4random_uniform(8) + 1)
             
-            let newCoordinate = Coordinate(latitude: self.coordinates.value.last!.latitude + randomNumber / 100, longitude: self.coordinates.value.last!.longitude + randomNumber2 / 100, accuracy: 0, timestamp: self.coordinates.value.last!.timestamp + randomNumber)
+            let newCoordinate = Coordinate(latitude: self.coordinates.value.last!.latitude + randomNumber / 1000, longitude: self.coordinates.value.last!.longitude + randomNumber2 / 1000, accuracy: 0, timestamp: self.coordinates.value.last!.timestamp + 7 * positiveTimeRandom)
             self.coordinates.accept(coordinates.value + [newCoordinate])
         }.fire()
     }

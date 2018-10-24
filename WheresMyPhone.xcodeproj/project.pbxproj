@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		260718D821412DFA009B36C1 /* Double+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 260718D721412DFA009B36C1 /* Double+extension.swift */; };
 		260718DE2141359A009B36C1 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 260718DD2141359A009B36C1 /* MapManager.swift */; };
+		2614E21321807B13009D314F /* ViewController+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2614E21221807B13009D314F /* ViewController+extension.swift */; };
 		2622265921382DF2000CB875 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2622265821382DF2000CB875 /* AppDelegate.swift */; };
 		2622265B21382DF2000CB875 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2622265A21382DF2000CB875 /* ViewController.swift */; };
 		2622265E21382DF2000CB875 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2622265C21382DF2000CB875 /* Main.storyboard */; };
@@ -21,6 +22,9 @@
 		26356FD3217E090300BD7DC5 /* CoordinateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26356FD2217E090300BD7DC5 /* CoordinateViewModel.swift */; };
 		26356FD5217E092D00BD7DC5 /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26356FD4217E092D00BD7DC5 /* Coordinate.swift */; };
 		26356FD7217E201A00BD7DC5 /* DeviceManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26356FD6217E201A00BD7DC5 /* DeviceManagerProtocol.swift */; };
+		26356FDA217F04AA00BD7DC5 /* UIColor+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26356FD9217F04AA00BD7DC5 /* UIColor+extension.swift */; };
+		26356FDE217F16E100BD7DC5 /* WMPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26356FDD217F16E100BD7DC5 /* WMPError.swift */; };
+		26356FE0217F171B00BD7DC5 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26356FDF217F171B00BD7DC5 /* AlertManager.swift */; };
 		2651CF14214160E500BB20A1 /* ImageView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2651CF13214160E500BB20A1 /* ImageView+extension.swift */; };
 		2687C600214A6FC300606D22 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2687C5FF214A6FC300606D22 /* MockData.swift */; };
 		26D9AA04213924590053F2DA /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D9AA03213924590053F2DA /* Device.swift */; };
@@ -42,6 +46,7 @@
 /* Begin PBXFileReference section */
 		260718D721412DFA009B36C1 /* Double+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+extension.swift"; sourceTree = "<group>"; };
 		260718DD2141359A009B36C1 /* MapManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
+		2614E21221807B13009D314F /* ViewController+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+extension.swift"; sourceTree = "<group>"; };
 		2622265521382DF2000CB875 /* WheresMyPhone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WheresMyPhone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2622265821382DF2000CB875 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2622265A21382DF2000CB875 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -58,6 +63,9 @@
 		26356FD2217E090300BD7DC5 /* CoordinateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateViewModel.swift; sourceTree = "<group>"; };
 		26356FD4217E092D00BD7DC5 /* Coordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
 		26356FD6217E201A00BD7DC5 /* DeviceManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManagerProtocol.swift; sourceTree = "<group>"; };
+		26356FD9217F04AA00BD7DC5 /* UIColor+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+extension.swift"; sourceTree = "<group>"; };
+		26356FDD217F16E100BD7DC5 /* WMPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMPError.swift; sourceTree = "<group>"; };
+		26356FDF217F171B00BD7DC5 /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 		2651CF13214160E500BB20A1 /* ImageView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageView+extension.swift"; sourceTree = "<group>"; };
 		2687C5FF214A6FC300606D22 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		26D9AA03213924590053F2DA /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
@@ -95,6 +103,8 @@
 			children = (
 				260718D721412DFA009B36C1 /* Double+extension.swift */,
 				2651CF13214160E500BB20A1 /* ImageView+extension.swift */,
+				26356FD9217F04AA00BD7DC5 /* UIColor+extension.swift */,
+				2614E21221807B13009D314F /* ViewController+extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -125,8 +135,10 @@
 				26D9AA08213925630053F2DA /* AppDelegate */,
 				26D9AA00213923F20053F2DA /* Controller */,
 				260718D421412DA0009B36C1 /* Extensions */,
+				26356FD8217F03E500BD7DC5 /* Managers */,
 				26356FCC217DE76300BD7DC5 /* Mock */,
 				26D9AA022139240B0053F2DA /* Model */,
+				26356FCD217DEB2400BD7DC5 /* Protocols */,
 				26D9A9FF213923EA0053F2DA /* Support */,
 				26D9AA01213924040053F2DA /* View */,
 				26D9AA05213924A70053F2DA /* ViewModels */,
@@ -161,6 +173,16 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
+		26356FD8217F03E500BD7DC5 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				260718DD2141359A009B36C1 /* MapManager.swift */,
+				26356FDD217F16E100BD7DC5 /* WMPError.swift */,
+				26356FDF217F171B00BD7DC5 /* AlertManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
 		26D9A9FF213923EA0053F2DA /* Support */ = {
 			isa = PBXGroup;
 			children = (
@@ -173,7 +195,6 @@
 		26D9AA00213923F20053F2DA /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				26356FCD217DEB2400BD7DC5 /* Protocols */,
 				2622265A21382DF2000CB875 /* ViewController.swift */,
 			);
 			path = Controller;
@@ -184,7 +205,6 @@
 			children = (
 				2622265C21382DF2000CB875 /* Main.storyboard */,
 				2622266421382DF3000CB875 /* LaunchScreen.storyboard */,
-				260718DD2141359A009B36C1 /* MapManager.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -425,8 +445,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2614E21321807B13009D314F /* ViewController+extension.swift in Sources */,
 				2622265B21382DF2000CB875 /* ViewController.swift in Sources */,
+				26356FE0217F171B00BD7DC5 /* AlertManager.swift in Sources */,
 				26356FD7217E201A00BD7DC5 /* DeviceManagerProtocol.swift in Sources */,
+				26356FDE217F16E100BD7DC5 /* WMPError.swift in Sources */,
 				2651CF14214160E500BB20A1 /* ImageView+extension.swift in Sources */,
 				26356FD1217E083F00BD7DC5 /* CoordinateProtocol.swift in Sources */,
 				26D9AA04213924590053F2DA /* Device.swift in Sources */,
@@ -437,6 +460,7 @@
 				26356FD3217E090300BD7DC5 /* CoordinateViewModel.swift in Sources */,
 				26356FD5217E092D00BD7DC5 /* Coordinate.swift in Sources */,
 				2622265921382DF2000CB875 /* AppDelegate.swift in Sources */,
+				26356FDA217F04AA00BD7DC5 /* UIColor+extension.swift in Sources */,
 				2687C600214A6FC300606D22 /* MockData.swift in Sources */,
 				26356FCF217DEB4100BD7DC5 /* DeviceProtocol.swift in Sources */,
 			);

@@ -1,0 +1,18 @@
+//
+//  AlertManager.swift
+//  WheresMyPhone
+//
+//  Created by Dusan Juranovic on 10/23/18.
+//  Copyright © 2018 Dusan Juranovic. All rights reserved.
+//
+
+import UIKit
+
+struct AlertManager {
+    static func errorAlert(withError error: WMPError ,_ viewController: ViewController) {
+        let alert = UIAlertController(title: "Warning", message: error.recoveryInstruction, preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(okButton)
+        viewController.present(alert, animated: true, completion: nil)
+    }
+}
